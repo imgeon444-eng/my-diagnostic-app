@@ -3,18 +3,17 @@
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../../lib/firebase'; // 파이어베이스 연결선
+import { db } from '../../lib/firebase';
 
 function ResultContent() {
   const searchParams = useSearchParams();
-  const id = searchParams.get('id'); // 주소창에서 고객의 데이터 ID를 가져옴
+  const id = searchParams.get('id');
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!id) return;
     
-    // 파이어베이스에서 해당 ID의 데이터를 불러오는 로직
     const fetchResult = async () => {
       try {
         const docRef = doc(db, "diagnostics", id);
@@ -48,7 +47,6 @@ function ResultContent() {
     return <div className="min-h-screen flex items-center justify-center font-bold text-xl">데이터를 찾을 수 없습니다.</div>;
   }
 
-  // 등급별 솔루션 메시지 세팅
   let solutionTitle = "";
   let solutionDesc = "";
 
@@ -67,7 +65,6 @@ function ResultContent() {
     <div className="min-h-screen bg-slate-100 flex justify-center items-start md:items-center py-0 md:py-10">
       <div className="w-full max-w-md bg-white min-h-screen md:min-h-[850px] md:h-auto md:rounded-[2.5rem] shadow-2xl relative overflow-hidden flex flex-col animate-fade-in-up">
         
-        {/* 상단 헤더 */}
         <header className="px-6 pt-10 pb-6 bg-slate-900 text-white text-center">
           <div className="inline-block bg-white/20 text-blue-300 text-xs font-bold px-3 py-1 rounded-full mb-4">
             분석 완료
@@ -77,7 +74,6 @@ function ResultContent() {
           </h1>
         </header>
 
-        {/* 점수 대시보드 */}
         <div className="px-6 py-8 bg-slate-50 border-b border-slate-100 text-center">
           <p className="text-slate-500 font-bold mb-2">마케팅 체급 총점</p>
           <div className="flex justify-center items-baseline gap-2 mb-4">
@@ -89,7 +85,6 @@ function ResultContent() {
           </div>
         </div>
 
-        {/* 솔루션 제안 영역 */}
         <main className="flex-1 overflow-y-auto px-6 py-8 custom-scrollbar">
           <h2 className="text-lg font-extrabold text-blue-600 mb-3">더크리에이터즈AI 솔루션</h2>
           <h3 className="text-xl font-bold text-slate-900 mb-4 leading-snug">{solutionTitle}</h3>
@@ -107,10 +102,10 @@ function ResultContent() {
           </div>
         </main>
 
-        {/* 🚀 클로징 (Call to Action) 버튼 */}
         <footer className="p-6 bg-white border-t border-slate-100 z-20">
+          {/* 변경된 부분: window.open을 사용하여 새 창으로 대표님의 오픈채팅방을 띄웁니다 */}
           <button 
-            onClick={() => window.location.href = "kakaotalk://add/friend?friend_id=aegisnova"}
+            onClick={() => window.open('https://open.kakao.com/o/sw0Qhz5b', '_blank')}
             className="w-full h-16 bg-[#FEE500] hover:bg-[#FDD800] text-slate-900 rounded-2xl font-extrabold text-lg transition-all shadow-lg flex items-center justify-center gap-2"
           >
             💬 카카오톡 1:1 심층 상담하기
@@ -122,7 +117,6 @@ function ResultContent() {
   );
 }
 
-// Next.js 13+ 에서 useSearchParams를 안전하게 사용하기 위한 Suspense 래퍼
 export default function ResultPage() {
   return (
     <Suspense fallback={<div className="min-h-screen bg-slate-900"></div>}>
