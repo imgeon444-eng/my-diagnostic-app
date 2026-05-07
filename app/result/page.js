@@ -47,16 +47,21 @@ function ResultContent() {
     return <div className="min-h-screen flex items-center justify-center font-bold text-xl">데이터를 찾을 수 없습니다.</div>;
   }
 
+  // 💡 [수정된 부분] 총점을 기준으로 실시간 등급 텍스트와 솔루션 부여
+  let finalGrade = "";
   let solutionTitle = "";
   let solutionDesc = "";
 
   if (data.totalScore <= 12) {
+    finalGrade = "🥉 레벨 1. 마케팅 비기너";
     solutionTitle = "🚨 마케팅 기초 뼈대 구축이 시급합니다.";
     solutionDesc = "현재 타겟 설정과 키워드 전략 등 기본기가 부족한 상태입니다. 밑빠진 독에 물 붓기 식의 광고비 지출을 멈추고, 더크리에이터즈AI의 [기초 실무 교육]을 통해 브랜드의 방향성부터 다시 잡아야 할 골든 타임입니다.";
   } else if (data.totalScore <= 22) {
+    finalGrade = "🥈 레벨 2. 퍼포먼스 챌린저";
     solutionTitle = "💡 퍼널 고도화와 전환율 개선이 필요합니다.";
     solutionDesc = "기본적인 마케팅은 진행 중이나, 트래픽이 실제 매출로 이어지는 '전환 연결고리(Funnel)'가 끊어져 있습니다. 매체별 효율을 분석하고 자동화 CRM을 도입하는 [전략 컨설팅]이 가장 필요한 시점입니다.";
   } else {
+    finalGrade = "🥇 레벨 3. 하이엔드 마스터";
     solutionTitle = "🚀 대규모 스케일업 파트너십이 가능합니다.";
     solutionDesc = "마케팅에 대한 훌륭한 이해도와 실행력을 갖추고 계십니다. 이제 혼자서 감당하기 힘든 퍼포먼스 마케팅 예산 운용과 하이엔드 브랜딩 콘텐츠 제작을 더크리에이터즈AI와 [파트너십]으로 해결하여 압도적 성장을 이뤄낼 때입니다.";
   }
@@ -80,8 +85,9 @@ function ResultContent() {
             <span className="text-5xl font-black text-slate-900">{data.totalScore}</span>
             <span className="text-xl text-slate-400 font-bold">/ 30점</span>
           </div>
+          {/* 💡 [수정된 부분] DB 값이 아닌 실시간 계산된 등급(finalGrade)을 바로 출력 */}
           <div className="inline-block bg-slate-800 text-white font-extrabold px-5 py-2.5 rounded-xl text-lg">
-            {data.grade || '등급 계산 불가'}
+            {finalGrade}
           </div>
         </div>
 
@@ -103,7 +109,6 @@ function ResultContent() {
         </main>
 
         <footer className="p-6 bg-white border-t border-slate-100 z-20">
-          {/* 변경된 부분: window.open을 사용하여 새 창으로 대표님의 오픈채팅방을 띄웁니다 */}
           <button 
             onClick={() => window.open('https://open.kakao.com/o/sw0Qhz5b', '_blank')}
             className="w-full h-16 bg-[#FEE500] hover:bg-[#FDD800] text-slate-900 rounded-2xl font-extrabold text-lg transition-all shadow-lg flex items-center justify-center gap-2"
