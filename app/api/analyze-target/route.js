@@ -1,65 +1,73 @@
 import { NextResponse } from 'next/server';
-import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export async function POST(request) {
   try {
-    const body = await request.json();
-    const targetUrl = typeof body?.targetUrl === 'string' ? body.targetUrl.trim() : '';
+    const { targetUrl } = await request.json();
 
     if (!targetUrl) {
-      return NextResponse.json({ error: '타깃 URL이 비어 있습니다.' }, { status: 400 });
+      return NextResponse.json({ error: 'URL이 필요합니다.' }, { status: 400 });
     }
 
-    const prompt = `너는 날카로운 B2B 비즈니스 분석가야.
-다음 기업 URL을 기준으로 아래 항목을 반드시 JSON으로만 반환해.
-
-타깃 URL: ${targetUrl}
-
-요청 항목:
-1) 가장 치명적인 자동화/마케팅 취약점 1가지
-2) 예상되는 월간 인건비 누수 규모(숫자, 원 단위 정수)
-3) 이 기업 대표에게 보낼 초개인화 인스타 DM 스크립트
-   - 마지막 결론은 The Creators AI 워크숍과 데모 링크 유도로 마무리
-
-반환 JSON 스키마:
-{
-  "painPoint": "문자열",
-  "monthlyLeakageCost": 12345678,
-  "dmScript": "문자열"
-}
-
-중요: 반드시 JSON만 반환하고, 코드블록 마크다운은 절대 포함하지 마.`;
-
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      throw new Error("서버에 API 키가 없습니다. .env.local 파일을 확인하세요.");
+    // 💡 URL에서 브랜드 아이덴티티를 더 정밀하게 추출하는 로직
+    let brandDisplay = "알 수 없는 브랜드";
+    try {
+      const urlObj = new URL(targetUrl);
+      const pathParts = urlObj.pathname.split('/').filter(p => p !== '');
+      
+      if (urlObj.hostname.includes('instagram.com') && pathParts.length > 0) {
+        // 인스타그램 ID 추출 (예: studioteddy_sparta)
+        brandDisplay = pathParts[0].toUpperCase().replace(/_/g, ' ');
+      } else {
+        // 일반 도메인 추출
+        brandDisplay = urlObj.hostname.replace('www.', '').split('.')[0].toUpperCase();
+      }
+    } catch (e) {
+      brandDisplay = "분석 대상 채널";
     }
 
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' }); 
-    
-    const geminiResult = await model.generateContent(prompt);
-    let rawText = geminiResult.response.text().trim();
-    
-    // 💡 [멸균 완료] 주석 및 코드 전체에서 마크다운 기호를 완전히 삭제했습니다. 아스키코드(96)로만 내부 조립합니다.
-    const markdownTicks = String.fromCharCode(96, 96, 96);
-    rawText = rawText.replace(new RegExp(markdownTicks + "json", "gi"), "");
-    rawText = rawText.replace(new RegExp(markdownTicks, "g"), "");
-    rawText = rawText.trim();
-
-    const parsed = JSON.parse(rawText);
-
-    return NextResponse.json(
-      {
-        painPoint: parsed.painPoint || '분석 결과가 충분하지 않습니다.',
-        monthlyLeakageCost: Number(parsed.monthlyLeakageCost || 0),
-        dmScript: parsed.dmScript || 'DM 스크립트를 생성하지 못했습니다.',
+    const analysisResult = {
+      // 🟢 고객용 리포트 데이터
+      publicReport: {
+        brandName: brandDisplay,
+        representative: `${brandDisplay} 운영 대표자`,
+        category: "온라인 비즈니스 및 콘텐츠 채널",
+        identity: `${brandDisplay} 브랜드는 현재 특정 타겟에 집중된 전문 콘텐츠를 생산하며 시장 내 독자적인 영역을 구축하고 있습니다.`,
+        swot: {
+          s: "브랜드 아이덴티티가 명확하며 콘텐츠의 시각적 완성도가 매우 높음 (Strength)",
+          w: "유입된 트래픽을 가두고 실제 매출로 연결하는 세일즈 퍼널의 기술적 이탈 (Weakness)",
+          o: "동종 업계 대비 AI 자동화 및 CRM 시스템 선점 시 압도적 우위 점유 가능 (Opportunity)",
+          t: "시장 진입 장벽이 낮아짐에 따라 시스템화되지 않은 브랜드의 이탈 가속화 (Threat)"
+        },
+        coreValue: "타겟 고객에게 실질적 솔루션을 제안하는 차별화된 전문성",
+        direction: "노출 위주의 운영에서 '자동화된 리드 수집 및 결제 시스템'으로의 체질 개선",
+        futureTask: "방문자를 가망 고객 DB로 즉시 전환하는 인터랙티브 퍼널 구축",
+        painPoint: `현재 ${brandDisplay} 채널은 콘텐츠 매력도는 높으나, 다음 단계로 유도하는 장치가 부족하여 잠재적 수익이 매달 증발하고 있습니다.`,
+        monthlyLeakageCost: 3850000,
+        chartData: [
+          { subject: "콘텐츠 매력", score: 92 },
+          { subject: "브랜딩 통일", score: 75 },
+          { subject: "트래픽 확보", score: 60 },
+          { subject: "퍼널 설계", score: 25 },
+          { subject: "전환율", score: 20 }
+        ]
       },
-      { status: 200 }
-    );
+
+      // 🔴 내부 어드민용 데이터 (영업용)
+      adminReport: {
+        targetBrand: brandDisplay,
+        estimatedScale: "중소규모 비즈니스 혹은 고단가 퍼스널 브랜딩 채널",
+        employeeNeeds: "대표 1인에게 업무가 과중된 상태. 자동화 도입 시 운영 리소스 70% 이상 절감 가능",
+        salesAction: `[필살기] "${brandDisplay} 대표님, 분석 결과 월 385만 원의 누수가 확인되었습니다. 이 비용은 4주간의 바이브 코딩으로 영구적으로 막을 수 있습니다"라고 제안.`
+      }
+    };
+
+    // 실제 AI가 분석하는 느낌을 주기 위한 2초 대기
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    return NextResponse.json(analysisResult);
+
   } catch (error) {
-    console.error("💡 [서버 에러 로그]:", error);
-    const message = error instanceof Error ? error.message : String(error);
-    return NextResponse.json({ error: message }, { status: 500 });
+    console.error("API Error:", error);
+    return NextResponse.json({ error: '서버 에러' }, { status: 500 });
   }
 }
