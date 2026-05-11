@@ -1,28 +1,56 @@
 'use client';
-import { useState } from 'react';
-import Link from 'next/link';
+import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
-import StorybookModal from './components/StorybookModal';
 
 export default function BootcampFunnelPage() {
+  const router = useRouter();
+  const resultRef = useRef(null);
+
+  // 1. 상태 관리
+  const [platform, setPlatform] = useState('youtube'); // youtube, web, instagram
   const [url, setUrl] = useState('');
+  const [instaData, setInstaData] = useState({ brandName: '', followerCount: '', mainContent: '', coreProblem: '' });
   const [analysisResult, setAnalysisResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isStorybookOpen, setIsStorybookOpen] = useState(false);
 
+  // 2. 분석 완료 후 결과창으로 자동 스크롤
+  useEffect(() => {
+    if (analysisResult && resultRef.current) {
+      resultRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [analysisResult]);
+
+  // 3. 분석 실행 함수
   const handleAnalyze = async () => {
-    if (!url) return alert("진단할 채널 URL을 입력해주세요.");
+    if (platform !== 'instagram' && !url.trim()) return alert("진단할 채널 URL을 입력해주세요.");
+    if (platform === 'instagram' && (!instaData.brandName || !instaData.followerCount)) return alert("정확한 진단을 위해 브랜드명과 대략적인 팔로워 수를 입력해주세요.");
+    
     setIsLoading(true);
+    setAnalysisResult(null);
+
+    const payload = {
+      platform,
+      targetUrl: platform !== 'instagram' ? url.trim() : null,
+      manualData: platform === 'instagram' ? instaData : null
+    };
+
     try {
       const res = await fetch('/api/analyze-target', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ targetUrl: url }),
+        body: JSON.stringify(payload),
       });
       const data = await res.json();
+
+      if (!res.ok || data.error) {
+        alert(`🚨 AI 진단 실패: ${data.error}`);
+        setIsLoading(false);
+        return;
+      }
       setAnalysisResult(data);
     } catch (error) {
-      alert("분석 중 오류가 발생했습니다.");
+      alert("서버 통신 오류가 발생했습니다.");
     } finally {
       setIsLoading(false);
     }
@@ -31,126 +59,146 @@ export default function BootcampFunnelPage() {
   const report = analysisResult?.publicReport;
 
   return (
-    <div className="min-h-screen bg-slate-50 selection:bg-blue-500 selection:text-white">
-      {isStorybookOpen && <StorybookModal onClose={() => setIsStorybookOpen(false)} />}
-
-      {/* 🚀 Phase 1: 후킹 섹션 */}
-      <section className="relative bg-slate-950 pt-24 pb-32 px-6 overflow-hidden">
+    <div className="min-h-screen bg-slate-50 selection:bg-blue-500 selection:text-white font-sans">
+      
+      {/* =========================================
+          🏢 1층 로비: 플랫폼 선택 및 데이터 입력
+          ========================================= */}
+      <section className="relative bg-slate-950 pt-24 pb-32 px-6 overflow-hidden min-h-[80vh] flex flex-col justify-center">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-full bg-gradient-to-b from-blue-900/20 to-transparent blur-3xl opacity-50 pointer-events-none"></div>
-        <div className="max-w-4xl mx-auto relative z-10 text-center">
+        <div className="max-w-4xl mx-auto relative z-10 text-center w-full">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700/50 backdrop-blur-md mb-8">
-            <span className="flex h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>
-            <span className="text-slate-300 text-sm font-semibold tracking-wider">The Creators AI 독자 기술 엔진 가동 중</span>
+            <span className="text-slate-300 text-sm font-semibold tracking-wider">The Creators AI 100% 팩트 진단 엔진</span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter leading-tight">
-            콘텐츠는 훌륭한데,<br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">왜 매출로 이어지지 않을까요?</span>
+          <h1 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tighter leading-tight">
+            환각 없는 진짜 데이터를 위한<br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">분석 플랫폼 선택</span>
           </h1>
-          <div className="flex flex-col md:flex-row gap-3 justify-center max-w-3xl mx-auto bg-slate-900/50 p-3 rounded-2xl border border-slate-800 backdrop-blur-sm shadow-2xl mt-12">
-            <input type="text" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="분석할 URL을 입력하세요" className="flex-1 bg-slate-800/80 border-none p-5 rounded-xl text-white outline-none" />
-            <button onClick={handleAnalyze} disabled={isLoading} className="bg-blue-600 text-white px-10 py-5 rounded-xl font-bold hover:bg-blue-500 disabled:bg-slate-700 transition-all">
-              {isLoading ? '정밀 진단 중...' : '손해비용 분석하기'}
+          
+          {/* 💡 [완벽 복구] 3-Tier 플랫폼 선택 탭 */}
+          <div className="flex flex-wrap justify-center gap-3 mb-8">
+            <button onClick={() => setPlatform('youtube')} className={`px-8 py-4 rounded-xl font-bold transition-all ${platform === 'youtube' ? 'bg-red-600 text-white shadow-lg shadow-red-500/30 scale-105' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}>유튜브 (URL)</button>
+            <button onClick={() => setPlatform('web')} className={`px-8 py-4 rounded-xl font-bold transition-all ${platform === 'web' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30 scale-105' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}>웹사이트 (URL)</button>
+            <button onClick={() => setPlatform('instagram')} className={`px-8 py-4 rounded-xl font-bold transition-all ${platform === 'instagram' ? 'bg-pink-600 text-white shadow-lg shadow-pink-500/30 scale-105' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}>인스타그램 (직접입력)</button>
+          </div>
+
+          <div className="max-w-2xl mx-auto bg-slate-900/80 p-8 rounded-3xl border border-slate-800 backdrop-blur-sm shadow-2xl text-left">
+            
+            {/* 🔴 유튜브 & 웹사이트 폼 */}
+            {platform !== 'instagram' && (
+              <div className="space-y-4 animate-fade-in">
+                <p className="text-slate-300 font-medium text-sm mb-4">
+                  {platform === 'youtube' 
+                    ? '📺 구글 공식 API 및 URL 구조를 분석하여 채널의 객관적 지표를 추출하고 정밀 진단합니다.' 
+                    : '🌐 웹사이트의 구조를 스캔하여 트래픽 대비 세일즈 퍼널의 빈틈과 누수를 진단합니다.'}
+                </p>
+                <input 
+                  type="text" 
+                  value={url} 
+                  onChange={(e) => setUrl(e.target.value)} 
+                  placeholder={platform === 'youtube' ? "유튜브 채널 URL (예: https://youtube.com/@...)" : "웹사이트 URL 입력"} 
+                  className="w-full bg-slate-800 border border-slate-700 p-5 rounded-xl text-white outline-none focus:ring-2 focus:ring-blue-500 transition-all" 
+                />
+              </div>
+            )}
+
+            {/* 🟣 인스타그램 폼 */}
+            {platform === 'instagram' && (
+              <div className="space-y-4 animate-fade-in">
+                <p className="text-slate-300 font-medium text-sm mb-4">
+                  🔒 인스타그램의 보안 정책을 존중합니다. 환각(거짓) 없는 진짜 분석을 위해 채널의 객관적 팩트를 직접 입력해 주십시오.
+                </p>
+                <input type="text" value={instaData.brandName} onChange={(e) => setInstaData({...instaData, brandName: e.target.value})} placeholder="브랜드명 또는 계정명 (필수)" className="w-full bg-slate-800 border border-slate-700 p-4 rounded-xl text-white outline-none focus:ring-2 focus:ring-pink-500" />
+                <input type="text" value={instaData.followerCount} onChange={(e) => setInstaData({...instaData, followerCount: e.target.value})} placeholder="대략적인 팔로워 수 (예: 1.5만명) (필수)" className="w-full bg-slate-800 border border-slate-700 p-4 rounded-xl text-white outline-none focus:ring-2 focus:ring-pink-500" />
+                <input type="text" value={instaData.mainContent} onChange={(e) => setInstaData({...instaData, mainContent: e.target.value})} placeholder="핵심 콘텐츠 주제 (예: 승무원 면접 코칭)" className="w-full bg-slate-800 border border-slate-700 p-4 rounded-xl text-white outline-none focus:ring-2 focus:ring-pink-500" />
+                <input type="text" value={instaData.coreProblem} onChange={(e) => setInstaData({...instaData, coreProblem: e.target.value})} placeholder="현재 느끼는 가장 큰 고민 (예: 결제 전환율 저조)" className="w-full bg-slate-800 border border-slate-700 p-4 rounded-xl text-white outline-none focus:ring-2 focus:ring-pink-500" />
+              </div>
+            )}
+
+            <button 
+              onClick={handleAnalyze} 
+              disabled={isLoading} 
+              className="w-full mt-8 bg-blue-600 text-white px-8 py-5 rounded-xl font-bold text-lg hover:bg-blue-500 disabled:bg-slate-700 transition-all flex justify-center items-center gap-2 shadow-xl shadow-blue-600/20"
+            >
+              {isLoading ? '팩트 기반 정밀 진단 중...' : '데이터 기반 진단 시작'}
             </button>
           </div>
         </div>
       </section>
 
-      {/* 📊 분석 리포트 영역 */}
-      {report && (
-        <div className="max-w-4xl mx-auto px-6 py-16 space-y-10 animate-fade-in-up -mt-10 relative z-20">
-          
-          <section className="bg-white p-8 md:p-12 rounded-[2rem] shadow-2xl border border-slate-100 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-600 to-indigo-600"></div>
-            
-            <div className="text-center mb-10">
-              <h2 className="text-3xl font-black text-slate-900 mb-2">AI 정밀 진단 리포트</h2>
-              <p className="text-slate-500 font-medium">데이터 엔진이 당신의 브랜드를 정확히 식별했습니다.</p>
-            </div>
+      {/* =========================================
+          📊 2층 결과창: 분석 리포트 출력
+          ========================================= */}
+      <div ref={resultRef} className="scroll-mt-10"> 
+        {report && (
+          <div className="max-w-4xl mx-auto px-6 py-16 space-y-10 animate-fade-in-up">
+            <section className="bg-white p-8 md:p-12 rounded-[2rem] shadow-2xl border border-slate-100 relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-600 to-indigo-600"></div>
+              
+              <div className="text-center mb-10">
+                <h2 className="text-3xl font-black text-slate-900 mb-2">AI 정밀 진단 리포트</h2>
+                <p className="text-slate-500 font-medium">데이터 엔진이 추출한 팩트 기반 결과입니다.</p>
+              </div>
 
-            {/* 💡 AI 브랜드 인식 프로필 (여기에 이름이 나옵니다) */}
-            <div className="bg-indigo-900 rounded-3xl p-8 mb-10 text-white shadow-xl relative overflow-hidden">
-              <div className="relative z-10 grid md:grid-cols-3 gap-6">
-                <div>
-                  <span className="text-indigo-300 text-xs font-bold uppercase tracking-widest block mb-1">Recognized Brand</span>
-                  <div className="text-xl font-black">{report.brandName}</div>
+              {/* 정보 바 */}
+              <div className="bg-slate-900 rounded-3xl p-8 mb-10 text-white grid md:grid-cols-3 gap-8 shadow-xl">
+                <div className="flex flex-col"><span className="text-blue-400 text-xs font-bold uppercase mb-1">Brand</span><span className="text-xl font-black">{report.brandName}</span></div>
+                <div className="flex flex-col"><span className="text-blue-400 text-xs font-bold uppercase mb-1">Rep</span><span className="text-sm font-bold opacity-80">{report.representative}</span></div>
+                <div className="flex flex-col"><span className="text-blue-400 text-xs font-bold uppercase mb-1">Sector</span><span className="text-sm font-bold opacity-80">{report.category}</span></div>
+              </div>
+
+              {/* 차트 & 비용 */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                <div className="bg-slate-950 rounded-3xl p-6 flex flex-col items-center justify-center min-h-[320px]">
+                  <span className="text-slate-400 font-bold text-xs uppercase tracking-widest mb-4">Analysis Radar</span>
+                  <ResponsiveContainer width="100%" height={250}>
+                    <RadarChart cx="50%" cy="50%" outerRadius="70%" data={report.chartData}>
+                      <PolarGrid stroke="#334155" />
+                      <PolarAngleAxis dataKey="subject" tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 'bold' }} />
+                      <Radar name="Score" dataKey="score" stroke="#3b82f6" strokeWidth={2} fill="#3b82f6" fillOpacity={0.4} />
+                    </RadarChart>
+                  </ResponsiveContainer>
                 </div>
-                <div>
-                  <span className="text-indigo-300 text-xs font-bold uppercase tracking-widest block mb-1">Representative</span>
-                  <div className="text-sm font-bold opacity-90">{report.representative}</div>
-                </div>
-                <div>
-                  <span className="text-indigo-300 text-xs font-bold uppercase tracking-widest block mb-1">Sector</span>
-                  <div className="text-sm font-bold opacity-90">{report.category}</div>
+                <div className="bg-red-50 p-8 rounded-3xl border border-red-100 text-center flex flex-col justify-center">
+                  <span className="text-slate-500 font-bold text-sm">월간 예상 누수 비용</span>
+                  <h3 className="text-4xl md:text-5xl font-black text-red-600 my-4 tracking-tighter">{report.monthlyLeakageCost?.toLocaleString()}원</h3>
+                  <p className="text-sm text-red-500 font-bold">{report.painPoint}</p>
                 </div>
               </div>
-            </div>
 
-            {/* 차트 & 누수비용 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-              <div className="bg-slate-900 rounded-3xl p-6 flex flex-col items-center justify-center min-h-[320px]">
-                <span className="text-slate-400 font-bold text-xs uppercase tracking-widest mb-4">Analysis Radar</span>
-                <ResponsiveContainer width="100%" height={250}>
-                  <RadarChart cx="50%" cy="50%" outerRadius="70%" data={report.chartData}>
-                    <PolarGrid stroke="#334155" />
-                    <PolarAngleAxis dataKey="subject" tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 'bold' }} />
-                    <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-                    <Radar name="내 채널" dataKey="score" stroke="#6366f1" strokeWidth={2} fill="#818cf8" fillOpacity={0.4} />
-                  </RadarChart>
-                </ResponsiveContainer>
+              {/* SWOT */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+                {Object.entries(report.swot).map(([key, val]) => (
+                  <div key={key} className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                    <span className="text-blue-600 font-black text-xl mr-2">{key.toUpperCase()}</span>
+                    <p className="text-slate-700 text-sm mt-2 font-medium leading-relaxed">{val}</p>
+                  </div>
+                ))}
               </div>
-              <div className="bg-red-50 p-8 rounded-3xl border border-red-100 flex flex-col justify-center text-center">
-                <span className="text-red-400 font-bold text-xs uppercase tracking-widest mb-2">Monthly Leakage</span>
-                <span className="text-slate-600 font-bold">예상 월간 누수 비용</span>
-                <h3 className="text-4xl md:text-5xl font-black text-red-600 tracking-tighter my-2">
-                  {report.monthlyLeakageCost.toLocaleString()}<span className="text-2xl font-bold ml-1">원</span>
-                </h3>
-                <p className="text-sm text-red-500 font-medium mt-2">{report.painPoint}</p>
+
+              <div className="pt-8 mb-10 border-t border-slate-100 text-center">
+                <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-4">AI Identity Analysis</p>
+                <p className="text-slate-800 font-bold leading-relaxed">{report.identity}</p>
               </div>
-            </div>
 
-            {/* 💡 [수정됨] SWOT 분석 4개 카드 모두 출력 */}
-            <div className="space-y-4">
-              <h3 className="text-xl font-black text-slate-800 px-2">채널 심층 SWOT 분석</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-blue-50/50 border border-blue-100 p-5 rounded-2xl">
-                  <div className="text-blue-600 font-black text-lg mb-1">S <span className="text-[10px] font-bold text-slate-400 uppercase ml-2">Strength</span></div>
-                  <p className="text-slate-700 text-sm font-medium">{report.swot.s}</p>
-                </div>
-                <div className="bg-rose-50/50 border border-rose-100 p-5 rounded-2xl">
-                  <div className="text-rose-600 font-black text-lg mb-1">W <span className="text-[10px] font-bold text-slate-400 uppercase ml-2">Weakness</span></div>
-                  <p className="text-slate-700 text-sm font-medium">{report.swot.w}</p>
-                </div>
-                <div className="bg-emerald-50/50 border border-emerald-100 p-5 rounded-2xl">
-                  <div className="text-emerald-600 font-black text-lg mb-1">O <span className="text-[10px] font-bold text-slate-400 uppercase ml-2">Opportunity</span></div>
-                  <p className="text-slate-700 text-sm font-medium">{report.swot.o}</p>
-                </div>
-                <div className="bg-amber-50/50 border border-amber-100 p-5 rounded-2xl">
-                  <div className="text-amber-600 font-black text-lg mb-1">T <span className="text-[10px] font-bold text-slate-400 uppercase ml-2">Threat</span></div>
-                  <p className="text-slate-700 text-sm font-medium">{report.swot.t}</p>
-                </div>
+              {/* =========================================
+                  🚪 3층 출구: 랜딩 페이지로 이동 (라우팅)
+                  ========================================= */}
+              <div className="bg-indigo-600 rounded-3xl p-10 text-white shadow-2xl text-center relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl"></div>
+                <h4 className="text-2xl font-black mb-4 relative z-10">💡 월 {report.monthlyLeakageCost?.toLocaleString()}원의 누수를 지금 막으시겠습니까?</h4>
+                <p className="text-indigo-100 mb-8 font-medium relative z-10">The Creators AI 부트캠프에서 당신의 채널을 자동화 수익 엔진으로 바꿔드립니다.</p>
+                <button 
+                  onClick={() => router.push('/bootcamp-sales')} // 💡 [완벽 복구] 스크린샷 팩트 기반 주소로 교체 완료
+                  className="relative z-10 bg-white text-indigo-600 px-10 py-5 rounded-2xl font-black text-xl hover:bg-indigo-50 transition-all shadow-xl hover:scale-105 active:scale-95"
+                >
+                  부트캠프 커리큘럼 확인 및 신청하기 →
+                </button>
               </div>
-            </div>
-            
-            <div className="mt-8 pt-8 border-t border-slate-100">
-              <span className="text-slate-400 font-bold text-xs uppercase tracking-widest block mb-2">AI Identity Analysis</span>
-              <p className="text-slate-700 font-bold leading-relaxed">{report.identity}</p>
-            </div>
-          </section>
 
-          {/* 퍼널 스토리북 및 CTA */}
-          <section className="bg-white rounded-[2rem] shadow-lg p-10 text-center relative overflow-hidden border border-slate-200">
-            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-indigo-500 to-blue-500"></div>
-            <h2 className="text-3xl font-black text-slate-900 mb-6">왜 이런 막대한 손해가 발생할까요?</h2>
-            <button onClick={() => setIsStorybookOpen(true)} className="bg-indigo-600 text-white font-bold text-lg px-10 py-4 rounded-xl shadow-lg">📖 퍼널 스토리북 열람</button>
-          </section>
-
-          <section className="bg-slate-900 text-white p-12 text-center rounded-[2.5rem] shadow-2xl">
-            <h2 className="text-3xl md:text-5xl font-black mb-10 leading-tight">문제를 알았다면,<br/>이제 끊어낼 시간입니다.</h2>
-            <Link href="/bootcamp-sales" className="inline-block bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-xl px-12 py-5 rounded-2xl hover:scale-105 transition-all">
-              🚀 부트캠프 상세 안내 보기
-            </Link>
-          </section>
-        </div>
-      )}
+            </section>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

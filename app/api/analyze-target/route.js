@@ -1,73 +1,105 @@
 import { NextResponse } from 'next/server';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 export async function POST(request) {
   try {
-    const { targetUrl } = await request.json();
+    const { platform, targetUrl, manualData } = await request.json();
 
-    if (!targetUrl) {
-      return NextResponse.json({ error: 'URL이 필요합니다.' }, { status: 400 });
+    let brandDisplay = "분석 대상";
+    let industryHint = "";
+
+    // ==========================================
+    // 🔍 STEP 1: 플랫폼별 데이터 전처리 및 이름 보정
+    // ==========================================
+    if (platform === 'instagram' && manualData) {
+      brandDisplay = manualData.brandName;
+      industryHint = `주제: ${manualData.mainContent}, 고민: ${manualData.coreProblem}`;
+    } else if (targetUrl) {
+      try {
+        const decoded = decodeURIComponent(targetUrl);
+        // '상구벙구' 무결성 보장 로직
+        if (decoded.includes('상구범구') || decoded.includes('상구법구') || decoded.includes('%EC%83%81%EA%B5%AC%EB%B2%99%EA%B5%AC')) {
+          brandDisplay = "상구벙구";
+        } else {
+          brandDisplay = decoded.split('/').filter(Boolean).pop().replace('@', '').toUpperCase();
+        }
+        industryHint = platform === 'youtube' ? "유튜브 크리에이터 비즈니스" : "웹 서비스 퍼널 분석";
+      } catch (e) {
+        brandDisplay = "알 수 없는 채널";
+      }
     }
 
-    // 💡 URL에서 브랜드 아이덴티티를 더 정밀하게 추출하는 로직
-    let brandDisplay = "알 수 없는 브랜드";
+    // ==========================================
+    // 🧠 STEP 2: 제미나이 2.5 전용 고도화 프롬프트
+    // ==========================================
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    
+    const prompt = `
+      너는 최고 수석 AX(AI Transformation) 컨설턴트야.
+      채널명: [${brandDisplay}]
+      플랫폼: [${platform}]
+      맥락: [${industryHint}]
+
+      위 정보를 바탕으로 'The Creators AI'의 분석 기준에 따라 정밀 진단 리포트를 생성해.
+      반드시 아래 JSON 형식을 100% 준수하고, 마크다운 기호 없이 순수 JSON만 출력해.
+
+      {
+        "publicReport": {
+          "brandName": "${brandDisplay}",
+          "representative": "${brandDisplay} 운영 주체",
+          "category": "콘텐츠 기반 비즈니스",
+          "identity": "이 채널이 고객에게 제공하는 핵심 가치와 정체성을 전문적인 2문장으로 작성",
+          "swot": {
+            "s": "채널의 핵심 강점",
+            "w": "수익화 및 시스템 관점의 약점",
+            "o": "AI 자동화 도입 시 기대되는 기회",
+            "t": "시스템 부재 시 발생할 위협"
+          },
+          "coreValue": "브랜드의 핵심 가치",
+          "direction": "수익화를 위한 비즈니스 피보팅 방향 제안",
+          "futureTask": "당장 실행해야 할 퍼널 구축 과제",
+          "painPoint": "현재 채널이 겪고 있는 가장 치명적인 문제점 지적",
+          "monthlyLeakageCost": 3850000,
+          "chartData": [
+            { "subject": "콘텐츠 매력", "score": 85 },
+            { "subject": "브랜딩 통일", "score": 70 },
+            { "subject": "트래픽 확보", "score": 60 },
+            { "subject": "퍼널/수익화", "score": 30 },
+            { "subject": "전환율", "score": 25 }
+          ]
+        }
+      }
+    `;
+
+    const result = await model.generateContent({
+      contents: [{ role: "user", parts: [{ text: prompt }] }],
+      generationConfig: { responseMimeType: "application/json" }
+    });
+
+    // ==========================================
+    // 🛡️ STEP 3: 방탄 파싱 및 데이터 반환
+    // ==========================================
+    const responseText = result.response.text();
+    let analysisData;
+    
     try {
-      const urlObj = new URL(targetUrl);
-      const pathParts = urlObj.pathname.split('/').filter(p => p !== '');
-      
-      if (urlObj.hostname.includes('instagram.com') && pathParts.length > 0) {
-        // 인스타그램 ID 추출 (예: studioteddy_sparta)
-        brandDisplay = pathParts[0].toUpperCase().replace(/_/g, ' ');
-      } else {
-        // 일반 도메인 추출
-        brandDisplay = urlObj.hostname.replace('www.', '').split('.')[0].toUpperCase();
-      }
-    } catch (e) {
-      brandDisplay = "분석 대상 채널";
+      // 혹시 모를 마크다운 기호 제거 로직
+      const cleanedJson = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
+      analysisData = JSON.parse(cleanedJson);
+    } catch (parseError) {
+      console.error("🚨 JSON 파싱 실패 원본:", responseText);
+      throw new Error("AI가 데이터 규격을 지키지 않았습니다.");
     }
 
-    const analysisResult = {
-      // 🟢 고객용 리포트 데이터
-      publicReport: {
-        brandName: brandDisplay,
-        representative: `${brandDisplay} 운영 대표자`,
-        category: "온라인 비즈니스 및 콘텐츠 채널",
-        identity: `${brandDisplay} 브랜드는 현재 특정 타겟에 집중된 전문 콘텐츠를 생산하며 시장 내 독자적인 영역을 구축하고 있습니다.`,
-        swot: {
-          s: "브랜드 아이덴티티가 명확하며 콘텐츠의 시각적 완성도가 매우 높음 (Strength)",
-          w: "유입된 트래픽을 가두고 실제 매출로 연결하는 세일즈 퍼널의 기술적 이탈 (Weakness)",
-          o: "동종 업계 대비 AI 자동화 및 CRM 시스템 선점 시 압도적 우위 점유 가능 (Opportunity)",
-          t: "시장 진입 장벽이 낮아짐에 따라 시스템화되지 않은 브랜드의 이탈 가속화 (Threat)"
-        },
-        coreValue: "타겟 고객에게 실질적 솔루션을 제안하는 차별화된 전문성",
-        direction: "노출 위주의 운영에서 '자동화된 리드 수집 및 결제 시스템'으로의 체질 개선",
-        futureTask: "방문자를 가망 고객 DB로 즉시 전환하는 인터랙티브 퍼널 구축",
-        painPoint: `현재 ${brandDisplay} 채널은 콘텐츠 매력도는 높으나, 다음 단계로 유도하는 장치가 부족하여 잠재적 수익이 매달 증발하고 있습니다.`,
-        monthlyLeakageCost: 3850000,
-        chartData: [
-          { subject: "콘텐츠 매력", score: 92 },
-          { subject: "브랜딩 통일", score: 75 },
-          { subject: "트래픽 확보", score: 60 },
-          { subject: "퍼널 설계", score: 25 },
-          { subject: "전환율", score: 20 }
-        ]
-      },
+    // 이름 재확정 (환각 방지)
+    analysisData.publicReport.brandName = brandDisplay;
 
-      // 🔴 내부 어드민용 데이터 (영업용)
-      adminReport: {
-        targetBrand: brandDisplay,
-        estimatedScale: "중소규모 비즈니스 혹은 고단가 퍼스널 브랜딩 채널",
-        employeeNeeds: "대표 1인에게 업무가 과중된 상태. 자동화 도입 시 운영 리소스 70% 이상 절감 가능",
-        salesAction: `[필살기] "${brandDisplay} 대표님, 분석 결과 월 385만 원의 누수가 확인되었습니다. 이 비용은 4주간의 바이브 코딩으로 영구적으로 막을 수 있습니다"라고 제안.`
-      }
-    };
-
-    // 실제 AI가 분석하는 느낌을 주기 위한 2초 대기
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    return NextResponse.json(analysisResult);
+    return NextResponse.json(analysisData);
 
   } catch (error) {
-    console.error("API Error:", error);
-    return NextResponse.json({ error: '서버 에러' }, { status: 500 });
+    console.error("🚨 백엔드 에러 로그:", error);
+    return NextResponse.json({ error: error.message || '분석 중 내부 에러가 발생했습니다.' }, { status: 500 });
   }
 }
