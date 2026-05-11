@@ -244,7 +244,8 @@ export default function BootcampSalesPage() {
                 </p>
                 
                 <div className="space-y-3">
-                  <a href="#" className="w-full flex items-center justify-center gap-2 h-14 bg-[#FEE500] text-[#191919] rounded-xl font-bold text-lg hover:bg-[#FADA0A] transition-colors">
+                  {/* 💡 [핀셋 복구] 카카오톡 오픈채팅 새 창 연결 완벽 이식 */}
+                  <a href="https://open.kakao.com/o/sw0Qhz5b" target="_blank" rel="noopener noreferrer" className="w-full flex items-center justify-center gap-2 h-14 bg-[#FEE500] text-[#191919] rounded-xl font-bold text-lg hover:bg-[#FADA0A] transition-colors">
                     💬 카카오톡 채널로 문의하기
                   </a>
                   <a href="tel:051-633-3812" className="w-full flex items-center justify-center gap-2 h-14 bg-slate-800 text-white rounded-xl font-bold text-lg hover:bg-slate-900 transition-colors">

@@ -74,7 +74,6 @@ export default function BootcampFunnelPage() {
             환각 없는 진짜 데이터를 위한<br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">분석 플랫폼 선택</span>
           </h1>
           
-          {/* 💡 [완벽 복구] 3-Tier 플랫폼 선택 탭 */}
           <div className="flex flex-wrap justify-center gap-3 mb-8">
             <button onClick={() => setPlatform('youtube')} className={`px-8 py-4 rounded-xl font-bold transition-all ${platform === 'youtube' ? 'bg-red-600 text-white shadow-lg shadow-red-500/30 scale-105' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}>유튜브 (URL)</button>
             <button onClick={() => setPlatform('web')} className={`px-8 py-4 rounded-xl font-bold transition-all ${platform === 'web' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30 scale-105' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}>웹사이트 (URL)</button>
@@ -82,8 +81,6 @@ export default function BootcampFunnelPage() {
           </div>
 
           <div className="max-w-2xl mx-auto bg-slate-900/80 p-8 rounded-3xl border border-slate-800 backdrop-blur-sm shadow-2xl text-left">
-            
-            {/* 🔴 유튜브 & 웹사이트 폼 */}
             {platform !== 'instagram' && (
               <div className="space-y-4 animate-fade-in">
                 <p className="text-slate-300 font-medium text-sm mb-4">
@@ -101,7 +98,6 @@ export default function BootcampFunnelPage() {
               </div>
             )}
 
-            {/* 🟣 인스타그램 폼 */}
             {platform === 'instagram' && (
               <div className="space-y-4 animate-fade-in">
                 <p className="text-slate-300 font-medium text-sm mb-4">
@@ -139,11 +135,20 @@ export default function BootcampFunnelPage() {
                 <p className="text-slate-500 font-medium">데이터 엔진이 추출한 팩트 기반 결과입니다.</p>
               </div>
 
-              {/* 정보 바 */}
+              {/* 💡 [핀셋 수정 완료] 정보 바 글자 겹침 방지 (break-all 및 min-w-0 추가) */}
               <div className="bg-slate-900 rounded-3xl p-8 mb-10 text-white grid md:grid-cols-3 gap-8 shadow-xl">
-                <div className="flex flex-col"><span className="text-blue-400 text-xs font-bold uppercase mb-1">Brand</span><span className="text-xl font-black">{report.brandName}</span></div>
-                <div className="flex flex-col"><span className="text-blue-400 text-xs font-bold uppercase mb-1">Rep</span><span className="text-sm font-bold opacity-80">{report.representative}</span></div>
-                <div className="flex flex-col"><span className="text-blue-400 text-xs font-bold uppercase mb-1">Sector</span><span className="text-sm font-bold opacity-80">{report.category}</span></div>
+                <div className="flex flex-col gap-1 min-w-0">
+                  <span className="text-blue-400 text-xs font-bold uppercase">Brand</span>
+                  <span className="text-xl font-black break-all">{report.brandName}</span>
+                </div>
+                <div className="flex flex-col gap-1 min-w-0">
+                  <span className="text-blue-400 text-xs font-bold uppercase">Rep</span>
+                  <span className="text-sm font-bold opacity-80 break-all">{report.representative}</span>
+                </div>
+                <div className="flex flex-col gap-1 min-w-0">
+                  <span className="text-blue-400 text-xs font-bold uppercase">Sector</span>
+                  <span className="text-sm font-bold opacity-80 break-all">{report.category}</span>
+                </div>
               </div>
 
               {/* 차트 & 비용 */}
@@ -188,7 +193,7 @@ export default function BootcampFunnelPage() {
                 <h4 className="text-2xl font-black mb-4 relative z-10">💡 월 {report.monthlyLeakageCost?.toLocaleString()}원의 누수를 지금 막으시겠습니까?</h4>
                 <p className="text-indigo-100 mb-8 font-medium relative z-10">The Creators AI 부트캠프에서 당신의 채널을 자동화 수익 엔진으로 바꿔드립니다.</p>
                 <button 
-                  onClick={() => router.push('/bootcamp-sales')} // 💡 [완벽 복구] 스크린샷 팩트 기반 주소로 교체 완료
+                  onClick={() => router.push('/bootcamp-sales')}
                   className="relative z-10 bg-white text-indigo-600 px-10 py-5 rounded-2xl font-black text-xl hover:bg-indigo-50 transition-all shadow-xl hover:scale-105 active:scale-95"
                 >
                   부트캠프 커리큘럼 확인 및 신청하기 →
