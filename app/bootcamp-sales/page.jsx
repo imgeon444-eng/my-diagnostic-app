@@ -39,13 +39,12 @@ function FadeInSection({ children, delay = 0 }) {
   );
 }
 
-// 💡 [STEP 3 핵심] PC(3D 틸트) & 모바일(터치 반응형 햅틱) 하이브리드 카드 모듈
+// 💡 [STEP 3] PC(3D 틸트) & 모바일(Lv 1.5 프리미엄 햅틱) 하이브리드 카드 모듈
 function TiltCard({ children, className = "" }) {
   const [style, setStyle] = useState({});
   
   // 💻 [PC] 마우스 무브: 3D 틸트 효과
   const handleMouseMove = (e) => {
-    // 터치 디바이스에서는 마우스 이벤트 무시
     if (window.matchMedia("(pointer: coarse)").matches) return;
     
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
@@ -68,21 +67,23 @@ function TiltCard({ children, className = "" }) {
     });
   };
 
-  // 📱 [Mobile] 터치 시작: 꾹 눌리는 프레스 & 네온 글로우 효과
+  // 📱 [Mobile] 터치 시작: 묵직하게 눌리는 프레스 (Lv 1.5)
   const handleTouchStart = () => {
     setStyle({
-      transform: 'perspective(1000px) scale3d(0.96, 0.96, 0.96)', // 살짝 깊게 눌리는 효과
-      boxShadow: '0 0 30px rgba(59, 130, 246, 0.3)', // 파란색 빛이 뿜어져 나옴
-      transition: 'all 0.1s ease-out'
+      // 0.96은 너무 미세하고, 0.92는 가벼움. 가장 고급스러운 0.94 적용
+      transform: 'perspective(1000px) scale3d(0.94, 0.94, 0.94)', 
+      boxShadow: '0 0 40px rgba(59, 130, 246, 0.4)', // 은은하지만 확실한 네온 아우라
+      transition: 'all 0.15s ease-out' // 너무 팍! 눌리지 않도록 0.15초로 묵직함 부여
     });
   };
 
-  // 📱 [Mobile] 터치 종료: 텐션 있게 튕겨져 나오는 스프링 효과
+  // 📱 [Mobile] 터치 종료: 고급 세단처럼 부드럽고 묵직한 복귀
   const handleTouchEnd = () => {
     setStyle({
       transform: 'perspective(1000px) scale3d(1, 1, 1)',
       boxShadow: 'none',
-      transition: 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)' // 통통 튀는 바운스 효과
+      // 통통 튀는(Bounce) 느낌을 죽이고, 부드럽고 우아하게 제자리로 돌아오는 곡선 적용
+      transition: 'all 0.6s cubic-bezier(0.25, 1, 0.5, 1)' 
     });
   };
 
