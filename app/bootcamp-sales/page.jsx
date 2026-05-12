@@ -248,7 +248,7 @@ export default function BootcampSalesPage() {
             </div>
 
             <p className="mt-8 text-slate-500 font-medium text-sm md:text-base break-keep">
-              * 영상을 시청해 주시면, 저희가 추구하는 교육의 본질과 방향성을 명확히 확인하실 수 있습니다.
+              * 영상은 가볍게 촬영했지만, <span className="text-slate-700 font-bold">The Creators AI가 다루는 비즈니스 자동화의 무게는 결코 가볍지 않습니다.</span>
             </p>
           </div>
         </FadeInSection>
