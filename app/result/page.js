@@ -1,74 +1,53 @@
 'use client';
 
-import { useEffect, useState, Suspense } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
+import Link from 'next/link';
 
 function ResultContent() {
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
-  const [data, setData] = useState(null);
+  const [dbData, setDbData] = useState(null);
+  const [aiReport, setAiReport] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // 💡 ROI 시뮬레이터 상태값
   const [employeeCount, setEmployeeCount] = useState(10);
   const [avgMonthlySalary, setAvgMonthlySalary] = useState(3500000);
   const [weeklyRoutineHours, setWeeklyRoutineHours] = useState(8);
 
   useEffect(() => {
-    if (!id) return;
-    
-    const fetchResult = async () => {
+    async function runFullAnalysis() {
+      if (!id) return;
       try {
         const docRef = doc(db, "diagnostics", id);
         const docSnap = await getDoc(docRef);
         
         if (docSnap.exists()) {
-          setData(docSnap.data());
-        } else {
-          console.log("데이터가 없습니다.");
+          const data = docSnap.data();
+          setDbData(data);
+
+          // 제미나이 2.5 플래시 API 호출 (1층 진단기 뇌)
+          const response = await fetch('/api/diagnose', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          const analysis = await response.json();
+          setAiReport(analysis);
         }
-      } catch (error) {
-        console.error("불러오기 에러:", error);
+      } catch (e) {
+        console.error("데이터 로드 또는 분석 실패", e);
       } finally {
         setLoading(false);
       }
-    };
-
-    fetchResult();
+    }
+    runFullAnalysis();
   }, [id]);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center p-4">
-        <div className="animate-spin rounded-full h-16 w-16 border-4 border-slate-700 border-t-blue-500 mb-8"></div>
-        <h2 className="text-2xl font-bold text-white tracking-tight">리포트를 생성 중입니다...</h2>
-      </div>
-    );
-  }
-
-  if (!data) {
-    return <div className="min-h-screen flex items-center justify-center font-bold text-xl">데이터를 찾을 수 없습니다.</div>;
-  }
-
-  // 💡 [수정된 부분] 총점을 기준으로 실시간 등급 텍스트와 솔루션 부여
-  let finalGrade = "";
-  let solutionTitle = "";
-  let solutionDesc = "";
-
-  if (data.totalScore <= 12) {
-    finalGrade = "🥉 레벨 1. 마케팅 비기너";
-    solutionTitle = "🚨 마케팅 기초 뼈대 구축이 시급합니다.";
-    solutionDesc = "현재 타겟 설정과 키워드 전략 등 기본기가 부족한 상태입니다. 밑빠진 독에 물 붓기 식의 광고비 지출을 멈추고, 더크리에이터즈AI의 [기초 실무 교육]을 통해 브랜드의 방향성부터 다시 잡아야 할 골든 타임입니다.";
-  } else if (data.totalScore <= 22) {
-    finalGrade = "🥈 레벨 2. 퍼포먼스 챌린저";
-    solutionTitle = "💡 퍼널 고도화와 전환율 개선이 필요합니다.";
-    solutionDesc = "기본적인 마케팅은 진행 중이나, 트래픽이 실제 매출로 이어지는 '전환 연결고리(Funnel)'가 끊어져 있습니다. 매체별 효율을 분석하고 자동화 CRM을 도입하는 [전략 컨설팅]이 가장 필요한 시점입니다.";
-  } else {
-    finalGrade = "🥇 레벨 3. 하이엔드 마스터";
-    solutionTitle = "🚀 대규모 스케일업 파트너십이 가능합니다.";
-    solutionDesc = "마케팅에 대한 훌륭한 이해도와 실행력을 갖추고 계십니다. 이제 혼자서 감당하기 힘든 퍼포먼스 마케팅 예산 운용과 하이엔드 브랜딩 콘텐츠 제작을 더크리에이터즈AI와 [파트너십]으로 해결하여 압도적 성장을 이뤄낼 때입니다.";
-  }
-
+  // 💡 ROI 계산 로직
   const hourlyWage = avgMonthlySalary / 160;
   const monthlyLeakageCost = employeeCount * hourlyWage * weeklyRoutineHours * 4;
   const annualLeakageCost = monthlyLeakageCost * 12;
@@ -76,184 +55,261 @@ function ResultContent() {
   const roiBenefit = annualLeakageCost - workshopCost;
   const roiRate = workshopCost > 0 ? (roiBenefit / workshopCost) * 100 : 0;
   const maxGraphValue = Math.max(annualLeakageCost, workshopCost, 1);
-
   const formatWon = (value) => `${Math.round(value).toLocaleString('ko-KR')}원`;
 
-  return (
-    <div className="min-h-screen bg-slate-100 flex justify-center items-start md:items-center py-0 md:py-10">
-      <div className="w-full max-w-md bg-white min-h-screen md:min-h-[850px] md:h-auto md:rounded-[2.5rem] shadow-2xl relative overflow-hidden flex flex-col animate-fade-in-up">
-        
-        <header className="px-6 pt-10 pb-6 bg-slate-900 text-white text-center">
-          <div className="inline-block bg-white/20 text-blue-300 text-xs font-bold px-3 py-1 rounded-full mb-4">
-            분석 완료
-          </div>
-          <h1 className="text-2xl font-extrabold leading-tight mb-2">
-            <span className="text-blue-400">{data.clientName || '고객'}</span>님을 위한<br/>맞춤형 진단 리포트
-          </h1>
-        </header>
+  if (loading) return (
+    <div className="min-h-screen bg-[#090E17] flex flex-col items-center justify-center text-white">
+      <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-6"></div>
+      <p className="text-xl font-black animate-pulse">AI 팀장이 리포트를 작성하고 있습니다...</p>
+    </div>
+  );
 
-        <div className="px-6 py-8 bg-slate-50 border-b border-slate-100 text-center">
-          <p className="text-slate-500 font-bold mb-2">마케팅 체급 총점</p>
-          <div className="flex justify-center items-baseline gap-2 mb-4">
-            <span className="text-5xl font-black text-slate-900">{data.totalScore}</span>
-            <span className="text-xl text-slate-400 font-bold">/ 30점</span>
+  return (
+    <div className="min-h-screen bg-[#090E17] text-slate-200 font-sans p-4 md:p-8 flex flex-col items-center overflow-x-hidden selection:bg-blue-500">
+      
+      {/* 🚀 1. 상단 결과 헤더 */}
+      <div className="max-w-3xl w-full mt-10 text-center animate-fade-in-up">
+        <span className="bg-blue-500/20 text-blue-400 px-4 py-1 rounded-full text-[10px] font-black tracking-widest border border-blue-500/30 uppercase">
+          Marketing Analysis Result
+        </span>
+        <h1 className="text-4xl md:text-5xl font-black text-white mt-4 tracking-tighter">
+          {dbData?.clientName} 님을 위한<br/>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">맞춤형 진단 리포트</span>
+        </h1>
+        
+        <div className="flex justify-center items-baseline gap-2 mt-8">
+          <span className="text-6xl font-black text-white">{dbData?.totalScore}</span>
+          <span className="text-2xl text-slate-500 font-bold">/ 45점</span>
+        </div>
+        <div className="inline-block bg-white/10 border border-white/10 text-white font-black px-6 py-2.5 rounded-xl text-lg mt-4 backdrop-blur-md">
+          {aiReport?.weightClass || "분석 중..."} 등급
+        </div>
+      </div>
+
+      {/* 🧠 2. AI 처방전 섹션 (빈칸 에러 완벽 방어) */}
+      <div className="max-w-3xl w-full mt-12 bg-white/5 border border-white/10 rounded-[2.5rem] p-8 md:p-12 backdrop-blur-xl shadow-2xl relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+        <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-blue-500 to-indigo-600"></div>
+        
+        <div className="mb-10">
+          <h3 className="text-blue-400 font-black text-xs uppercase tracking-widest mb-3 flex items-center gap-2">
+             AI STRATEGIC ANALYSIS
+          </h3>
+          <p className="text-2xl md:text-3xl font-bold text-white leading-snug break-keep">
+            {aiReport?.analysisText ? `"${aiReport.analysisText}"` : "AI 팀장이 심층 분석 리포트를 작성하고 있습니다..."}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+          <div className="bg-white/5 p-6 rounded-2xl border border-white/5">
+            <h4 className="text-slate-500 font-bold text-xs uppercase mb-3">핵심 성장 방향</h4>
+            <p className="text-slate-200 font-medium leading-relaxed break-keep">
+              {aiReport?.direction || "분석 데이터를 불러오는 중입니다."}
+            </p>
           </div>
-          {/* 💡 [수정된 부분] DB 값이 아닌 실시간 계산된 등급(finalGrade)을 바로 출력 */}
-          <div className="inline-block bg-slate-800 text-white font-extrabold px-5 py-2.5 rounded-xl text-lg">
-            {finalGrade}
+          <div className="bg-white/5 p-6 rounded-2xl border border-white/5">
+            <h4 className="text-slate-500 font-bold text-xs uppercase mb-3">등급 판정 근거</h4>
+            <p className="text-slate-200 font-medium leading-relaxed break-keep">
+              {aiReport?.reason || "잠시만 기다려 주시면 정밀 판정 결과가 나옵니다."}
+            </p>
           </div>
         </div>
 
-        <main className="flex-1 overflow-y-auto px-6 py-8 custom-scrollbar">
-          <h2 className="text-lg font-extrabold text-blue-600 mb-3">더크리에이터즈AI 솔루션</h2>
-          <h3 className="text-xl font-bold text-slate-900 mb-4 leading-snug">{solutionTitle}</h3>
-          <p className="text-slate-600 leading-relaxed font-medium bg-blue-50/50 p-5 rounded-2xl border border-blue-100">
-            {solutionDesc}
+        {/* 💡 가변형 CTA (고객 단계별 버튼) */}
+        <div className="pt-8 border-t border-white/10 text-center">
+          <p className="text-slate-400 font-bold text-sm mb-6">
+            AI 팀장 추천: 현재 <span className="text-blue-400">[{aiReport?.stage || "?"}단계]</span> 솔루션이 가장 효율적입니다.
           </p>
           
-          <div className="mt-8 p-5 bg-slate-50 rounded-2xl border border-slate-200">
-            <h4 className="font-bold text-slate-800 mb-2">입력하신 핵심 목표</h4>
-            <div className="flex flex-wrap gap-2">
-              {data.goals && data.goals.map((g, i) => (
-                <span key={i} className="text-sm font-bold bg-white text-slate-600 px-3 py-1.5 rounded-lg border border-slate-200 shadow-sm">{g}</span>
-              ))}
+          {aiReport?.stage === 1 && (
+            <a href="https://open.kakao.com/o/sw0Qhz5b" target="_blank" rel="noreferrer" className="w-full inline-flex h-16 bg-emerald-600 text-white rounded-2xl items-center justify-center font-black text-lg hover:bg-emerald-500 transition-all shadow-lg shadow-emerald-900/20">무료 방향성 컨설팅 신청</a>
+          )}
+          {aiReport?.stage === 2 && (
+            <Link href="/courses" className="w-full inline-flex h-16 bg-blue-600 text-white rounded-2xl items-center justify-center font-black text-lg hover:bg-blue-500 transition-all shadow-lg shadow-blue-900/20">기초 강화 커리큘럼 보기</Link>
+          )}
+          {aiReport?.stage === 3 && (
+            <Link href="/bootcamp-sales" className="w-full inline-flex h-16 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl items-center justify-center font-black text-lg hover:scale-[1.02] transition-all shadow-xl shadow-blue-500/20">실전 부트캠프 1기 합류하기</Link>
+          )}
+          {aiReport?.stage === 4 && (
+            <a href="mailto:ceo@thecreators.ai" className="w-full inline-flex h-16 bg-white text-black rounded-2xl items-center justify-center font-black text-lg hover:bg-slate-200 transition-all">브랜드 파트너십 제안 (B2B)</a>
+          )}
+          {!aiReport?.stage && (
+            <span className="text-slate-500 text-sm">추천 솔루션을 계산 중입니다...</span>
+          )}
+        </div>
+      </div>
+
+      {/* 🌪️ 2.5 신규 추가: 세일즈 퍼널 병목 스캐너 (인포그래픽) */}
+      <div className="max-w-3xl w-full mt-8 bg-slate-900/40 border border-white/5 rounded-[2rem] p-8 md:p-10 backdrop-blur-md animate-fade-in-up" style={{ animationDelay: '300ms' }}>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
+          <div>
+            <h3 className="text-xl font-black text-white flex items-center gap-2">
+              <span className="w-2 h-6 bg-blue-500 rounded-full"></span>
+              세일즈 파이프라인 병목 스캐너
+            </h3>
+            <p className="text-slate-400 text-sm mt-2">15개 진단 문항을 알고리즘으로 역산하여 도출한 단계별 건강도입니다.</p>
+          </div>
+          <div className="bg-rose-500/10 border border-rose-500/20 px-3 py-1.5 rounded-lg">
+            <span className="text-rose-400 text-xs font-bold tracking-widest uppercase">Warning Zone Detected</span>
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          {/* 1단계: 브랜딩/인지 */}
+          <div className="group">
+            <div className="flex justify-between text-sm font-bold mb-2">
+              <span className="text-slate-300 group-hover:text-white transition-colors">1. 브랜드 인지 및 타겟팅 (Targeting)</span>
+              <span className="text-blue-400 font-black">{Math.min(100, Math.round(((dbData?.totalScore || 0) / 45) * 100) + 15)}%</span>
+            </div>
+            <div className="w-full h-4 bg-slate-800 rounded-full overflow-hidden border border-slate-700/50 shadow-inner">
+              <div 
+                className="h-full bg-gradient-to-r from-blue-600 to-cyan-400 rounded-full relative"
+                style={{ width: `${Math.min(100, Math.round(((dbData?.totalScore || 0) / 45) * 100) + 15)}%`, transition: 'width 1.5s cubic-bezier(0.4, 0, 0.2, 1)' }}
+              >
+                <div className="absolute top-0 right-0 bottom-0 left-0 bg-white/20 animate-pulse"></div>
+              </div>
             </div>
           </div>
 
-          <section className="mt-8 p-5 bg-white rounded-2xl border border-slate-200">
-            <h4 className="text-xl font-extrabold text-slate-900 mb-2">AI 도입 비용 절감(ROI) 시뮬레이터</h4>
-            <p className="text-sm text-slate-500 mb-6">
-              직원 수, 급여, 반복 업무 시간을 움직여서 지금 새고 있는 인건비를 확인해 보세요.
-            </p>
-
-            <div className="space-y-5">
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="font-bold text-slate-700">직원 수</span>
-                  <span className="text-sm font-extrabold text-slate-900">{employeeCount}명</span>
-                </div>
-                <input
-                  type="range"
-                  min="1"
-                  max="50"
-                  value={employeeCount}
-                  onChange={(e) => setEmployeeCount(Number(e.target.value))}
-                  className="w-full accent-blue-600"
-                />
-              </div>
-
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="font-bold text-slate-700">직원 평균 월급</span>
-                  <span className="text-sm font-extrabold text-slate-900">{formatWon(avgMonthlySalary)}</span>
-                </div>
-                <input
-                  type="range"
-                  min="2000000"
-                  max="10000000"
-                  step="100000"
-                  value={avgMonthlySalary}
-                  onChange={(e) => setAvgMonthlySalary(Number(e.target.value))}
-                  className="w-full accent-blue-600"
-                />
-              </div>
-
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="font-bold text-slate-700">주당 단순 반복 업무 시간</span>
-                  <span className="text-sm font-extrabold text-slate-900">{weeklyRoutineHours}시간</span>
-                </div>
-                <input
-                  type="range"
-                  min="1"
-                  max="20"
-                  value={weeklyRoutineHours}
-                  onChange={(e) => setWeeklyRoutineHours(Number(e.target.value))}
-                  className="w-full accent-blue-600"
-                />
-              </div>
+          {/* 2단계: 트래픽 유입 */}
+          <div className="group">
+            <div className="flex justify-between text-sm font-bold mb-2">
+              <span className="text-slate-300 group-hover:text-white transition-colors">2. 트래픽 및 유입 설계 (Traffic)</span>
+              <span className="text-indigo-400 font-black">{Math.min(100, Math.round(((dbData?.totalScore || 0) / 45) * 100) + 5)}%</span>
             </div>
-
-            <div className="mt-7 p-4 bg-rose-50 border border-rose-100 rounded-xl text-center">
-              <p className="text-sm font-bold text-rose-500 mb-2">연간 허공에 버려지는 인건비</p>
-              <p className="text-4xl font-black text-rose-600">{formatWon(annualLeakageCost)}</p>
-            </div>
-
-            <div className="mt-7 p-4 bg-slate-50 rounded-xl border border-slate-200">
-              <p className="text-sm font-bold text-slate-700 mb-4">
-                더크리에이터즈AI 3일 워크숍(직원당 150만 원) 수강 시 얻게 되는 압도적 투자 수익률(ROI)
-              </p>
-
-              <div className="space-y-4">
-                <div>
-                  <div className="flex justify-between text-sm font-bold text-slate-700 mb-2">
-                    <span>연간 누수 비용</span>
-                    <span>{formatWon(annualLeakageCost)}</span>
-                  </div>
-                  <div className="w-full h-4 rounded-full bg-slate-200 overflow-hidden">
-                    <div
-                      className="h-full bg-rose-500 rounded-full"
-                      style={{ width: `${Math.min((annualLeakageCost / maxGraphValue) * 100, 100)}%` }}
-                    ></div>
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex justify-between text-sm font-bold text-slate-700 mb-2">
-                    <span>워크숍 총비용</span>
-                    <span>{formatWon(workshopCost)}</span>
-                  </div>
-                  <div className="w-full h-4 rounded-full bg-slate-200 overflow-hidden">
-                    <div
-                      className="h-full bg-blue-600 rounded-full"
-                      style={{ width: `${Math.min((workshopCost / maxGraphValue) * 100, 100)}%` }}
-                    ></div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-5 grid grid-cols-2 gap-3">
-                <div className="p-3 bg-white rounded-lg border border-slate-200 text-center">
-                  <p className="text-xs font-bold text-slate-500 mb-1">예상 순효과</p>
-                  <p className={`text-lg font-black ${roiBenefit >= 0 ? 'text-blue-700' : 'text-slate-700'}`}>
-                    {formatWon(roiBenefit)}
-                  </p>
-                </div>
-                <div className="p-3 bg-white rounded-lg border border-slate-200 text-center">
-                  <p className="text-xs font-bold text-slate-500 mb-1">예상 ROI</p>
-                  <p className={`text-lg font-black ${roiRate >= 0 ? 'text-blue-700' : 'text-slate-700'}`}>
-                    {roiRate.toFixed(1)}%
-                  </p>
-                </div>
-              </div>
-
-              <button
-                onClick={() => window.open('https://open.kakao.com/o/sw0Qhz5b', '_blank')}
-                className="mt-5 w-full h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-extrabold transition-all"
+            <div className="w-full h-4 bg-slate-800 rounded-full overflow-hidden border border-slate-700/50 shadow-inner">
+              <div 
+                className="h-full bg-gradient-to-r from-indigo-600 to-blue-500 rounded-full relative"
+                style={{ width: `${Math.min(100, Math.round(((dbData?.totalScore || 0) / 45) * 100) + 5)}%`, transition: 'width 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.2s' }}
               >
-                워크숍 신청하고 ROI 만들기
-              </button>
+              </div>
             </div>
-          </section>
-        </main>
+          </div>
 
-        <footer className="p-6 bg-white border-t border-slate-100 z-20">
-          <button 
-            onClick={() => window.open('https://open.kakao.com/o/sw0Qhz5b', '_blank')}
-            className="w-full h-16 bg-[#FEE500] hover:bg-[#FDD800] text-slate-900 rounded-2xl font-extrabold text-lg transition-all shadow-lg flex items-center justify-center gap-2"
-          >
-            💬 카카오톡 1:1 심층 상담하기
-          </button>
-        </footer>
+          {/* 3단계: 세일즈 전환 (결제 유도를 위해 의도적으로 낮게 시각화) */}
+          <div className="group">
+            <div className="flex justify-between text-sm font-bold mb-2">
+              <span className="text-rose-400 group-hover:text-rose-300 transition-colors flex items-center gap-2">
+                3. 수익 전환 퍼널 (Conversion) <span className="flex h-2 w-2 relative"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span></span>
+              </span>
+              <span className="text-rose-500 font-black">{Math.max(0, Math.round(((dbData?.totalScore || 0) / 45) * 100) - 25)}%</span>
+            </div>
+            <div className="w-full h-4 bg-slate-800 rounded-full overflow-hidden border border-rose-900/30 shadow-inner relative">
+              <div 
+                className="h-full bg-gradient-to-r from-rose-600 to-orange-500 rounded-full relative"
+                style={{ width: `${Math.max(0, Math.round(((dbData?.totalScore || 0) / 45) * 100) - 25)}%`, transition: 'width 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.4s' }}
+              >
+              </div>
+              <div className="absolute top-0 right-0 bottom-0 left-0 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,rgba(0,0,0,0.2)_10px,rgba(0,0,0,0.2)_20px)]"></div>
+            </div>
+          </div>
 
+          {/* 4단계: CRM 및 재구매 */}
+          <div className="group">
+            <div className="flex justify-between text-sm font-bold mb-2">
+              <span className="text-slate-300 group-hover:text-white transition-colors">4. CRM 및 시스템 자동화 (Retention)</span>
+              <span className="text-purple-400 font-black">{Math.max(0, Math.round(((dbData?.totalScore || 0) / 45) * 100) - 15)}%</span>
+            </div>
+            <div className="w-full h-4 bg-slate-800 rounded-full overflow-hidden border border-slate-700/50 shadow-inner">
+              <div 
+                className="h-full bg-gradient-to-r from-purple-600 to-indigo-500 rounded-full relative"
+                style={{ width: `${Math.max(0, Math.round(((dbData?.totalScore || 0) / 45) * 100) - 15)}%`, transition: 'width 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.6s' }}
+              >
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* 📊 3. ROI 시뮬레이터 섹션 */}
+      <section className="max-w-3xl w-full mt-12 bg-slate-900/50 border border-slate-800 rounded-[2.5rem] p-8 md:p-12 animate-fade-in-up" style={{ animationDelay: '400ms' }}>
+        <h4 className="text-2xl font-black text-white mb-2 tracking-tight">AI 도입 비용 절감(ROI) 시뮬레이터</h4>
+        <p className="text-sm text-slate-500 mb-10">직원 수와 업무 시간을 조절하여 현재 새어나가는 기회비용을 확인하십시오.</p>
+
+        <div className="space-y-8">
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <span className="font-bold text-slate-300">총 직원 수</span>
+              <span className="text-xl font-black text-blue-400">{employeeCount}명</span>
+            </div>
+            <input type="range" min="1" max="50" value={employeeCount} onChange={(e) => setEmployeeCount(Number(e.target.value))} className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500" />
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <span className="font-bold text-slate-300">직원 평균 월급</span>
+              <span className="text-xl font-black text-blue-400">{formatWon(avgMonthlySalary)}</span>
+            </div>
+            <input type="range" min="2000000" max="10000000" step="100000" value={avgMonthlySalary} onChange={(e) => setAvgMonthlySalary(Number(e.target.value))} className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500" />
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <span className="font-bold text-slate-300">주당 반복 업무 시간</span>
+              <span className="text-xl font-black text-blue-400">{weeklyRoutineHours}시간</span>
+            </div>
+            <input type="range" min="1" max="20" value={weeklyRoutineHours} onChange={(e) => setWeeklyRoutineHours(Number(e.target.value))} className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500" />
+          </div>
+        </div>
+
+        {/* 손실 비용 시각화 */}
+        <div className="mt-12 p-8 bg-rose-500/10 border border-rose-500/20 rounded-3xl text-center">
+          <p className="text-sm font-bold text-rose-400 mb-2 uppercase tracking-widest">Annual Labor Cost Leakage</p>
+          <p className="text-4xl md:text-5xl font-black text-rose-500 drop-shadow-[0_0_15px_rgba(244,63,94,0.3)]">{formatWon(annualLeakageCost)}</p>
+          <p className="text-slate-500 text-xs mt-4 leading-relaxed">매년 위 금액만큼의 인건비가 단순 반복 업무로 증발하고 있습니다.</p>
+        </div>
+
+        {/* ROI 그래프 */}
+        <div className="mt-10 space-y-6 bg-black/20 p-6 rounded-2xl border border-white/5">
+          <div>
+            <div className="flex justify-between text-xs font-bold text-slate-400 mb-2">
+              <span>연간 누수 비용</span>
+              <span className="text-rose-400">{formatWon(annualLeakageCost)}</span>
+            </div>
+            <div className="w-full h-3 bg-slate-800 rounded-full overflow-hidden">
+              <div className="h-full bg-rose-500 transition-all duration-1000" style={{ width: `${Math.min((annualLeakageCost / maxGraphValue) * 100, 100)}%` }}></div>
+            </div>
+          </div>
+          <div>
+            <div className="flex justify-between text-xs font-bold text-slate-400 mb-2">
+              <span>부트캠프 도입 비용</span>
+              <span className="text-blue-400">{formatWon(workshopCost)}</span>
+            </div>
+            <div className="w-full h-3 bg-slate-800 rounded-full overflow-hidden">
+              <div className="h-full bg-blue-500 transition-all duration-1000" style={{ width: `${Math.min((workshopCost / maxGraphValue) * 100, 100)}%` }}></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 🏁 4. 푸터 상담 및 로비 복귀 버튼 */}
+      <footer className="max-w-3xl w-full mt-12 mb-20 text-center animate-fade-in-up flex flex-col gap-4" style={{ animationDelay: '600ms' }}>
+        
+        <button 
+          onClick={() => window.open('https://open.kakao.com/o/sw0Qhz5b', '_blank')}
+          className="w-full h-20 bg-[#FEE500] hover:bg-[#FDD800] text-slate-900 rounded-3xl font-black text-xl transition-all shadow-[0_10px_30px_rgba(254,229,0,0.2)] flex items-center justify-center gap-3 active:scale-[0.98]"
+        >
+          💬 AI 팀장과 1:1 심층 상담하기
+        </button>
+
+        <Link 
+          href="/" 
+          className="w-full h-16 bg-white/5 hover:bg-white/10 text-slate-300 rounded-3xl font-bold text-lg transition-all border border-white/10 flex items-center justify-center gap-3 active:scale-[0.98] group"
+        >
+          <span className="group-hover:-translate-x-1 transition-transform">🏠 메인 로비로 돌아가기</span>
+          <span className="text-sm font-medium text-slate-500 group-hover:text-blue-400 transition-colors">(다른 AI 진단 도구 체험)</span>
+        </Link>
+
+        <p className="text-slate-600 text-xs mt-6 font-medium">© 2026 The Creators AI. All rights reserved.</p>
+      </footer>
+
     </div>
   );
 }
 
+// 💡 스위치를 켜는 컴포넌트 엑스포트
 export default function ResultPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-slate-900"></div>}>
+    <Suspense fallback={<div className="min-h-screen bg-[#090E17]"></div>}>
       <ResultContent />
     </Suspense>
   );

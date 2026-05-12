@@ -1,218 +1,193 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { db } from '../../lib/firebase';
+import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
 
 export default function B2BTargetSniperAnalyzer() {
-  const [targetUrl, setTargetUrl] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [result, setResult] = useState(null);
-  const [serverErrorText, setServerErrorText] = useState('');
-  const [isCopied, setIsCopied] = useState(false);
-  const [toast, setToast] = useState(null);
+  const [analysisLogs, setAnalysisLogs] = useState([]);
+  const [stats, setStats] = useState({
+    total: 0,
+    channels: { web: 0, youtube: 0, insta: 0 },
+    topKeywords: []
+  });
 
-  const showToast = (message, type = 'error') => {
-    setToast({ message, type });
-    setTimeout(() => {
-      setToast(null);
-    }, 2200);
-  };
-
-  const handleAnalyze = async () => {
-    if (!targetUrl.trim() || isLoading) return;
-
-    setIsLoading(true);
-    setResult(null);
-    setServerErrorText('');
-    setIsCopied(false);
-    
-    try {
-      const response = await fetch('/api/analyze-target', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ targetUrl: targetUrl.trim() }),
-      });
-
-      const payload = await response.json().catch(() => ({}));
-
-      if (!response.ok) {
-        const errorText = `${response.status} ${payload?.error || '분석 요청에 실패했습니다.'}`;
-        setServerErrorText(errorText);
-        throw new Error(errorText);
-      }
-
-      // 💡 [핵심 수정] 백엔드 이원화 구조에 맞게 데이터 추출 경로(Depth) 재설정
-      // 고객이 보는 데이터와 직원이 보는 데이터를 모두 가져옵니다.
-      setResult({
-        // publicReport에서 가져오는 데이터
-        painPoint: payload.publicReport?.painPoint,
-        monthlyLeakageCost: payload.publicReport?.monthlyLeakageCost,
-        brandName: payload.adminReport?.targetBrand || payload.publicReport?.brandName,
-        
-        // adminReport에서 가져오는 직원 전용 극비 데이터
-        estimatedScale: payload.adminReport?.estimatedScale,
-        employeeNeeds: payload.adminReport?.employeeNeeds,
-        companyStrength: payload.adminReport?.companyStrength,
-        hiddenProblem: payload.adminReport?.hiddenProblem,
-        salesAction: payload.adminReport?.salesAction,
-        
-        // (선택) DM 스크립트가 API에 있다면 가져오고, 없으면 세일즈 액션을 활용
-        dmScript: payload.dmScript || payload.adminReport?.salesAction, 
-      });
+  useEffect(() => {
+    // 💡 2층 URL 분석기 데이터베이스 연동
+    const q = query(collection(db, "url_analysis"), orderBy("createdAt", "desc"));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const logs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       
-      showToast('어드민 정밀 분석이 완료되었습니다.', 'success');
-    } catch (error) {
-      setResult(null);
-      const message = error instanceof Error ? error.message : '분석 중 오류가 발생했습니다.';
-      if (!serverErrorText) {
-        setServerErrorText(message);
-      }
-      showToast(message, 'error');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      // 임시 목업 데이터 믹스 (초기 화면이 비어보이지 않도록 시각화)
+      const displayLogs = logs.length > 0 ? logs : [
+        { id: '1', channel: 'youtube', url: 'youtube.com/shorts/...', keyword: '비즈니스/동기부여', createdAt: { toDate: () => new Date() } },
+        { id: '2', channel: 'insta', url: 'instagram.com/p/...', keyword: '뷰티/코스메틱', createdAt: { toDate: () => new Date(Date.now() - 3600000) } },
+        { id: '3', channel: 'web', url: 'naver.com/place/...', keyword: '지역 맛집/F&B', createdAt: { toDate: () => new Date(Date.now() - 7200000) } },
+        { id: '4', channel: 'youtube', url: 'youtube.com/watch?...', keyword: 'IT/테크 리뷰', createdAt: { toDate: () => new Date(Date.now() - 10800000) } },
+        { id: '5', channel: 'youtube', url: 'youtube.com/shorts/...', keyword: '비즈니스/동기부여', createdAt: { toDate: () => new Date(Date.now() - 14400000) } },
+      ];
 
-  const handleCopyScript = async () => {
-    if (!result?.dmScript) return;
-    try {
-      await navigator.clipboard.writeText(result.dmScript);
-      setIsCopied(true);
-      showToast('세일즈 스크립트를 복사했습니다.', 'success');
-      setTimeout(() => setIsCopied(false), 1500);
-    } catch {
-      showToast('복사에 실패했습니다.', 'error');
-    }
-  };
+      setAnalysisLogs(displayLogs);
+
+      // 통계 계산 로직
+      let web = 0, youtube = 0, insta = 0;
+      const keywordCounts = {};
+
+      displayLogs.forEach(log => {
+        if (log.channel === 'web') web++;
+        if (log.channel === 'youtube') youtube++;
+        if (log.channel === 'insta') insta++;
+
+        if (log.keyword) {
+          keywordCounts[log.keyword] = (keywordCounts[log.keyword] || 0) + 1;
+        }
+      });
+
+      const total = web + youtube + insta || 1; // 0 나누기 방지
+      const sortedKeywords = Object.entries(keywordCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5) // 상위 5개 추출
+        .map(([name, count]) => ({ name, count, percent: Math.round((count / displayLogs.length) * 100) }));
+
+      setStats({
+        total: displayLogs.length,
+        channels: {
+          web: Math.round((web / total) * 100),
+          youtube: Math.round((youtube / total) * 100),
+          insta: Math.round((insta / total) * 100),
+        },
+        topKeywords: sortedKeywords
+      });
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   return (
-    <section className="w-full mb-8 rounded-3xl border border-slate-200 bg-white p-6 md:p-8 shadow-sm">
-      {toast && (
-        <div
-          className={`fixed right-6 top-6 z-50 rounded-xl px-4 py-3 text-sm font-bold shadow-lg ${
-            toast.type === 'success' ? 'bg-emerald-600 text-white' : 'bg-rose-600 text-white'
-          }`}
-        >
-          {toast.message}
-        </div>
-      )}
-
-      <div className="mb-6">
-        <p className="inline-flex items-center rounded-full bg-slate-900 px-3 py-1 text-xs font-bold text-white tracking-widest">
-          🔐 STAFF ONLY | X-RAY ANALYZER
-        </p>
-        <h2 className="mt-3 text-2xl font-black text-slate-900">타깃 기업 심층 X-Ray 스캐너</h2>
-        <p className="mt-2 text-sm text-slate-600">
-          고객에게 보이지 않는 '불편한 진실'과 세일즈 클로징을 위한 맞춤형 필살기 대본을 추출합니다.
-        </p>
-      </div>
-
-      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 md:p-5">
-        <label htmlFor="targetUrl" className="mb-2 block text-sm font-bold text-slate-700">
-          분석할 클라이언트 채널 URL
-        </label>
-        <div className="flex flex-col gap-3 md:flex-row">
-          <input
-            id="targetUrl"
-            type="url"
-            value={targetUrl}
-            onChange={(e) => setTargetUrl(e.target.value)}
-            placeholder="예: https://instagram.com/client_id"
-            className="h-14 flex-1 rounded-xl border border-slate-300 bg-white px-4 text-base font-medium text-slate-900 outline-none transition focus:border-slate-500 focus:ring-4 focus:ring-slate-200"
-          />
-          <button
-            type="button"
-            onClick={handleAnalyze}
-            disabled={!targetUrl.trim() || isLoading}
-            className="h-14 rounded-xl bg-slate-900 px-6 text-base font-extrabold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-300 whitespace-nowrap"
-          >
-            {isLoading ? '스캔 중...' : 'X-Ray 스캔'}
-          </button>
-        </div>
-      </div>
-
-      {isLoading && (
-        <div className="mt-6 rounded-2xl border border-slate-300 bg-slate-100 p-5">
-          <div className="flex items-center gap-3">
-            <div className="h-5 w-5 animate-spin rounded-full border-2 border-slate-400 border-t-slate-900"></div>
-            <p className="text-sm font-bold text-slate-900">기업 비공개 데이터 및 약점 추출 중...</p>
-          </div>
-        </div>
-      )}
-
-      {!!serverErrorText && !isLoading && (
-        <div className="mt-6 rounded-2xl border border-rose-200 bg-rose-50 p-4">
-          <p className="text-sm font-extrabold text-rose-700">서버 에러 원인</p>
-          <p className="mt-1 text-sm font-semibold text-rose-900 break-all">{serverErrorText}</p>
-        </div>
-      )}
-
-      {result && !isLoading && (
-        <div className="mt-8 space-y-6">
+    <div className="w-full space-y-6">
+      
+      {/* 📊 상단 요약 통계 */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+        {/* 채널별 관심도 (미니 데이터랩) */}
+        <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6 md:col-span-2 shadow-lg">
+          <h3 className="text-white font-black text-lg mb-6 flex items-center gap-2">
+            📊 플랫폼 채널별 고객 관심도
+            <span className="text-xs font-medium text-slate-400 font-normal ml-2">실시간 URL 분석 점유율</span>
+          </h3>
           
-          {/* 💡 [신설] 영업 사원용 브리핑 보드 */}
-          <div className="bg-slate-900 rounded-2xl p-6 text-white border border-slate-800 shadow-xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-slate-800 rounded-full blur-3xl opacity-50 -mr-10 -mt-10"></div>
-            <div className="relative z-10">
-              <span className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1 block">Target Brand</span>
-              <h3 className="text-3xl font-black text-white mb-6 border-b border-slate-700 pb-4">{result.brandName}</h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <span className="text-emerald-400 text-xs font-bold uppercase tracking-widest block mb-1">Estimated Scale</span>
-                  <p className="text-slate-300 text-sm font-medium">{result.estimatedScale}</p>
+          <div className="space-y-5">
+            {/* 유튜브 프로그레스 바 */}
+            <div>
+              <div className="flex justify-between items-end mb-1.5">
+                <span className="text-sm font-bold text-red-400 flex items-center gap-1">▶️ YouTube</span>
+                <span className="text-sm font-black text-white">{stats.channels.youtube}%</span>
+              </div>
+              <div className="w-full bg-slate-900 rounded-full h-3 border border-slate-800 overflow-hidden">
+                <div className="bg-gradient-to-r from-red-600 to-red-400 h-3 rounded-full transition-all duration-1000 ease-out relative" style={{ width: `${stats.channels.youtube}%` }}>
+                  <div className="absolute top-0 right-0 bottom-0 left-0 bg-white/20 animate-pulse"></div>
                 </div>
-                <div>
-                  <span className="text-blue-400 text-xs font-bold uppercase tracking-widest block mb-1">Resource Needs</span>
-                  <p className="text-slate-300 text-sm font-medium">{result.employeeNeeds}</p>
+              </div>
+            </div>
+
+            {/* 인스타그램 프로그레스 바 */}
+            <div>
+              <div className="flex justify-between items-end mb-1.5">
+                <span className="text-sm font-bold text-pink-400 flex items-center gap-1">📸 Instagram</span>
+                <span className="text-sm font-black text-white">{stats.channels.insta}%</span>
+              </div>
+              <div className="w-full bg-slate-900 rounded-full h-3 border border-slate-800 overflow-hidden">
+                <div className="bg-gradient-to-r from-pink-600 to-purple-500 h-3 rounded-full transition-all duration-1000 ease-out relative" style={{ width: `${stats.channels.insta}%` }}>
+                  <div className="absolute top-0 right-0 bottom-0 left-0 bg-white/20 animate-pulse"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* 웹사이트 프로그레스 바 */}
+            <div>
+              <div className="flex justify-between items-end mb-1.5">
+                <span className="text-sm font-bold text-blue-400 flex items-center gap-1">🌐 Web / Blog</span>
+                <span className="text-sm font-black text-white">{stats.channels.web}%</span>
+              </div>
+              <div className="w-full bg-slate-900 rounded-full h-3 border border-slate-800 overflow-hidden">
+                <div className="bg-gradient-to-r from-blue-600 to-cyan-400 h-3 rounded-full transition-all duration-1000 ease-out relative" style={{ width: `${stats.channels.web}%` }}>
+                  <div className="absolute top-0 right-0 bottom-0 left-0 bg-white/20 animate-pulse"></div>
                 </div>
               </div>
             </div>
           </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            {/* 불편한 진실 (내부 고발용) */}
-            <article className="rounded-2xl border border-rose-200 bg-rose-50 p-5 shadow-sm">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="bg-rose-600 text-white text-[10px] font-black px-2 py-1 rounded uppercase tracking-widest">Secret</span>
-                <p className="text-sm font-black text-rose-800">숨겨진 문제점 (불편한 진실)</p>
-              </div>
-              <p className="text-sm leading-relaxed font-semibold text-rose-900">{result.hiddenProblem}</p>
-              
-              <div className="mt-5 rounded-xl bg-white border border-rose-100 p-4">
-                <p className="text-xs font-bold text-slate-500">예상 월간 누수 비용 (고객 노출 수치)</p>
-                <p className="mt-1 text-2xl font-black text-rose-600">
-                  {result.monthlyLeakageCost ? result.monthlyLeakageCost.toLocaleString('ko-KR') : '0'}원
-                </p>
-              </div>
-            </article>
-
-            {/* 세일즈 클로징 필살기 */}
-            <article className="rounded-2xl border border-indigo-200 bg-indigo-50 p-5 shadow-sm flex flex-col">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <span className="bg-indigo-600 text-white text-[10px] font-black px-2 py-1 rounded uppercase tracking-widest">Action</span>
-                  <p className="text-sm font-black text-indigo-900">클로징 필살기 대본</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={handleCopyScript}
-                  className="rounded-lg border border-indigo-300 bg-white px-3 py-1.5 text-xs font-bold text-indigo-700 transition hover:bg-indigo-600 hover:text-white"
-                >
-                  {isCopied ? '복사 완료' : '대본 복사'}
-                </button>
-              </div>
-              
-              <div className="flex-1 bg-white rounded-xl border border-indigo-100 p-4 relative">
-                <span className="absolute top-2 left-2 text-4xl text-indigo-100 font-serif leading-none">"</span>
-                <p className="text-sm font-bold text-slate-800 leading-relaxed relative z-10 pt-2 px-2">
-                  {result.salesAction}
-                </p>
-              </div>
-            </article>
-          </div>
-
         </div>
-      )}
-    </section>
+
+        {/* 🏆 인기 장르/업종 랭킹 */}
+        <div className="bg-slate-800/50 border border-slate-700 rounded-2xl p-6 shadow-lg flex flex-col">
+          <h3 className="text-white font-black text-lg mb-5 flex items-center gap-2">
+            🏆 분석 키워드 랭킹
+          </h3>
+          <div className="flex-1 bg-slate-900/50 rounded-xl p-4 border border-slate-800 flex flex-col gap-3">
+            {stats.topKeywords.length > 0 ? stats.topKeywords.map((kw, idx) => (
+              <div key={idx} className="flex items-center justify-between group">
+                <div className="flex items-center gap-3">
+                  <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black ${idx === 0 ? 'bg-amber-500 text-amber-900' : idx === 1 ? 'bg-slate-300 text-slate-700' : idx === 2 ? 'bg-amber-700 text-amber-100' : 'bg-slate-800 text-slate-400'}`}>
+                    {idx + 1}
+                  </span>
+                  <span className="text-sm font-bold text-slate-300 group-hover:text-white transition-colors">{kw.name}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-slate-500">{kw.count}건</span>
+                  <span className="text-[10px] font-black text-blue-400 bg-blue-500/10 px-1.5 py-0.5 rounded">{kw.percent}%</span>
+                </div>
+              </div>
+            )) : (
+              <div className="h-full flex items-center justify-center">
+                <span className="text-slate-500 text-sm">데이터 수집 중...</span>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* 🔍 실시간 URL 분석 로그 */}
+      <div className="bg-slate-800/30 border border-slate-700 rounded-2xl overflow-hidden shadow-lg">
+        <div className="p-5 border-b border-slate-700/50 bg-slate-800/50 flex justify-between items-center">
+          <h3 className="text-white font-black text-base">🔍 실시간 고객 분석 로그 (Recent Logs)</h3>
+          <span className="bg-blue-500/20 text-blue-400 text-xs font-bold px-3 py-1 rounded-full border border-blue-500/30">
+            총 {stats.total}건 분석됨
+          </span>
+        </div>
+        
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-slate-900/50 text-slate-400 text-xs uppercase tracking-widest border-b border-slate-800">
+                <th className="px-6 py-4 font-bold">시간</th>
+                <th className="px-6 py-4 font-bold">플랫폼</th>
+                <th className="px-6 py-4 font-bold">분석 대상 URL</th>
+                <th className="px-6 py-4 font-bold">감지된 업종/장르</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-800/50">
+              {analysisLogs.slice(0, 10).map((log, idx) => (
+                <tr key={log.id || idx} className="hover:bg-slate-800/50 transition-colors">
+                  <td className="px-6 py-4 text-xs text-slate-500 whitespace-nowrap">
+                    {log.createdAt?.toDate ? log.createdAt.toDate().toLocaleString() : '시간 정보 없음'}
+                  </td>
+                  <td className="px-6 py-4">
+                    {log.channel === 'youtube' && <span className="bg-red-500/10 text-red-400 text-[10px] font-black px-2 py-1 rounded border border-red-500/20">YOUTUBE</span>}
+                    {log.channel === 'insta' && <span className="bg-pink-500/10 text-pink-400 text-[10px] font-black px-2 py-1 rounded border border-pink-500/20">INSTAGRAM</span>}
+                    {log.channel === 'web' && <span className="bg-blue-500/10 text-blue-400 text-[10px] font-black px-2 py-1 rounded border border-blue-500/20">WEB</span>}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-slate-300 font-mono truncate max-w-[200px] md:max-w-xs">
+                    {log.url || 'URL 파싱 실패'}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-white font-bold">
+                    {log.keyword || '미분류'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
   );
 }
