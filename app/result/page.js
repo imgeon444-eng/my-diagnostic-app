@@ -86,7 +86,7 @@ function ResultContent() {
         </div>
       </div>
 
-      {/* 🧠 2. AI 처방전 섹션 (빈칸 에러 완벽 방어) */}
+      {/* 🧠 2. AI 처방전 섹션 */}
       <div className="max-w-3xl w-full mt-12 bg-white/5 border border-white/10 rounded-[2.5rem] p-8 md:p-12 backdrop-blur-xl shadow-2xl relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '200ms' }}>
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-blue-500 to-indigo-600"></div>
         
@@ -114,7 +114,7 @@ function ResultContent() {
           </div>
         </div>
 
-        {/* 💡 가변형 CTA (고객 단계별 버튼) */}
+        {/* 💡 가변형 CTA */}
         <div className="pt-8 border-t border-white/10 text-center">
           <p className="text-slate-400 font-bold text-sm mb-6">
             AI 팀장 추천: 현재 <span className="text-blue-400">[{aiReport?.stage || "?"}단계]</span> 솔루션이 가장 효율적입니다.
@@ -138,7 +138,7 @@ function ResultContent() {
         </div>
       </div>
 
-      {/* 🌪️ 2.5 신규 추가: 세일즈 퍼널 병목 스캐너 (인포그래픽) */}
+      {/* 🌪️ 2.5 세일즈 퍼널 병목 스캐너 (인포그래픽) */}
       <div className="max-w-3xl w-full mt-8 bg-slate-900/40 border border-white/5 rounded-[2rem] p-8 md:p-10 backdrop-blur-md animate-fade-in-up" style={{ animationDelay: '300ms' }}>
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
           <div>
@@ -154,7 +154,6 @@ function ResultContent() {
         </div>
 
         <div className="space-y-6">
-          {/* 1단계: 브랜딩/인지 */}
           <div className="group">
             <div className="flex justify-between text-sm font-bold mb-2">
               <span className="text-slate-300 group-hover:text-white transition-colors">1. 브랜드 인지 및 타겟팅 (Targeting)</span>
@@ -163,14 +162,11 @@ function ResultContent() {
             <div className="w-full h-4 bg-slate-800 rounded-full overflow-hidden border border-slate-700/50 shadow-inner">
               <div 
                 className="h-full bg-gradient-to-r from-blue-600 to-cyan-400 rounded-full relative"
-                style={{ width: `${Math.min(100, Math.round(((dbData?.totalScore || 0) / 45) * 100) + 15)}%`, transition: 'width 1.5s cubic-bezier(0.4, 0, 0.2, 1)' }}
-              >
-                <div className="absolute top-0 right-0 bottom-0 left-0 bg-white/20 animate-pulse"></div>
-              </div>
+                style={{ width: `${Math.min(100, Math.round(((dbData?.totalScore || 0) / 45) * 100) + 15)}%`, transition: 'width 1.5s ease-out' }}
+              ></div>
             </div>
           </div>
 
-          {/* 2단계: 트래픽 유입 */}
           <div className="group">
             <div className="flex justify-between text-sm font-bold mb-2">
               <span className="text-slate-300 group-hover:text-white transition-colors">2. 트래픽 및 유입 설계 (Traffic)</span>
@@ -179,13 +175,11 @@ function ResultContent() {
             <div className="w-full h-4 bg-slate-800 rounded-full overflow-hidden border border-slate-700/50 shadow-inner">
               <div 
                 className="h-full bg-gradient-to-r from-indigo-600 to-blue-500 rounded-full relative"
-                style={{ width: `${Math.min(100, Math.round(((dbData?.totalScore || 0) / 45) * 100) + 5)}%`, transition: 'width 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.2s' }}
-              >
-              </div>
+                style={{ width: `${Math.min(100, Math.round(((dbData?.totalScore || 0) / 45) * 100) + 5)}%`, transition: 'width 1.5s ease-out 0.2s' }}
+              ></div>
             </div>
           </div>
 
-          {/* 3단계: 세일즈 전환 (결제 유도를 위해 의도적으로 낮게 시각화) */}
           <div className="group">
             <div className="flex justify-between text-sm font-bold mb-2">
               <span className="text-rose-400 group-hover:text-rose-300 transition-colors flex items-center gap-2">
@@ -196,14 +190,12 @@ function ResultContent() {
             <div className="w-full h-4 bg-slate-800 rounded-full overflow-hidden border border-rose-900/30 shadow-inner relative">
               <div 
                 className="h-full bg-gradient-to-r from-rose-600 to-orange-500 rounded-full relative"
-                style={{ width: `${Math.max(0, Math.round(((dbData?.totalScore || 0) / 45) * 100) - 25)}%`, transition: 'width 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.4s' }}
-              >
-              </div>
+                style={{ width: `${Math.max(0, Math.round(((dbData?.totalScore || 0) / 45) * 100) - 25)}%`, transition: 'width 1.5s ease-out 0.4s' }}
+              ></div>
               <div className="absolute top-0 right-0 bottom-0 left-0 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,rgba(0,0,0,0.2)_10px,rgba(0,0,0,0.2)_20px)]"></div>
             </div>
           </div>
 
-          {/* 4단계: CRM 및 재구매 */}
           <div className="group">
             <div className="flex justify-between text-sm font-bold mb-2">
               <span className="text-slate-300 group-hover:text-white transition-colors">4. CRM 및 시스템 자동화 (Retention)</span>
@@ -212,9 +204,8 @@ function ResultContent() {
             <div className="w-full h-4 bg-slate-800 rounded-full overflow-hidden border border-slate-700/50 shadow-inner">
               <div 
                 className="h-full bg-gradient-to-r from-purple-600 to-indigo-500 rounded-full relative"
-                style={{ width: `${Math.max(0, Math.round(((dbData?.totalScore || 0) / 45) * 100) - 15)}%`, transition: 'width 1.5s cubic-bezier(0.4, 0, 0.2, 1) 0.6s' }}
-              >
-              </div>
+                style={{ width: `${Math.max(0, Math.round(((dbData?.totalScore || 0) / 45) * 100) - 15)}%`, transition: 'width 1.5s ease-out 0.6s' }}
+              ></div>
             </div>
           </div>
         </div>
@@ -251,14 +242,12 @@ function ResultContent() {
           </div>
         </div>
 
-        {/* 손실 비용 시각화 */}
         <div className="mt-12 p-8 bg-rose-500/10 border border-rose-500/20 rounded-3xl text-center">
           <p className="text-sm font-bold text-rose-400 mb-2 uppercase tracking-widest">Annual Labor Cost Leakage</p>
           <p className="text-4xl md:text-5xl font-black text-rose-500 drop-shadow-[0_0_15px_rgba(244,63,94,0.3)]">{formatWon(annualLeakageCost)}</p>
           <p className="text-slate-500 text-xs mt-4 leading-relaxed">매년 위 금액만큼의 인건비가 단순 반복 업무로 증발하고 있습니다.</p>
         </div>
 
-        {/* ROI 그래프 */}
         <div className="mt-10 space-y-6 bg-black/20 p-6 rounded-2xl border border-white/5">
           <div>
             <div className="flex justify-between text-xs font-bold text-slate-400 mb-2">
@@ -281,22 +270,26 @@ function ResultContent() {
         </div>
       </section>
 
-      {/* 🏁 4. 푸터 상담 및 로비 복귀 버튼 */}
-      <footer className="max-w-3xl w-full mt-12 mb-20 text-center animate-fade-in-up flex flex-col gap-4" style={{ animationDelay: '600ms' }}>
+      {/* 🏁 4. 푸터: 2층 URL 진단기 무한 루프 크로스셀링 */}
+      <footer className="max-w-3xl w-full mt-16 mb-20 text-center animate-fade-in-up flex flex-col gap-5" style={{ animationDelay: '600ms' }}>
         
-        <button 
-          onClick={() => window.open('https://open.kakao.com/o/sw0Qhz5b', '_blank')}
-          className="w-full h-20 bg-[#FEE500] hover:bg-[#FDD800] text-slate-900 rounded-3xl font-black text-xl transition-all shadow-[0_10px_30px_rgba(254,229,0,0.2)] flex items-center justify-center gap-3 active:scale-[0.98]"
-        >
-          💬 AI 팀장과 1:1 심층 상담하기
-        </button>
+        <div className="bg-slate-800/50 border border-slate-700/50 rounded-3xl p-6 relative overflow-hidden">
+          <div className="absolute -top-10 -right-10 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl"></div>
+          <p className="text-slate-400 font-bold text-sm md:text-base mb-2">
+            💡 혹시 현재 운영 중인 유튜브나 웹사이트가 있으신가요?
+          </p>
+          <p className="text-white font-black text-lg md:text-xl break-keep">
+            아래 <span className="text-cyan-400">URL 채널 진단기</span>를 통해<br/>
+            트래픽 누수도 함께 확인해 보세요.
+          </p>
+        </div>
 
         <Link 
           href="/" 
-          className="w-full h-16 bg-white/5 hover:bg-white/10 text-slate-300 rounded-3xl font-bold text-lg transition-all border border-white/10 flex items-center justify-center gap-3 active:scale-[0.98] group"
+          className="group relative w-full h-20 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-3xl font-black text-xl md:text-2xl transition-all shadow-[0_10px_30px_rgba(6,182,212,0.3)] flex items-center justify-center gap-3 overflow-hidden active:scale-[0.98]"
         >
-          <span className="group-hover:-translate-x-1 transition-transform">🏠 메인 로비로 돌아가기</span>
-          <span className="text-sm font-medium text-slate-500 group-hover:text-blue-400 transition-colors">(다른 AI 진단 도구 체험)</span>
+          <div className="absolute inset-0 w-1/4 h-full bg-white/20 skew-x-12 -translate-x-full group-hover:translate-x-[400%] transition-transform duration-1000 ease-in-out"></div>
+          🔍 내 채널 URL 진단하러 가기
         </Link>
 
         <p className="text-slate-600 text-xs mt-6 font-medium">© 2026 The Creators AI. All rights reserved.</p>
@@ -306,7 +299,6 @@ function ResultContent() {
   );
 }
 
-// 💡 스위치를 켜는 컴포넌트 엑스포트
 export default function ResultPage() {
   return (
     <Suspense fallback={<div className="min-h-screen bg-[#090E17]"></div>}>
