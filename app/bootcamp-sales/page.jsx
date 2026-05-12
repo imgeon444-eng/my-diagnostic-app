@@ -39,16 +39,19 @@ function FadeInSection({ children, delay = 0 }) {
   );
 }
 
-// 💡 [STEP 3 핵심] 마우스 반응형 3D 틸트(Tilt) 모듈 자체 구현
+// 💡 [STEP 3 핵심] PC(3D 틸트) & 모바일(터치 반응형 햅틱) 하이브리드 카드 모듈
 function TiltCard({ children, className = "" }) {
   const [style, setStyle] = useState({});
   
+  // 💻 [PC] 마우스 무브: 3D 틸트 효과
   const handleMouseMove = (e) => {
+    // 터치 디바이스에서는 마우스 이벤트 무시
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+    
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
     const x = (e.clientX - left) / width;
     const y = (e.clientY - top) / height;
     
-    // 최대 회전 각도 설정 (15도)
     const rotateX = (0.5 - y) * 15; 
     const rotateY = (x - 0.5) * 15;
     
@@ -65,11 +68,32 @@ function TiltCard({ children, className = "" }) {
     });
   };
 
+  // 📱 [Mobile] 터치 시작: 꾹 눌리는 프레스 & 네온 글로우 효과
+  const handleTouchStart = () => {
+    setStyle({
+      transform: 'perspective(1000px) scale3d(0.96, 0.96, 0.96)', // 살짝 깊게 눌리는 효과
+      boxShadow: '0 0 30px rgba(59, 130, 246, 0.3)', // 파란색 빛이 뿜어져 나옴
+      transition: 'all 0.1s ease-out'
+    });
+  };
+
+  // 📱 [Mobile] 터치 종료: 텐션 있게 튕겨져 나오는 스프링 효과
+  const handleTouchEnd = () => {
+    setStyle({
+      transform: 'perspective(1000px) scale3d(1, 1, 1)',
+      boxShadow: 'none',
+      transition: 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)' // 통통 튀는 바운스 효과
+    });
+  };
+
   return (
     <div 
-      className={`transform-gpu ${className}`} 
+      className={`transform-gpu cursor-pointer ${className}`} 
       onMouseMove={handleMouseMove} 
-      onMouseLeave={handleMouseLeave} 
+      onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchEnd}
       style={style}
     >
       {children}
