@@ -85,58 +85,76 @@ export default function TheCreatorsDiagnostic() {
 
   if (step === 4) {
     return (
-      <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center p-4">
-        <div className="animate-spin rounded-full h-16 w-16 border-4 border-slate-700 border-t-blue-500 mb-8"></div>
-        <h2 className="text-2xl font-bold text-white tracking-tight mb-2">AI가 데이터를 분석하고 있습니다</h2>
-        <p className="text-slate-400 text-center">현재 마케팅 상태를 분석하여<br/>맞춤형 제안을 생성 중입니다...</p>
+      <div className="min-h-screen bg-[#090E17] flex flex-col items-center justify-center p-4">
+        <div className="animate-spin rounded-full h-16 w-16 border-4 border-slate-700 border-t-[#3B82F6] mb-8"></div>
+        <h2 className="text-2xl font-black text-white tracking-tight mb-2">AI가 데이터를 분석하고 있습니다</h2>
+        <p className="text-slate-400 text-center font-medium">현재 마케팅 상태를 분석하여<br/>맞춤형 제안을 생성 중입니다...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 flex justify-center items-start md:items-center py-0 md:py-10">
-      <div className="w-full max-w-md bg-white min-h-screen md:min-h-[850px] md:h-auto md:rounded-[2.5rem] shadow-2xl relative overflow-hidden flex flex-col">
+    // 💡 V2.0 다크 모드 & 글래스모피즘 바탕
+    <div className="min-h-screen bg-[#090E17] text-slate-200 font-sans break-keep flex justify-center items-start md:items-center py-0 md:py-10 relative overflow-hidden selection:bg-[#3B82F6] selection:text-white">
+      
+      {/* 💡 배경 아우라 효과 */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/20 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-600/20 rounded-full blur-[120px] pointer-events-none"></div>
+
+      <div className="w-full max-w-md bg-white/5 backdrop-blur-2xl border border-white/10 min-h-screen md:min-h-[850px] md:h-auto md:rounded-[2.5rem] shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] relative overflow-hidden flex flex-col z-10">
+        
         {step > 0 && (
-          <header className="px-6 pt-10 pb-4 bg-white z-10">
+          <header className="px-6 pt-10 pb-4 bg-transparent z-10 border-b border-white/5">
             <div className="flex justify-between items-center mb-4">
-              <h1 className="text-lg font-extrabold text-slate-900">심층 진단</h1>
-              <span className="text-sm font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">{step} / 3</span>
+              <h1 className="text-lg font-black text-white">심층 진단</h1>
+              <span className="text-sm font-black text-[#3B82F6] bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-full">{step} / 3</span>
             </div>
-            <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-              <div className="h-full bg-blue-600 transition-all duration-500 ease-out" style={{ width: `${progressPercent}%` }}></div>
+            <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+              <div className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-500 ease-out" style={{ width: `${progressPercent}%` }}></div>
             </div>
           </header>
         )}
 
         <main className={`flex-1 overflow-y-auto px-6 custom-scrollbar ${step === 0 ? 'pb-10 pt-16' : 'pb-32'}`}>
+          
           {step === 0 && (
             <div className="animate-fade-in-up flex flex-col items-center justify-center h-full text-center mt-8">
-              <img src="https://i.postimg.cc/4dhycVrx/logo.png" alt="더크리에이터즈AI 로고" className="h-14 md:h-20 object-contain mb-8" />
-              <h2 className="text-2xl md:text-3xl font-black text-slate-900 leading-tight mb-6 tracking-tight">
-                클라이언트 마케팅<br/>심층 진단 대시보드
+              {/* 로고 영역 */}
+              <div className="mb-8 flex justify-center flex-col items-center gap-2">
+                <span className="px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-black tracking-widest uppercase">
+                  The Creators AI Engine
+                </span>
+                <h1 className="text-3xl font-black text-white tracking-tighter mt-2">
+                  THE CREATORS <span className="font-sans text-[#3B82F6]">Ai</span>
+                </h1>
+              </div>
+
+              <h2 className="text-2xl md:text-3xl font-black text-white leading-tight mb-6 tracking-tight break-keep">
+                클라이언트 마케팅<br/>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">심층 진단 대시보드</span>
               </h2>
-              <div className="bg-slate-50 border border-slate-100 p-5 md:p-6 rounded-2xl mb-10 text-left">
-                <p className="text-slate-600 leading-relaxed text-[15px] md:text-base font-medium break-keep">
-                  이 진단기는 <strong className="text-blue-600">마케팅/브랜딩/퍼널마케팅 설계</strong>가 필요한 사업자 분들의 현재 상태를 정확히 진단 후 맞춤형 제안을 드리기 위해 제공됩니다.
+              
+              <div className="bg-black/20 border border-white/5 p-5 md:p-6 rounded-2xl mb-10 text-left">
+                <p className="text-slate-400 leading-relaxed text-[15px] md:text-base font-medium break-keep">
+                  이 진단기는 <strong className="text-blue-400">마케팅/브랜딩/퍼널마케팅 설계</strong>가 필요한 사업자 분들의 현재 상태를 정확히 진단 후 맞춤형 제안을 드리기 위해 제공됩니다.
                 </p>
               </div>
 
               <div className="w-full space-y-3">
-                <button onClick={() => setStep(1)} className="w-full h-16 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-extrabold text-lg transition-all shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2">
+                <button onClick={() => setStep(1)} className="w-full h-16 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-2xl font-black text-lg transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] flex items-center justify-center gap-2 border border-blue-500/50">
                   🚀 진단기 접수 시작하기
                 </button>
-                <a href="tel:051-633-3812" className="w-full h-16 bg-slate-800 hover:bg-slate-900 text-white rounded-2xl font-extrabold text-lg transition-all shadow-lg flex items-center justify-center gap-2">
+                <a href="tel:051-633-3812" className="w-full h-16 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-2xl font-black text-lg transition-all shadow-md flex items-center justify-center gap-2">
                   📞 바로 전화상담
                 </a>
                 
                 <div className="pt-4 pb-2">
-                  <div className="border-t border-slate-200"></div>
+                  <div className="border-t border-white/10"></div>
                 </div>
 
-                {/* 💡 3. 부트캠프 퍼널로 이동 (이 버튼만 남깁니다) */}
                 <Link 
                   href="/bootcamp-funnel" 
-                  className="w-full h-14 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white rounded-xl font-bold text-base transition-all shadow-md flex items-center justify-center gap-2"
+                  className="w-full h-14 bg-black/40 hover:bg-black/60 border border-indigo-500/30 text-indigo-300 rounded-xl font-bold text-base transition-all shadow-md flex items-center justify-center gap-2"
                 >
                   💡 AI 진단 후 부트캠프 합류하기
                 </Link>
@@ -144,30 +162,29 @@ export default function TheCreatorsDiagnostic() {
             </div>
           )}
 
-          {/* STEP 1~3: 진단기 로직 유지 */}
           {step === 1 && (
             <div className="animate-fade-in-up mt-4">
-              <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 leading-tight mb-2 tracking-tight">반갑습니다.<br/>기본 정보를 알려주세요.</h2>
+              <h2 className="text-2xl md:text-3xl font-black text-white leading-tight mb-2 tracking-tight break-keep">반갑습니다.<br/>기본 정보를 알려주세요.</h2>
               <div className="space-y-4 mt-8">
-                <input type="text" placeholder="기업명 또는 브랜드명" value={formData.clientName} onChange={e => handleInputChange('clientName', e.target.value)} className="w-full p-4 bg-slate-50 border-none rounded-2xl outline-none" />
-                <input type="text" placeholder="성함 및 직함" value={formData.clientTitle} onChange={e => handleInputChange('clientTitle', e.target.value)} className="w-full p-4 bg-slate-50 border-none rounded-2xl outline-none" />
-                <input type="text" placeholder="연락처" value={formData.clientContact} onChange={e => handleInputChange('clientContact', e.target.value)} className="w-full p-4 bg-slate-50 border-none rounded-2xl outline-none" />
-                <input type="email" placeholder="이메일" value={formData.clientEmail} onChange={e => handleInputChange('clientEmail', e.target.value)} className="w-full p-4 bg-slate-50 border-none rounded-2xl outline-none" />
+                <input type="text" placeholder="기업명 또는 브랜드명" value={formData.clientName} onChange={e => handleInputChange('clientName', e.target.value)} className="w-full p-4 bg-black/40 border border-white/10 rounded-2xl outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-white placeholder:text-slate-500" />
+                <input type="text" placeholder="성함 및 직함" value={formData.clientTitle} onChange={e => handleInputChange('clientTitle', e.target.value)} className="w-full p-4 bg-black/40 border border-white/10 rounded-2xl outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-white placeholder:text-slate-500" />
+                <input type="text" placeholder="연락처" value={formData.clientContact} onChange={e => handleInputChange('clientContact', e.target.value)} className="w-full p-4 bg-black/40 border border-white/10 rounded-2xl outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-white placeholder:text-slate-500" />
+                <input type="email" placeholder="이메일" value={formData.clientEmail} onChange={e => handleInputChange('clientEmail', e.target.value)} className="w-full p-4 bg-black/40 border border-white/10 rounded-2xl outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-white placeholder:text-slate-500" />
               </div>
             </div>
           )}
 
           {step === 2 && (
             <div className="animate-fade-in-up mt-4">
-              <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 leading-tight mb-2 tracking-tight">마케팅 체급 진단</h2>
+              <h2 className="text-2xl md:text-3xl font-black text-white leading-tight mb-2 tracking-tight break-keep">마케팅 체급 진단</h2>
               <div className="space-y-8 mt-8">
                 {PART1_QUESTIONS.map((q) => (
-                  <div key={q.id} className="bg-slate-50 p-5 md:p-6 rounded-3xl">
-                    <h3 className="text-base md:text-lg font-bold text-slate-800 mb-4 md:mb-5 leading-snug">{q.text}</h3>
+                  <div key={q.id} className="bg-black/20 border border-white/5 p-5 md:p-6 rounded-3xl">
+                    <h3 className="text-base md:text-lg font-bold text-slate-200 mb-4 md:mb-5 leading-snug break-keep">{q.text}</h3>
                     <div className="flex flex-col gap-2 md:gap-3">
                       {[ {label: '네, 그렇습니다', val: '2'}, {label: '보통입니다', val: '1'}, {label: '아직 안하고 있습니다', val: '0'} ].map(opt => (
                         <button key={opt.val} onClick={() => handlePart1Change(q.id, opt.val)}
-                          className={`w-full text-left p-4 rounded-2xl font-bold transition-all text-sm md:text-base ${formData.part1[q.id] === opt.val ? 'bg-blue-600 text-white' : 'bg-white text-slate-600 border'}`}>
+                          className={`w-full text-left p-4 rounded-2xl font-bold transition-all text-sm md:text-base ${formData.part1[q.id] === opt.val ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-transparent shadow-[0_0_15px_rgba(59,130,246,0.3)]' : 'bg-white/5 text-slate-400 border border-white/10 hover:bg-white/10'}`}>
                           {opt.label}
                         </button>
                       ))}
@@ -180,25 +197,25 @@ export default function TheCreatorsDiagnostic() {
 
           {step === 3 && (
             <div className="animate-fade-in-up mt-4">
-              <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 leading-tight mb-2 tracking-tight">거의 다 왔습니다.<br/>목표를 설정해 주세요.</h2>
+              <h2 className="text-2xl md:text-3xl font-black text-white leading-tight mb-2 tracking-tight break-keep">거의 다 왔습니다.<br/>목표를 설정해 주세요.</h2>
               <div className="space-y-6 mt-8">
                 <div>
-                  <label className="block font-bold text-slate-800 mb-3 text-base md:text-lg">최우선 해결 목표</label>
+                  <label className="block font-bold text-slate-300 mb-3 text-base md:text-lg">최우선 해결 목표</label>
                   <div className="flex flex-col gap-2 md:gap-3">
                     {['브랜드 인지도 상승', '잠재 고객 DB 수집', '매출 증대', '키워드 장악'].map(goal => (
-                      <button key={goal} onClick={() => handleCheckboxChange(goal)} className={`w-full text-left p-4 rounded-2xl font-bold transition-all border-2 ${formData.goals.includes(goal) ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-slate-100 bg-white'}`}>
+                      <button key={goal} onClick={() => handleCheckboxChange(goal)} className={`w-full text-left p-4 rounded-2xl font-bold transition-all border ${formData.goals.includes(goal) ? 'border-blue-500 bg-blue-500/10 text-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.2)]' : 'border-white/10 bg-black/40 text-slate-400 hover:bg-white/5'}`}>
                         {goal}
                       </button>
                     ))}
                   </div>
                 </div>
                 <div>
-                  <label className="block font-bold text-slate-800 mb-3 text-base md:text-lg">예산</label>
-                  <input type="text" placeholder="예: 월 300만 원" value={formData.budget} onChange={e => handleInputChange('budget', e.target.value)} className="w-full p-4 bg-slate-50 rounded-2xl outline-none" />
+                  <label className="block font-bold text-slate-300 mb-3 text-base md:text-lg">예산</label>
+                  <input type="text" placeholder="예: 월 300만 원" value={formData.budget} onChange={e => handleInputChange('budget', e.target.value)} className="w-full p-4 bg-black/40 border border-white/10 rounded-2xl outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-white placeholder:text-slate-500" />
                 </div>
                 <div>
-                  <label className="block font-bold text-slate-800 mb-3 text-base md:text-lg">고민</label>
-                  <textarea placeholder="자유롭게 적어주세요." value={formData.shortPainPoint} onChange={e => handleInputChange('shortPainPoint', e.target.value)} className="w-full p-4 bg-slate-50 rounded-2xl h-28 outline-none" />
+                  <label className="block font-bold text-slate-300 mb-3 text-base md:text-lg">고민</label>
+                  <textarea placeholder="자유롭게 적어주세요." value={formData.shortPainPoint} onChange={e => handleInputChange('shortPainPoint', e.target.value)} className="w-full p-4 bg-black/40 border border-white/10 rounded-2xl h-28 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-white placeholder:text-slate-500" />
                 </div>
               </div>
             </div>
@@ -206,13 +223,13 @@ export default function TheCreatorsDiagnostic() {
         </main>
 
         {step > 0 && step < 4 && (
-          <footer className="absolute bottom-0 left-0 w-full p-4 md:p-6 bg-gradient-to-t from-white via-white to-transparent z-20">
-            <div className="flex gap-2 md:gap-3">
-              {step > 1 && <button onClick={prevStep} className="w-14 h-14 flex items-center justify-center bg-slate-100 text-slate-600 rounded-2xl font-bold">←</button>}
+          <footer className="absolute bottom-0 left-0 w-full p-4 md:p-6 bg-gradient-to-t from-[#090E17] via-[#090E17]/90 to-transparent z-20">
+            <div className="flex gap-2 md:gap-3 mt-4">
+              {step > 1 && <button onClick={prevStep} className="w-14 h-14 flex items-center justify-center bg-white/10 hover:bg-white/20 text-white border border-white/10 rounded-2xl font-bold transition-colors">←</button>}
               {step < 3 ? (
-                <button onClick={nextStep} className="flex-1 h-14 bg-slate-900 text-white rounded-2xl font-extrabold text-base">다음 단계로</button>
+                <button onClick={nextStep} className="flex-1 h-14 bg-white/10 hover:bg-white/20 text-white border border-white/10 rounded-2xl font-black text-base transition-colors">다음 단계로</button>
               ) : (
-                <button onClick={handleSubmit} className="flex-1 h-14 bg-blue-600 text-white rounded-2xl font-extrabold text-base">진단 완료 및 결과 보기</button>
+                <button onClick={handleSubmit} className="flex-1 h-14 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-2xl font-black text-base transition-all shadow-[0_0_15px_rgba(59,130,246,0.4)]">진단 완료 및 결과 보기</button>
               )}
             </div>
           </footer>
