@@ -3,9 +3,21 @@
 import React, { useState } from 'react';
 import KanbanBoard from '../../components/admin/KanbanBoard';
 import B2BTargetSniperAnalyzer from '../../components/admin/B2BTargetSniperAnalyzer';
+import { getAuth, signOut } from 'firebase/auth';
+import { app } from '../../lib/firebase'; // firebase.js 경로 (필요시 확인)
+import { useRouter } from 'next/navigation';
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('bootcamp'); 
+  const router = useRouter();
+
+  // 💡 신규 추가: 보안 로그아웃 기능
+  const handleLogout = () => {
+    const auth = getAuth(app);
+    signOut(auth).then(() => {
+      router.push('/admin/login');
+    });
+  };
 
   return (
     <div className="min-h-screen bg-[#090E17] text-slate-200 p-4 md:p-8 font-sans selection:bg-[#3B82F6] selection:text-white relative overflow-x-hidden">
@@ -14,6 +26,7 @@ export default function AdminDashboard() {
 
       <div className="max-w-[1400px] mx-auto relative z-10">
         
+        {/* 💡 헤더에 로그아웃 버튼 배치 */}
         <header className="mb-8 md:mb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-slate-800 pb-6">
           <div>
             <span className="text-blue-500 font-black tracking-widest text-xs uppercase mb-2 block animate-pulse">Live CRM Dashboard</span>
@@ -22,6 +35,13 @@ export default function AdminDashboard() {
             </h1>
             <p className="text-slate-400 mt-2 font-medium">전체 세일즈 퍼널 및 고객 파이프라인 통합 관리 시스템</p>
           </div>
+          
+          <button 
+            onClick={handleLogout}
+            className="bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-400 px-5 py-2.5 rounded-xl font-bold text-sm transition-all flex items-center gap-2"
+          >
+            🔒 시스템 로그아웃
+          </button>
         </header>
 
         {/* 🎯 3대 파이프라인 탭(Tab) 네비게이션 */}
@@ -67,7 +87,7 @@ export default function AdminDashboard() {
             </div>
           )}
 
-          {/* 💡 1층 진단기 보드 (3층과 똑같은 컴포넌트를 이름표만 바꿔서 재사용!) */}
+          {/* 1층 진단기 보드 */}
           {activeTab === 'diagnostics' && (
             <div className="space-y-6 animate-fade-in-up">
               <KanbanBoard 
