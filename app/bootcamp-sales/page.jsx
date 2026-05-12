@@ -214,7 +214,7 @@ export default function BootcampSalesPage() {
         </div>
       </header>
 
-      {/* 🎬 1.5. VSL 홀로그램 쇼케이스 섹션 */}
+      {/* 🎬 1.5. VSL 쇼케이스 (숏폼 & 스마트폰 프레임 최적화) */}
       <section className="relative py-16 md:py-24 px-4 md:px-6 bg-[#090E17] overflow-hidden flex flex-col items-center border-b border-slate-800">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-[#3B82F6]/10 rounded-[100%] blur-[150px] pointer-events-none"></div>
 
@@ -228,24 +228,27 @@ export default function BootcampSalesPage() {
               </h2>
             </div>
 
-            <div className="relative group w-full mx-auto aspect-video rounded-3xl overflow-hidden shadow-[0_0_40px_rgba(59,130,246,0.2)] border border-white/10 bg-black transition-all duration-500 hover:shadow-[0_0_60px_rgba(59,130,246,0.3)]">
-              <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-white/10 to-transparent flex items-center px-4 gap-2 z-20 pointer-events-none">
-                <div className="w-2.5 h-2.5 rounded-full bg-slate-600/80"></div>
-                <div className="w-2.5 h-2.5 rounded-full bg-slate-600/80"></div>
-                <div className="w-2.5 h-2.5 rounded-full bg-slate-600/80"></div>
+            {/* 📱 숏폼(9:16) 스마트폰 목업 프레임 */}
+            <div className="relative group w-full max-w-[280px] sm:max-w-xs md:max-w-sm mx-auto aspect-[9/16] rounded-[2.5rem] md:rounded-[3rem] overflow-hidden shadow-[0_0_40px_rgba(59,130,246,0.3)] border-[6px] md:border-[8px] border-slate-800 bg-black transition-all duration-500 hover:shadow-[0_0_60px_rgba(59,130,246,0.5)] hover:border-blue-500/50 hover:-translate-y-2">
+              
+              {/* 상단 노치(Notch) 영역 */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 md:h-6 bg-slate-800 rounded-b-2xl z-20 pointer-events-none flex justify-center items-end pb-1">
+                <div className="w-10 h-1 bg-slate-700/50 rounded-full"></div>
               </div>
+
+              {/* 촬영하신 실제 숏폼 유튜브 링크 적용 */}
               <iframe 
                 className="absolute inset-0 w-full h-full z-10"
-                src="https://www.youtube.com/embed/M7FIvfx5J10?controls=1&rel=0&modestbranding=1" 
+                src="https://www.youtube.com/embed/9wWX5Xn18HM?controls=1&rel=0&modestbranding=1&playsinline=1" 
                 title="The Creators AI VSL" 
                 frameBorder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                 allowFullScreen
               ></iframe>
             </div>
 
             <p className="mt-8 text-slate-500 font-medium text-sm md:text-base break-keep">
-              * 잠시만 시간을 내어 영상을 시청해 주시면, 저희가 추구하는 교육의 본질과 방향성을 명확히 확인하실 수 있습니다.
+              * 영상을 시청해 주시면, 저희가 추구하는 교육의 본질과 방향성을 명확히 확인하실 수 있습니다.
             </p>
           </div>
         </FadeInSection>
@@ -495,7 +498,7 @@ export default function BootcampSalesPage() {
         </div>
       </section>
 
-      {/* 🚀 5. 수료 후의 변화 */}
+      {/* 🚀 5. 수료 후의 변화 로드맵 */}
       <section className="py-16 md:py-24 px-4 md:px-6 bg-white overflow-hidden">
         <div className="max-w-4xl mx-auto">
           <FadeInSection>
@@ -553,6 +556,7 @@ export default function BootcampSalesPage() {
 
       {/* 🌟 5.5. 소셜 프루프 */}
       <section className="py-16 md:py-24 px-4 md:px-6 bg-[#F8FAFC] border-t border-slate-200 overflow-hidden relative">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-100 rounded-full blur-3xl pointer-events-none opacity-50"></div>
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <FadeInSection>
             <span className="text-slate-500 font-bold tracking-widest text-xs uppercase mb-3 block">Since 2018</span>
