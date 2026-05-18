@@ -96,7 +96,7 @@ function TiltCard({ children, className = "" }) {
   );
 }
 
-// 💡 [신규 추가] 듀얼 리뷰 섹션 모듈 (메인 함수 바깥에 안전하게 배치)
+// 💡 듀얼 리뷰 섹션 모듈 (카톡 원본 후기 포함)
 function ReviewSection() {
   const [activeTab, setActiveTab] = useState('video');
 
@@ -105,11 +105,14 @@ function ReviewSection() {
       <div className="max-w-5xl mx-auto">
         <FadeInSection>
           <div className="text-center mb-10 md:mb-12">
-            <span className="text-[#3B82F6] font-black tracking-widest text-xs uppercase mb-2 block">Real Testimonials</span>
+            <span className="text-[#3B82F6] font-black tracking-widest text-xs uppercase mb-2 block">100% Real Reviews</span>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight">
-              이미 변화를 경험한 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-[#3B82F6]">생생한 증언</span>
+              조작 없는 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-[#3B82F6]">날것의 변화</span>를 증명합니다
             </h2>
-            <p className="text-slate-400 mt-4 text-sm md:text-base">100% 실제 수강생의 동의를 얻어 촬영된 가공 없는 리뷰입니다.</p>
+            <p className="text-slate-400 mt-4 text-sm md:text-base break-keep">
+              아름답게 꾸며낸 가짜 텍스트 리뷰는 단 한 줄도 적지 않겠습니다.<br className="hidden sm:block"/>
+              오직 수강생의 동의를 얻은 생생한 영상과 카카오톡 대화 원본만 공개합니다.
+            </p>
           </div>
         </FadeInSection>
 
@@ -128,19 +131,19 @@ function ReviewSection() {
                 ▶️ 생생한 영상 리뷰
               </button>
               <button
-                onClick={() => setActiveTab('text')}
+                onClick={() => setActiveTab('kakao')}
                 className={`px-6 md:px-8 py-3 rounded-xl font-bold text-sm transition-all duration-300 flex items-center gap-2 ${
-                  activeTab === 'text' 
-                    ? 'bg-slate-700 text-white shadow-lg' 
-                    : 'text-slate-400 hover:text-white'
+                  activeTab === 'kakao' 
+                    ? 'bg-[#FEE500] text-[#191919] shadow-lg shadow-yellow-500/20' 
+                    : 'text-slate-400 hover:text-[#FEE500]'
                 }`}
               >
-                📝 상세 텍스트 리뷰
+                💬 100% 리얼 카톡 후기
               </button>
             </div>
           </div>
 
-          {/* 영상 리뷰 화면 */}
+          {/* 📺 영상 리뷰 화면 */}
           {activeTab === 'video' && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in-up">
               <div className="bg-slate-900/50 rounded-2xl overflow-hidden border border-slate-700/50 group">
@@ -155,10 +158,9 @@ function ReviewSection() {
                 </div>
                 <div className="p-5">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="bg-blue-500/20 text-blue-400 text-xs font-black px-2 py-1 rounded border border-blue-500/20">A기업 대표님</span>
-                    <span className="text-yellow-400 text-xs">★★★★★</span>
+                    <span className="bg-blue-500/20 text-blue-400 text-xs font-black px-2 py-1 rounded border border-blue-500/20">실제 수강생</span>
                   </div>
-                  <p className="text-white font-bold text-lg leading-snug">"개발자 없이 2주 만에 자동화 시스템을 구축했습니다."</p>
+                  <p className="text-white font-bold text-lg leading-snug break-keep">"개발자 없이 2주 만에 자동화 시스템을 구축했습니다."</p>
                 </div>
               </div>
 
@@ -174,47 +176,151 @@ function ReviewSection() {
                 </div>
                 <div className="p-5">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="bg-cyan-500/20 text-cyan-400 text-xs font-black px-2 py-1 rounded border border-cyan-500/20">마케팅 에이전시</span>
-                    <span className="text-yellow-400 text-xs">★★★★★</span>
+                    <span className="bg-cyan-500/20 text-cyan-400 text-xs font-black px-2 py-1 rounded border border-cyan-500/20">실제 수강생</span>
                   </div>
-                  <p className="text-white font-bold text-lg leading-snug">"이전에는 직원이 3일 걸리던 리포트가 지금은 10분 컷입니다."</p>
+                  <p className="text-white font-bold text-lg leading-snug break-keep">"이전에는 직원이 3일 걸리던 리포트가 지금은 10분 컷입니다."</p>
                 </div>
               </div>
             </div>
           )}
 
-          {/* 텍스트 리뷰 화면 */}
-          {activeTab === 'text' && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in-up">
-              <div className="bg-slate-800/30 p-6 rounded-2xl border border-slate-700/50">
-                <div className="text-yellow-400 text-sm mb-3">★★★★★</div>
-                <p className="text-slate-300 text-sm leading-relaxed mb-4 break-keep">
-                  "처음에는 반신반의했지만, 커리큘럼을 따라가다 보니 어느새 제 회사에 딱 맞는 AI 시스템이 완성되어 있었습니다. 
-                  가장 좋았던 점은 코딩을 전혀 몰라도 바이브 코딩 방식으로 모든 것을 통제할 수 있다는 점이었습니다."
-                </p>
-                <p className="text-white font-bold text-sm">- B쇼핑몰 김OO 대표</p>
+          {/* 💬 리얼 카톡 후기 화면 */}
+          {activeTab === 'kakao' && (
+            <div className="max-w-2xl mx-auto animate-fade-in-up">
+              <div className="bg-[#abc1d1] rounded-[2rem] p-4 md:p-6 shadow-2xl relative overflow-hidden border-4 border-slate-800 mb-8">
+                <div className="flex items-center gap-3 mb-6 bg-[#abc1d1] z-10 sticky top-0">
+                  <div className="w-10 h-10 bg-white/20 rounded-2xl flex items-center justify-center font-black text-slate-700">김</div>
+                  <span className="font-bold text-[#191919] text-lg">김유진 수강생님</span>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex items-start gap-2">
+                    <div className="w-8 h-8 rounded-full bg-white/50 shrink-0"></div>
+                    <div className="bg-white p-3 md:p-4 rounded-2xl rounded-tl-sm text-[#191919] text-sm md:text-base max-w-[85%] shadow-sm leading-relaxed break-keep">
+                      안녕하세요 정시후 선생님!! 😀<br/>
+                      오늘 청년 1인 크리에이터 심화반 수업에 참석한 김유진이라고 합니다 ㅎㅎ<br/><br/>
+                      오늘 수업 너무 재밌고 인상깊게 잘 들었습니다 ㅎㅎ 나 자신을 깊게 알아가고 객관화할수 있는 하나의 방식이 영상이 될 수 있다는 말씀이 많이 와닿았던거같아요 .. 🥺<br/><br/>
+                      그래서 그런데 오늘 수업자료들 좀 받을 수 있을까요? 놓친 부분이 있으면 참고할 수 있을 것 같아 부탁드립니다 ㅎㅎ 😀
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col items-end gap-2 mt-6">
+                    <div className="bg-white p-3 rounded-2xl rounded-tr-sm border border-slate-200 max-w-[80%] shadow-sm flex items-center gap-3">
+                      <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center text-orange-500 font-bold">P</div>
+                      <div className="text-left">
+                        <p className="text-[#191919] text-sm font-bold truncate">미디어산업이해 중급반 정시후강사.pptx</p>
+                        <p className="text-slate-500 text-xs mt-0.5">용량 4.07 MB</p>
+                      </div>
+                    </div>
+                    <div className="bg-[#FEE500] p-3 rounded-2xl rounded-tr-sm text-[#191919] text-sm shadow-sm inline-block">
+                      재밋게들어주셔서 감사합니다 ^^
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <div className="bg-slate-800/30 p-6 rounded-2xl border border-slate-700/50">
-                <div className="text-yellow-400 text-sm mb-3">★★★★★</div>
-                <p className="text-slate-300 text-sm leading-relaxed mb-4 break-keep">
-                  "단순한 툴 사용법이 아니라 비즈니스 본질에 AI를 접목하는 방법을 배웁니다. 
-                  수강 직후 인건비 누수를 막고 월 300만 원 이상의 고정 비용을 절감하는 데 성공했습니다. 무조건 추천합니다."
+              <div className="text-center">
+                <a
+                  href="http://thecreator-mcn.com/bbs/board.php?bo_table=review"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative inline-flex items-center justify-center gap-3 w-full md:w-auto px-8 py-5 bg-slate-800 text-white rounded-2xl font-black text-lg shadow-xl hover:bg-slate-700 transition-all hover:-translate-y-1"
+                >
+                  <span className="text-2xl">📝</span>
+                  본사 홈페이지에서 리얼 후기 더 보기
+                  <svg className="w-5 h-5 text-slate-400 group-hover:text-white group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </a>
+                <p className="text-slate-500 text-xs md:text-sm mt-4 font-medium">
+                  * 8년간 누적된 The Creators AI의 실제 수강생 리뷰를 투명하게 공개합니다.
                 </p>
-                <p className="text-white font-bold text-sm">- F&B 프랜차이즈 이OO 이사</p>
-              </div>
-
-              <div className="bg-slate-800/30 p-6 rounded-2xl border border-slate-700/50">
-                <div className="text-yellow-400 text-sm mb-3">★★★★★</div>
-                <p className="text-slate-300 text-sm leading-relaxed mb-4 break-keep">
-                  "막막했던 데이터 관리와 마케팅 자동화가 한 번에 해결되었습니다. 
-                  특히 강사님의 1:1 피드백은 웬만한 수백만 원짜리 컨설팅보다 훨씬 더 날카롭고 실질적이었습니다."
-                </p>
-                <p className="text-white font-bold text-sm">- 교육 스타트업 박OO 대표</p>
               </div>
             </div>
           )}
         </FadeInSection>
+      </div>
+    </section>
+  );
+}
+
+// 💡 [신규 추가] 롤링 명언 섹션 모듈
+function ParadigmShiftSection() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [fade, setFade] = useState(true);
+
+  const quotes = [
+    {
+      highlight: "곱셈",
+      text1: "비즈니스는 ",
+      text2: "입니다. 당신의 아이디어가 아무리 뛰어나도,",
+      text3: "결국 '실행'이 0이라면 결과는 영원히 0입니다."
+    },
+    {
+      highlight: "도태",
+      text1: "결정하지 않는 것도 하나의 결정입니다.",
+      text2: " 그리고 그 대가는 ",
+      text3: "라는 가장 잔인한 청구서로 돌아옵니다."
+    },
+    {
+      highlight: "행동",
+      text1: "생각만으로 바뀐 세상은 단 한 평도 없습니다.",
+      text2: " 변화를 증명하는 유일한 언어는 오직 ",
+      text3: "뿐입니다."
+    },
+    {
+      highlight: "독식",
+      text1: "기술은 당신을 기다려주지 않습니다.",
+      text2: " 오늘 핑계를 찾는 사이, 누군가는 시스템을 만들고 시장을 ",
+      text3: "합니다."
+    },
+    {
+      highlight: "예외는 없습니다",
+      text1: "모든 행동의 끝에는 결과라는 답이 기다리고 있습니다.",
+      text2: " 아무것도 하지 않은 자에게 주어지는 기적은 없습니다. ",
+      text3: "."
+    }
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setFade(false); 
+      setTimeout(() => {
+        setCurrentIndex((prev) => (prev + 1) % quotes.length);
+        setFade(true); 
+      }, 500); 
+    }, 4500); 
+
+    return () => clearInterval(timer);
+  }, [quotes.length]);
+
+  return (
+    <section className="py-20 md:py-32 px-4 md:px-6 bg-[#05080f] text-center relative overflow-hidden border-t border-slate-800">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-40 bg-blue-600/10 blur-[120px] pointer-events-none"></div>
+      
+      <div className="max-w-4xl mx-auto relative z-10 min-h-[200px] flex flex-col justify-center items-center">
+        <div className="text-blue-500/30 text-5xl md:text-7xl font-serif leading-none mb-[-10px] md:mb-[-20px]">"</div>
+        
+        <h2 
+          className={`text-xl sm:text-2xl md:text-4xl font-black text-white break-keep leading-tight mb-8 relative z-10 transition-opacity duration-500 ease-in-out ${fade ? 'opacity-100' : 'opacity-0'}`}
+        >
+          {quotes[currentIndex].text1}
+          <span className="text-cyan-400">{quotes[currentIndex].highlight}</span>
+          {quotes[currentIndex].text2}<br className="hidden md:block"/>
+          <span className="text-slate-300">{quotes[currentIndex].text3}</span>
+        </h2>
+        
+        <div className="w-12 h-1 bg-blue-500/50 mx-auto mb-6"></div>
+        <p className="text-slate-500 font-bold tracking-widest uppercase text-xs md:text-sm">
+          The Creators AI
+        </p>
+
+        <div className="flex gap-2 mt-8">
+          {quotes.map((_, idx) => (
+            <div 
+              key={idx} 
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${currentIndex === idx ? 'bg-cyan-400 w-6' : 'bg-slate-700'}`}
+            ></div>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -674,40 +780,11 @@ export default function BootcampSalesPage() {
         </div>
       </section>
 
-      {/* 💡 [신규 이식 완료] 듀얼 리뷰 섹션 삽입 */}
+      {/* 💡 듀얼 리뷰 섹션 삽입 */}
       <ReviewSection />
 
-      {/* 🌟 5.5. 소셜 프루프 (기존 링크 보존) */}
-      <section className="py-16 md:py-24 px-4 md:px-6 bg-[#F8FAFC] overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-100 rounded-full blur-3xl pointer-events-none opacity-50"></div>
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <FadeInSection>
-            <span className="text-slate-500 font-bold tracking-widest text-xs uppercase mb-3 block">Since 2018</span>
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-800 mb-5 break-keep leading-tight">
-              새로운 도전 앞에서의 신중함은 당연합니다.<br className="hidden sm:block"/>
-            </h2>
-            <p className="text-slate-600 text-sm md:text-base font-medium break-keep leading-relaxed mb-10 max-w-2xl mx-auto">
-              지난 8년간 교육 현장에서 쌓아온 저희의 진정성과 노력의 흔적을 먼저 확인해 보시기 바랍니다.
-            </p>
-
-            <div className="flex flex-col items-center justify-center gap-3">
-              <a
-                href="http://thecreator-mcn.com/bbs/board.php?bo_table=review"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative inline-flex items-center justify-center gap-2 px-6 py-4 bg-white text-slate-800 border border-slate-300 rounded-xl font-bold text-sm md:text-base shadow-sm hover:shadow-md hover:border-slate-400 transition-all duration-300"
-              >
-                <span className="text-slate-400">📝</span> 
-                본사 홈페이지에서 누적 수강생 리뷰 확인하기
-                <svg className="w-4 h-4 text-slate-400 group-hover:text-slate-600 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
-              </a>
-              <p className="text-slate-500 text-xs mt-3 font-medium break-keep">
-                * 클릭 시 리뷰 게시판이 새 창으로 열립니다. <br className="block sm:hidden"/>천천히 둘러보신 후, 준비가 되셨을 때 다시 이 창으로 돌아와 주시면 됩니다.
-              </p>
-            </div>
-          </FadeInSection>
-        </div>
-      </section>
+      {/* 💡 신규 이식: 5가지 롤링 명언 섹션 */}
+      <ParadigmShiftSection />
 
       {/* 6. 환불 보장 */}
       <section className="py-16 md:py-24 px-4 md:px-6 bg-slate-900 text-white overflow-hidden">
