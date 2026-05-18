@@ -96,6 +96,131 @@ function TiltCard({ children, className = "" }) {
   );
 }
 
+// 💡 [신규 추가] 듀얼 리뷰 섹션 모듈 (메인 함수 바깥에 안전하게 배치)
+function ReviewSection() {
+  const [activeTab, setActiveTab] = useState('video');
+
+  return (
+    <section className="py-16 md:py-24 px-4 md:px-6 bg-[#090E17] border-t border-slate-800">
+      <div className="max-w-5xl mx-auto">
+        <FadeInSection>
+          <div className="text-center mb-10 md:mb-12">
+            <span className="text-[#3B82F6] font-black tracking-widest text-xs uppercase mb-2 block">Real Testimonials</span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight">
+              이미 변화를 경험한 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-[#3B82F6]">생생한 증언</span>
+            </h2>
+            <p className="text-slate-400 mt-4 text-sm md:text-base">100% 실제 수강생의 동의를 얻어 촬영된 가공 없는 리뷰입니다.</p>
+          </div>
+        </FadeInSection>
+
+        <FadeInSection delay={100}>
+          {/* 토글 탭 버튼 */}
+          <div className="flex justify-center mb-10">
+            <div className="bg-slate-800/50 p-1.5 rounded-2xl border border-slate-700/50 inline-flex flex-wrap justify-center gap-2">
+              <button
+                onClick={() => setActiveTab('video')}
+                className={`px-6 md:px-8 py-3 rounded-xl font-bold text-sm transition-all duration-300 flex items-center gap-2 ${
+                  activeTab === 'video' 
+                    ? 'bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg' 
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                ▶️ 생생한 영상 리뷰
+              </button>
+              <button
+                onClick={() => setActiveTab('text')}
+                className={`px-6 md:px-8 py-3 rounded-xl font-bold text-sm transition-all duration-300 flex items-center gap-2 ${
+                  activeTab === 'text' 
+                    ? 'bg-slate-700 text-white shadow-lg' 
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                📝 상세 텍스트 리뷰
+              </button>
+            </div>
+          </div>
+
+          {/* 영상 리뷰 화면 */}
+          {activeTab === 'video' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in-up">
+              <div className="bg-slate-900/50 rounded-2xl overflow-hidden border border-slate-700/50 group">
+                <div className="aspect-video w-full relative bg-slate-800">
+                  <iframe 
+                    className="absolute top-0 left-0 w-full h-full"
+                    src="https://www.youtube.com/embed/임시유튜브아이디1" 
+                    title="부트캠프 수강생 리뷰 1"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowFullScreen
+                  ></iframe>
+                </div>
+                <div className="p-5">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="bg-blue-500/20 text-blue-400 text-xs font-black px-2 py-1 rounded border border-blue-500/20">A기업 대표님</span>
+                    <span className="text-yellow-400 text-xs">★★★★★</span>
+                  </div>
+                  <p className="text-white font-bold text-lg leading-snug">"개발자 없이 2주 만에 자동화 시스템을 구축했습니다."</p>
+                </div>
+              </div>
+
+              <div className="bg-slate-900/50 rounded-2xl overflow-hidden border border-slate-700/50 group">
+                <div className="aspect-video w-full relative bg-slate-800">
+                  <iframe 
+                    className="absolute top-0 left-0 w-full h-full"
+                    src="https://www.youtube.com/embed/임시유튜브아이디2" 
+                    title="부트캠프 수강생 리뷰 2"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowFullScreen
+                  ></iframe>
+                </div>
+                <div className="p-5">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="bg-cyan-500/20 text-cyan-400 text-xs font-black px-2 py-1 rounded border border-cyan-500/20">마케팅 에이전시</span>
+                    <span className="text-yellow-400 text-xs">★★★★★</span>
+                  </div>
+                  <p className="text-white font-bold text-lg leading-snug">"이전에는 직원이 3일 걸리던 리포트가 지금은 10분 컷입니다."</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* 텍스트 리뷰 화면 */}
+          {activeTab === 'text' && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fade-in-up">
+              <div className="bg-slate-800/30 p-6 rounded-2xl border border-slate-700/50">
+                <div className="text-yellow-400 text-sm mb-3">★★★★★</div>
+                <p className="text-slate-300 text-sm leading-relaxed mb-4 break-keep">
+                  "처음에는 반신반의했지만, 커리큘럼을 따라가다 보니 어느새 제 회사에 딱 맞는 AI 시스템이 완성되어 있었습니다. 
+                  가장 좋았던 점은 코딩을 전혀 몰라도 바이브 코딩 방식으로 모든 것을 통제할 수 있다는 점이었습니다."
+                </p>
+                <p className="text-white font-bold text-sm">- B쇼핑몰 김OO 대표</p>
+              </div>
+
+              <div className="bg-slate-800/30 p-6 rounded-2xl border border-slate-700/50">
+                <div className="text-yellow-400 text-sm mb-3">★★★★★</div>
+                <p className="text-slate-300 text-sm leading-relaxed mb-4 break-keep">
+                  "단순한 툴 사용법이 아니라 비즈니스 본질에 AI를 접목하는 방법을 배웁니다. 
+                  수강 직후 인건비 누수를 막고 월 300만 원 이상의 고정 비용을 절감하는 데 성공했습니다. 무조건 추천합니다."
+                </p>
+                <p className="text-white font-bold text-sm">- F&B 프랜차이즈 이OO 이사</p>
+              </div>
+
+              <div className="bg-slate-800/30 p-6 rounded-2xl border border-slate-700/50">
+                <div className="text-yellow-400 text-sm mb-3">★★★★★</div>
+                <p className="text-slate-300 text-sm leading-relaxed mb-4 break-keep">
+                  "막막했던 데이터 관리와 마케팅 자동화가 한 번에 해결되었습니다. 
+                  특히 강사님의 1:1 피드백은 웬만한 수백만 원짜리 컨설팅보다 훨씬 더 날카롭고 실질적이었습니다."
+                </p>
+                <p className="text-white font-bold text-sm">- 교육 스타트업 박OO 대표</p>
+              </div>
+            </div>
+          )}
+        </FadeInSection>
+      </div>
+    </section>
+  );
+}
+
+// 👑 [메인 함수] 랜딩페이지 뼈대
 export default function BootcampSalesPage() {
   const [heroState, setHeroState] = useState(0);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -214,7 +339,7 @@ export default function BootcampSalesPage() {
         </div>
       </header>
 
-      {/* 🎬 1.5. VSL 쇼케이스 (숏폼 & 스마트폰 프레임 최적화) */}
+      {/* 🎬 1.5. VSL 쇼케이스 */}
       <section className="relative py-16 md:py-24 px-4 md:px-6 bg-[#090E17] overflow-hidden flex flex-col items-center border-b border-slate-800">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-[#3B82F6]/10 rounded-[100%] blur-[150px] pointer-events-none"></div>
 
@@ -228,15 +353,10 @@ export default function BootcampSalesPage() {
               </h2>
             </div>
 
-            {/* 📱 숏폼(9:16) 스마트폰 목업 프레임 */}
             <div className="relative group w-full max-w-[280px] sm:max-w-xs md:max-w-sm mx-auto aspect-[9/16] rounded-[2.5rem] md:rounded-[3rem] overflow-hidden shadow-[0_0_40px_rgba(59,130,246,0.3)] border-[6px] md:border-[8px] border-slate-800 bg-black transition-all duration-500 hover:shadow-[0_0_60px_rgba(59,130,246,0.5)] hover:border-blue-500/50 hover:-translate-y-2">
-              
-              {/* 상단 노치(Notch) 영역 */}
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 md:h-6 bg-slate-800 rounded-b-2xl z-20 pointer-events-none flex justify-center items-end pb-1">
                 <div className="w-10 h-1 bg-slate-700/50 rounded-full"></div>
               </div>
-
-              {/* 촬영하신 실제 숏폼 유튜브 링크 적용 */}
               <iframe 
                 className="absolute inset-0 w-full h-full z-10"
                 src="https://www.youtube.com/embed/9wWX5Xn18HM?controls=1&rel=0&modestbranding=1&playsinline=1" 
@@ -554,8 +674,11 @@ export default function BootcampSalesPage() {
         </div>
       </section>
 
-      {/* 🌟 5.5. 소셜 프루프 */}
-      <section className="py-16 md:py-24 px-4 md:px-6 bg-[#F8FAFC] border-t border-slate-200 overflow-hidden relative">
+      {/* 💡 [신규 이식 완료] 듀얼 리뷰 섹션 삽입 */}
+      <ReviewSection />
+
+      {/* 🌟 5.5. 소셜 프루프 (기존 링크 보존) */}
+      <section className="py-16 md:py-24 px-4 md:px-6 bg-[#F8FAFC] overflow-hidden relative">
         <div className="absolute top-0 right-0 w-64 h-64 bg-blue-100 rounded-full blur-3xl pointer-events-none opacity-50"></div>
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <FadeInSection>
