@@ -150,7 +150,7 @@ function ReviewSection() {
                 <div className="aspect-video w-full relative bg-slate-800">
                   <iframe 
                     className="absolute top-0 left-0 w-full h-full"
-                    src="https://www.youtube.com/embed/임시유튜브아이디1" 
+                    src="https://www.youtube.com/embed/KGbAfQWeQpI"
                     title="부트캠프 수강생 리뷰 1"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                     allowFullScreen
