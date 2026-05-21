@@ -465,7 +465,7 @@ export default function BootcampSalesPage() {
               </div>
               <iframe 
                 className="absolute inset-0 w-full h-full z-10"
-                src="https://www.youtube.com/embed/9wWX5Xn18HM?controls=1&rel=0&modestbranding=1&playsinline=1" 
+                src="https://www.youtube.com/embed/j-Bo6WFvDAs?controls=1&rel=0&modestbranding=1&playsinline=1" 
                 title="The Creators AI VSL" 
                 frameBorder="0" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
@@ -474,7 +474,7 @@ export default function BootcampSalesPage() {
             </div>
 
             <p className="mt-8 text-slate-500 font-medium text-sm md:text-base break-keep">
-              * 영상은 가볍게 촬영했지만, <span className="text-slate-700 font-bold">The Creators AI가 다루는 비즈니스 자동화의 무게는 결코 가볍지 않습니다.</span>
+              * 소수정예 오프라인 부트캠프 입니다, <span className="text-slate-700 font-bold">The Creators AI 바이브코딩 비즈니스 자동화는 생존스킬 입니다.</span>
             </p>
           </div>
         </FadeInSection>
