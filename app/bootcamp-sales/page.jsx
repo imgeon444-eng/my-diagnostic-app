@@ -96,7 +96,7 @@ function TiltCard({ children, className = "" }) {
   );
 }
 
-// 💡 [신규 이식: V4.0 옵션 A] 안티-학원 프레임 선언문 모듈
+// 💡 [V4.0 이식] 안티-학원 프레임 선언문 모듈
 function AntiAcademySection() {
   return (
     <section className="py-16 md:py-24 px-4 md:px-6 bg-[#05080f] text-center border-b border-slate-800 relative overflow-hidden">
@@ -264,7 +264,7 @@ function ReviewSection() {
   );
 }
 
-// 💡 [이식 완료: V4.0 옵션 B] 날것의 백엔드 데이터 쇼케이스 모듈
+// 💡 [V4.0 이식] 백엔드 데이터 쇼케이스 모듈 (CLS 에러/높이튐 방어 패치 완료)
 function BackendShowcaseSection() {
   const [logs, setLogs] = useState([]);
   const [leads, setLeads] = useState([]);
@@ -331,8 +331,8 @@ function BackendShowcaseSection() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
           <FadeInSection delay={100}>
-            <div className="bg-[#0D1117] border border-slate-700 rounded-2xl overflow-hidden shadow-2xl h-full flex flex-col">
-              <div className="bg-[#161B22] px-4 py-3 border-b border-slate-700 flex items-center justify-between">
+            <div className="bg-[#0D1117] border border-slate-700 rounded-2xl overflow-hidden shadow-2xl h-[360px] md:h-[400px] flex flex-col">
+              <div className="bg-[#161B22] px-4 py-3 border-b border-slate-700 flex items-center justify-between shrink-0">
                 <div className="flex gap-2">
                   <div className="w-3 h-3 rounded-full bg-rose-500"></div>
                   <div className="w-3 h-3 rounded-full bg-amber-500"></div>
@@ -340,7 +340,7 @@ function BackendShowcaseSection() {
                 </div>
                 <div className="text-slate-400 text-xs font-mono font-bold tracking-widest">FIREBASE CLOUD FIRESTORE</div>
               </div>
-              <div className="p-5 font-mono text-xs sm:text-sm flex-1 bg-[#0D1117] text-slate-300 h-64 overflow-y-auto custom-scrollbar">
+              <div className="p-5 font-mono text-xs sm:text-sm flex-1 bg-[#0D1117] text-slate-300 overflow-y-auto custom-scrollbar">
                 <div className="text-blue-400 mb-4">$ The Creators AI - Database listening on port 3000...</div>
                 {logs.map((log, idx) => {
                   if (!log) return null;
@@ -363,8 +363,8 @@ function BackendShowcaseSection() {
           </FadeInSection>
 
           <FadeInSection delay={300}>
-            <div className="bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden shadow-2xl h-full flex flex-col">
-              <div className="bg-slate-800 px-4 py-3 border-b border-slate-700 flex items-center justify-between">
+            <div className="bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden shadow-2xl h-[360px] md:h-[400px] flex flex-col relative">
+              <div className="bg-slate-800 px-4 py-3 border-b border-slate-700 flex items-center justify-between shrink-0 z-20">
                 <div className="text-slate-200 text-sm font-bold flex items-center gap-2">
                   <span className="text-xl">📊</span> Admin CRM Dashboard
                 </div>
@@ -372,7 +372,7 @@ function BackendShowcaseSection() {
                   <span className="w-2 h-2 bg-emerald-400 rounded-full animate-ping"></span> Live Sync
                 </div>
               </div>
-              <div className="p-5 flex-1 bg-slate-900 relative">
+              <div className="p-5 flex-1 bg-slate-900 relative overflow-hidden">
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {leads.map((lead, idx) => {
                     if (!lead) return null;
@@ -381,15 +381,15 @@ function BackendShowcaseSection() {
                         ${idx === 0 ? 'border-cyan-500/50 shadow-[0_0_15px_rgba(34,211,238,0.2)] scale-105 z-10' : 'opacity-70'}
                       `}>
                         <div className="text-[10px] font-black text-cyan-400 mb-1 tracking-wider uppercase">{lead.status}</div>
-                        <div className="text-white font-bold text-sm mb-1">{lead.name}</div>
-                        <div className="text-slate-400 text-xs font-mono">{lead.phone}</div>
+                        <div className="text-white font-bold text-sm mb-1 truncate">{lead.name}</div>
+                        <div className="text-slate-400 text-[10px] sm:text-xs font-mono truncate">{lead.phone}</div>
                         {idx === 0 && <div className="mt-3 h-1 w-full bg-slate-700 rounded-full overflow-hidden"><div className="h-full bg-cyan-500 w-full animate-pulse"></div></div>}
                       </div>
                     );
                   })}
                 </div>
-                <div className="absolute bottom-5 left-5 right-5 text-center mt-6 p-3 bg-blue-600/10 border border-blue-500/30 rounded-xl">
-                  <p className="text-blue-400 text-xs font-bold tracking-wide">
+                <div className="absolute bottom-5 left-5 right-5 text-center p-3 bg-blue-600/10 border border-blue-500/30 rounded-xl z-10">
+                  <p className="text-blue-400 text-[11px] sm:text-xs font-bold tracking-wide break-keep">
                     ※ 마케팅 퍼널에서 수집된 DB가 딜레이 없이 100% 자동 라우팅 됩니다.
                   </p>
                 </div>
@@ -402,7 +402,188 @@ function BackendShowcaseSection() {
   );
 }
 
-// 💡 롤링 명언 섹션 모듈
+// 💡 [V4.6 고도화] 게임형 메타버스 AI 오피스 시뮬레이터 (클릭 이동 & 동적 말풍선)
+function VirtualAgencySection() {
+  const [ceoName, setCeoName] = useState("");
+  const [isLogged, setIsLogged] = useState(false);
+  const [agents, setAgents] = useState([]);
+  const [userPos, setUserPos] = useState({ x: 50, y: 50 }); // CEO(유저) 초기 좌표
+
+  // AI 직원 초기 세팅 및 실무 멘트 배열
+  const initialAgents = [
+    { 
+      id: 1, role: '기획 에이전트', icon: '🧠', color: 'bg-indigo-600', x: 20, y: 30, 
+      messages: ['대표님, 페르소나 분석 끝났습니다.', 'A/B 테스트 기획안 올렸습니다.', '경쟁사 랜딩페이지 크롤링 중입니다.'] 
+    },
+    { 
+      id: 2, role: '마케팅 에이전트', icon: '🎯', color: 'bg-rose-600', x: 75, y: 25, 
+      messages: ['어제 세팅한 퍼널 전환율 12% 상승했습니다!', '인스타그램 스폰서드 광고 세팅 완료.', '이탈 고객 리타겟팅 캠페인 가동합니다.'] 
+    },
+    { 
+      id: 3, role: '디자인 에이전트', icon: '🎨', color: 'bg-amber-600', x: 80, y: 70, 
+      messages: ['상세페이지 UI 수정 완료했습니다.', '광고 소재 베리에이션 생성 중...', 'A안 썸네일 서버에 배포했습니다.'] 
+    },
+    { 
+      id: 4, role: '개발 에이전트', icon: '💻', color: 'bg-cyan-600', x: 25, y: 75, 
+      messages: ['서버 연동 이상 없습니다.', 'CRM 칸반보드에 신규 DB 꽂혔습니다.', 'API 에러 자동 디버깅 완료.'] 
+    },
+  ];
+
+  // AI 직원의 자율 이동 및 말풍선 갱신 엔진
+  useEffect(() => {
+    if (!isLogged) return;
+    
+    // 초기 입장 시 첫 번째 멘트 장전
+    setAgents(initialAgents.map(a => ({...a, currentMsg: a.messages[0]})));
+
+    const logicInterval = setInterval(() => {
+      setAgents(prev => prev.map(agent => {
+        // 35% 확률로 말풍선 멘트 변경
+        const changeMsg = Math.random() > 0.65;
+        const newMsg = changeMsg ? agent.messages[Math.floor(Math.random() * agent.messages.length)] : agent.currentMsg;
+
+        return {
+          ...agent,
+          // 자기 자리 주변을 맴도는 무작위 이동 (바운더리 제한)
+          x: Math.max(10, Math.min(90, agent.x + (Math.random() * 8 - 4))),
+          y: Math.max(10, Math.min(90, agent.y + (Math.random() * 8 - 4))),
+          currentMsg: newMsg
+        };
+      }));
+    }, 2500);
+
+    return () => clearInterval(logicInterval);
+  }, [isLogged]);
+
+  // 유저 클릭 시 맵 좌표로 캐릭터 부드럽게 이동
+  const handleMapClick = (e) => {
+    if (!isLogged) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickX = ((e.clientX - rect.left) / rect.width) * 100;
+    const clickY = ((e.clientY - rect.top) / rect.height) * 100;
+    setUserPos({ x: clickX, y: clickY });
+  };
+
+  return (
+    <section className="py-20 px-4 md:px-6 bg-[#0B1120] overflow-hidden border-b border-slate-800 relative">
+      <div className="max-w-5xl mx-auto relative z-10">
+        <FadeInSection>
+          <div className="text-center mb-10 md:mb-12">
+            <span className="text-purple-400 font-black tracking-widest text-xs uppercase mb-2 block">Interactive Experience</span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight break-keep">
+              지금, 나만의 <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">AI 가상 오피스</span>에 접속해 보세요
+            </h2>
+          </div>
+        </FadeInSection>
+
+        {/* 🎮 게임 컨테이너 */}
+        <div className="bg-slate-900 border-4 border-slate-700 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden shadow-[0_0_50px_rgba(168,85,247,0.15)] relative h-[450px] md:h-[550px] font-mono">
+          
+          {!isLogged ? (
+            /* 로그인 화면 (레트로 게임 스타일) */
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#0B1120] z-20 px-4">
+              <div className="w-20 h-20 bg-slate-800 rounded-2xl flex items-center justify-center text-4xl mb-6 shadow-inner border-[3px] border-slate-700 animate-bounce">🕹️</div>
+              <h3 className="text-white font-black text-xl mb-6 text-center break-keep">당신의 AI 군단을 지휘할 이름을 입력하십시오.</h3>
+              <div className="flex w-full max-w-sm gap-2">
+                <input 
+                  type="text" 
+                  maxLength="8"
+                  placeholder="예: 임건 대표" 
+                  value={ceoName}
+                  onChange={(e) => setCeoName(e.target.value)}
+                  className="flex-1 bg-slate-800 border-2 border-slate-600 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-purple-500 font-bold"
+                />
+                <button 
+                  onClick={() => ceoName.trim() ? setIsLogged(true) : alert("이름을 입력해주세요!")}
+                  className="bg-purple-600 hover:bg-purple-500 text-white font-black px-6 py-3 rounded-xl transition-colors border-b-4 border-purple-800 active:border-b-0 active:translate-y-1"
+                >
+                  START
+                </button>
+              </div>
+            </div>
+          ) : (
+            /* 메타버스 인게임 화면 */
+            <div className="absolute inset-0 bg-[#1e293b] cursor-crosshair overflow-hidden" onClick={handleMapClick}>
+              
+              {/* 조작 안내 UI */}
+              <div className="absolute top-4 right-4 z-30 bg-black/50 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-lg text-white/70 text-[10px] sm:text-xs font-bold pointer-events-none flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                마우스(터치)로 빈 공간을 클릭하여 이동하세요
+              </div>
+
+              {/* 바닥 그리드 타일 (아이소메트릭 착시) */}
+              <div className="absolute inset-0" style={{ 
+                backgroundImage: 'linear-gradient(#334155 1px, transparent 1px), linear-gradient(90deg, #334155 1px, transparent 1px)', 
+                backgroundSize: '40px 40px',
+                transform: 'perspective(600px) rotateX(60deg) scale(2.5)',
+                transformOrigin: 'top center',
+                opacity: 0.3
+              }}></div>
+
+              {/* 👑 중앙: 유저 (CEO) 캐릭터 (클릭 좌표로 동적 이동) */}
+              <div 
+                className="absolute z-20 flex flex-col items-center transition-all duration-700 ease-out transform -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                style={{ top: `${userPos.y}%`, left: `${userPos.x}%` }}
+              >
+                <div className="bg-yellow-400 text-[#191919] text-[10px] md:text-xs font-black px-2 py-0.5 rounded shadow-lg mb-1 whitespace-nowrap border border-yellow-500">
+                  CEO {ceoName}
+                </div>
+                {/* 도트 느낌의 아바타 껍데기 */}
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-white rounded-lg border-[3px] border-slate-800 shadow-[0_4px_0_rgba(0,0,0,0.3)] flex items-center justify-center text-xl md:text-2xl z-20 bg-gradient-to-b from-white to-slate-200">
+                  😎
+                </div>
+                {/* 캐릭터 그림자 */}
+                <div className="w-6 h-2 bg-black/40 rounded-[100%] mt-1 blur-[1px]"></div>
+              </div>
+
+              {/* 🤖 주변: 상호작용하는 AI 직원들 */}
+              {agents.map(agent => (
+                <div 
+                  key={agent.id} 
+                  className="absolute z-10 flex flex-col items-center transition-all duration-1000 ease-in-out transform -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                  style={{ top: `${agent.y}%`, left: `${agent.x}%` }}
+                >
+                  {/* 동적 말풍선 UI */}
+                  <div className="mb-2 bg-white text-slate-800 text-[10px] md:text-xs font-bold px-3 py-1.5 rounded-2xl rounded-br-sm shadow-xl whitespace-nowrap border border-slate-200 animate-fade-in-up relative">
+                    {agent.currentMsg}
+                    <div className="absolute -bottom-1 right-2 w-2 h-2 bg-white border-b border-r border-slate-200 transform rotate-45"></div>
+                  </div>
+                  
+                  {/* AI 직함 태그 */}
+                  <div className="bg-slate-800/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded border border-slate-600 mb-1 whitespace-nowrap shadow-sm">
+                    {agent.role}
+                  </div>
+                  
+                  {/* AI 아바타 박스 (레트로 스타일) */}
+                  <div className={`w-8 h-8 md:w-10 md:h-10 ${agent.color} rounded-lg flex items-center justify-center text-base md:text-xl border-2 border-slate-800 shadow-[0_3px_0_rgba(0,0,0,0.4)]`}>
+                    {agent.icon}
+                  </div>
+                  {/* AI 그림자 */}
+                  <div className="w-5 h-1.5 bg-black/30 rounded-[100%] mt-1 blur-[1px]"></div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* 💡 [신규 추가] 목적 설명 카피라이팅 */}
+        <FadeInSection delay={200}>
+          <div className="mt-6 md:mt-8 bg-blue-900/10 border border-blue-500/20 p-5 md:p-6 rounded-2xl max-w-4xl mx-auto text-left md:text-center relative overflow-hidden shadow-sm">
+            <div className="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>
+            <p className="text-slate-300 font-bold text-xs md:text-base break-keep leading-relaxed pl-2 md:pl-0">
+              <span className="text-blue-400 text-lg mr-2 hidden md:inline-block">ℹ️</span>
+              위 화면은 <strong className="text-white">AI 직원들이 일하는 메타버스 환경 예시</strong>입니다.<br className="hidden md:block"/>
+              실제 교육 수료 후에는 AI 직원들에게 실무를 위임하고 이러한 대시보드를 구축하여, <strong className="text-cyan-400">대표님이 직접 AI 직원들과 함께 무인 기업을 운영하는 단계까지 시스템을 진화</strong>시키게 됩니다.
+            </p>
+          </div>
+        </FadeInSection>
+
+      </div>
+    </section>
+  );
+}
+
+// 💡 롤링 명언 섹션 모듈 (결제창 직전으로 재배치됨)
 function ParadigmShiftSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [fade, setFade] = useState(true);
@@ -427,7 +608,7 @@ function ParadigmShiftSection() {
   }, [quotes.length]);
 
   return (
-    <section className="py-20 md:py-32 px-4 md:px-6 bg-[#05080f] text-center relative overflow-hidden">
+    <section className="py-20 md:py-32 px-4 md:px-6 bg-[#05080f] text-center relative overflow-hidden border-t border-slate-800">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-40 bg-blue-600/10 blur-[120px] pointer-events-none"></div>
       
       <div className="max-w-4xl mx-auto relative z-10 min-h-[200px] flex flex-col justify-center items-center">
@@ -453,7 +634,7 @@ function ParadigmShiftSection() {
   );
 }
 
-// 👑 [메인 함수] 랜딩페이지 뼈대 (배치 순서 완벽 최적화)
+// 👑 [메인 함수] 랜딩페이지 뼈대 (배치 순서 완벽 최적화 완료)
 export default function BootcampSalesPage() {
   const [heroState, setHeroState] = useState(0);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -551,10 +732,11 @@ export default function BootcampSalesPage() {
                 <span className="bg-[#3B82F6] text-white px-3 py-1 rounded text-[8px] md:text-[10px] font-bold shadow-[0_0_10px_rgba(59,130,246,0.3)]">Active Sessions</span>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4 flex-1 overflow-hidden relative">
-                {[...Array(6)].map((_, i) => (
+                {/* 💡 서버-클라이언트 불일치 방지를 위해 고정된 배열 데이터 사용 */}
+                {[1911, 1121, 1199, 1390, 1374, 1202].map((num, i) => (
                   <div key={i} className="bg-[#1E293B] rounded-lg md:rounded-xl p-2 md:p-3 shadow-sm border border-slate-700 h-16 md:h-20 flex flex-col justify-center">
                     <div className="text-[8px] md:text-[10px] font-bold text-blue-300 mb-1">상담 대기 | 리드 스코어 92</div>
-                    <div className="text-[10px] md:text-xs font-black text-white">신규 잠재 고객 {Math.floor(Math.random() * 1000) + 1000}</div>
+                    <div className="text-[10px] md:text-xs font-black text-white">신규 잠재 고객 {num}</div>
                   </div>
                 ))}
                 <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#0F172A] to-transparent"></div>
@@ -587,7 +769,7 @@ export default function BootcampSalesPage() {
         </FadeInSection>
       </section>
 
-      {/* 💡 [신규 이식: V4.0 옵션 A] 안티-학원 프레임 선언문 */}
+      {/* 💡 [V4.0 이식] 안티-학원 프레임 선언문 */}
       <AntiAcademySection />
 
       {/* 🛑 2. 인강 VS 부트캠프 비교표 */}
@@ -769,8 +951,11 @@ export default function BootcampSalesPage() {
       {/* 💡 듀얼 리뷰 섹션 삽입 */}
       <ReviewSection />
 
-      {/* 💡 백엔드 데이터 쇼케이스 */}
+      {/* 💡 [V4.0 이식] 백엔드 데이터 쇼케이스 */}
       <BackendShowcaseSection />
+
+      {/* 💡 [V4.5 이식] 메타버스 가상 오피스 체험 모듈 */}
+      <VirtualAgencySection />
 
       {/* 6. 환불 보장 */}
       <section className="py-16 md:py-24 px-4 md:px-6 bg-slate-900 text-white overflow-hidden">
@@ -789,10 +974,10 @@ export default function BootcampSalesPage() {
         </div>
       </section>
 
-      {/* 💡 [재배치 완료] 결제창 직전 감정적 쐐기: 롤링 명언 섹션 */}
+      {/* 💡 [이동 완료] 결제창 직전 감정적 쐐기: 롤링 명언 섹션 */}
       <ParadigmShiftSection />
 
-      {/* 🚀 7. 최종 Pricing 및 상담 접수 CTA */}
+      {/* 🚀 7. 최종 Pricing 및 상담 접수 CTA (V4.6 정상가 220만원 제거 마크다운 반영) */}
       <section className="py-20 md:py-32 px-4 md:px-6 bg-slate-900 text-white overflow-hidden border-t border-slate-800 relative">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-64 bg-blue-600/10 blur-[120px] pointer-events-none"></div>
         
@@ -808,6 +993,7 @@ export default function BootcampSalesPage() {
               </p>
             </div>
 
+            {/* 압도적 조건 대시보드 */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mb-12 text-left">
               <div className="bg-slate-800/40 border border-white/5 p-5 rounded-2xl">
                 <p className="text-slate-500 text-xs font-bold mb-1">⏱️ 총 교육 시간</p>
@@ -831,19 +1017,21 @@ export default function BootcampSalesPage() {
               </div>
             </div>
 
+            {/* 💸 가격 카드 수정 영역 */}
             <div className="bg-white text-slate-900 p-8 md:p-12 rounded-[2.5rem] border border-slate-200 shadow-2xl relative max-w-2xl mx-auto overflow-hidden">
               <div className="absolute top-0 right-0 bg-rose-500 text-white font-black text-xs px-6 py-2 uppercase tracking-wider rounded-bl-2xl shadow-md">
                 30% SPECIAL OFF
               </div>
               
               <div className="text-slate-500 font-bold mb-2 text-xs md:text-sm tracking-wide uppercase">The Creators AI Bootcamp 1st Crew</div>
-              <div className="text-slate-400 line-through text-base md:text-lg mb-1">정상가 2,200,000원 (기존가 990,000원)</div>
+              
+              {/* 💡 [수정완료] 정상가 220만원을 흔적도 없이 제거하고 기존가 라인으로 심플하게 압축 */}
+              <div className="text-slate-400 line-through text-base md:text-lg mb-1">기존가 990,000원</div>
               
               <div className="text-4xl sm:text-5xl md:text-6xl font-black text-[#3B82F6] mb-8 tracking-tight">
                 693,000<span className="text-xl md:text-2xl text-slate-500 font-bold ml-1">원</span>
               </div>
               
-              {/* 결제창 마감 및 심사 지원 유도 버튼 */}
               <button 
                 onClick={() => setIsFormOpen(true)}
                 className="w-full bg-rose-600 text-white px-4 md:px-8 py-4 md:py-5 rounded-2xl text-base md:text-xl font-black shadow-lg hover:bg-rose-700 transition-all transform hover:-translate-y-0.5 break-keep flex items-center justify-center gap-2"
