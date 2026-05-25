@@ -96,6 +96,31 @@ function TiltCard({ children, className = "" }) {
   );
 }
 
+// 💡 [신규 이식: V4.0 옵션 A] 안티-학원 프레임 선언문 모듈
+function AntiAcademySection() {
+  return (
+    <section className="py-16 md:py-24 px-4 md:px-6 bg-[#05080f] text-center border-b border-slate-800 relative overflow-hidden">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-px bg-gradient-to-r from-transparent via-rose-500/50 to-transparent"></div>
+      <FadeInSection>
+        <div className="max-w-4xl mx-auto">
+          <span className="text-rose-500 font-black tracking-widest text-xs md:text-sm uppercase mb-4 block">Manifesto</span>
+          <h2 className="text-3xl md:text-5xl font-black text-white mb-8 break-keep leading-tight">
+            단호하게 말씀드립니다.<br className="hidden md:block"/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-orange-400"> 우리는 &apos;코딩 학원&apos;이 아닙니다.</span>
+          </h2>
+          <div className="bg-slate-900/80 border border-rose-500/20 p-8 md:p-12 rounded-[2rem] shadow-2xl relative transform transition-all hover:scale-[1.01]">
+            <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-rose-500 to-orange-500 rounded-l-[2rem]"></div>
+            <p className="text-slate-300 text-base md:text-lg lg:text-xl font-medium leading-relaxed break-keep text-left md:text-center">
+              누구나 돈만 내면 들을 수 있는 <strong className="text-white">공장형 템플릿 강의를 찾으신다면, 지금 당장 뒤로 가기를 눌러주십시오.</strong><br/><br/>
+              The Creators AI는 당신에게 지식을 파는 강사가 아닙니다. AI의 압도적인 효율성과 인간의 진정성을 결합하여, 당신의 비즈니스에 <strong>&apos;무인 자동화 시스템&apos;을 함께 지어 올리는 시스템 빌딩 파트너</strong>입니다.
+            </p>
+          </div>
+        </div>
+      </FadeInSection>
+    </section>
+  );
+}
+
 // 💡 듀얼 리뷰 섹션 모듈
 function ReviewSection() {
   const [activeTab, setActiveTab] = useState('video');
@@ -117,7 +142,6 @@ function ReviewSection() {
         </FadeInSection>
 
         <FadeInSection delay={100}>
-          {/* 토글 탭 버튼 */}
           <div className="flex justify-center mb-10">
             <div className="bg-slate-800/50 p-1.5 rounded-2xl border border-slate-700/50 inline-flex flex-wrap justify-center gap-2">
               <button
@@ -143,7 +167,6 @@ function ReviewSection() {
             </div>
           </div>
 
-          {/* 📺 영상 리뷰 화면 */}
           {activeTab === 'video' && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in-up">
               <div className="bg-slate-900/50 rounded-2xl overflow-hidden border border-slate-700/50 group">
@@ -184,7 +207,6 @@ function ReviewSection() {
             </div>
           )}
 
-          {/* 💬 리얼 카톡 후기 화면 */}
           {activeTab === 'kakao' && (
             <div className="max-w-2xl mx-auto animate-fade-in-up">
               <div className="bg-[#abc1d1] rounded-[2rem] p-4 md:p-6 shadow-2xl relative overflow-hidden border-4 border-slate-800 mb-8">
@@ -242,42 +264,155 @@ function ReviewSection() {
   );
 }
 
-// 💡 [신규 추가] 롤링 명언 섹션 모듈
+// 💡 [이식 완료: V4.0 옵션 B] 날것의 백엔드 데이터 쇼케이스 모듈
+function BackendShowcaseSection() {
+  const [logs, setLogs] = useState([]);
+  const [leads, setLeads] = useState([]);
+
+  useEffect(() => {
+    const rawLogs = [
+      { time: '00:00:01', msg: 'System initialized. Waiting for traffic...', type: 'info' },
+      { time: '00:00:04', msg: 'POST /api/funnel - Status: 200 OK', type: 'success' },
+      { time: '00:00:05', msg: 'Firebase Cloud Firestore: Document written [ID: 8xDf...]', type: 'warn' },
+      { time: '00:00:08', msg: 'Triggering Webhook -> CRM Kanban Board', type: 'info' },
+      { time: '00:00:10', msg: 'Auto-reply Email sent to new lead.', type: 'success' },
+    ];
+
+    const rawLeads = [
+      { id: 1, name: '김*진 대표', phone: '010-****-1234', status: 'DB 수집 완료' },
+      { id: 2, name: '이*훈 마케터', phone: '010-****-5678', status: '자동화 메일 발송' },
+      { id: 3, name: '박*성 크리에이터', phone: '010-****-9012', status: '상담 대기' },
+    ];
+
+    let logIndex = 0;
+    const logInterval = setInterval(() => {
+      if (logIndex < rawLogs.length) {
+        const currentLog = rawLogs[logIndex];
+        if (currentLog) setLogs(prev => [...prev, currentLog]);
+        logIndex++;
+      } else {
+        logIndex = 0;
+        setLogs([]);
+      }
+    }, 2000);
+
+    let leadIndex = 0;
+    const leadInterval = setInterval(() => {
+      if (leadIndex < rawLeads.length) {
+        const currentLead = rawLeads[leadIndex];
+        if (currentLead) setLeads(prev => [currentLead, ...prev].slice(0, 3));
+        leadIndex++;
+      } else {
+        leadIndex = 0;
+        setLeads([]);
+      }
+    }, 3000);
+
+    return () => { clearInterval(logInterval); clearInterval(leadInterval); };
+  }, []);
+
+  return (
+    <section className="py-20 md:py-32 px-4 md:px-6 bg-[#05080f] overflow-hidden border-y border-slate-800 relative">
+      <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'linear-gradient(#3B82F6 1px, transparent 1px), linear-gradient(90deg, #3B82F6 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
+      <div className="max-w-6xl mx-auto relative z-10">
+        
+        <FadeInSection>
+          <div className="text-center mb-12 md:mb-16">
+            <span className="animate-pulse inline-block w-3 h-3 bg-red-500 rounded-full mr-2"></span>
+            <span className="text-rose-400 font-black tracking-widest text-xs md:text-sm uppercase mb-3 inline-block">Live System Demonstration</span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white break-keep leading-tight mb-4">
+              화려한 말 대신, <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">날것의 시스템</span>을 보여드립니다.
+            </h2>
+            <p className="text-slate-400 text-sm md:text-base max-w-2xl mx-auto break-keep font-medium">
+              이것이 4주 후 당신이 소유하게 될 <strong>The Creators AI의 비즈니스 오토메이션 백엔드(Back-end)</strong> 실체입니다. 고객이 잠든 사이에도 데이터는 수집되고, 시스템은 일합니다.
+            </p>
+          </div>
+        </FadeInSection>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+          <FadeInSection delay={100}>
+            <div className="bg-[#0D1117] border border-slate-700 rounded-2xl overflow-hidden shadow-2xl h-full flex flex-col">
+              <div className="bg-[#161B22] px-4 py-3 border-b border-slate-700 flex items-center justify-between">
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-rose-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-amber-500"></div>
+                  <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
+                </div>
+                <div className="text-slate-400 text-xs font-mono font-bold tracking-widest">FIREBASE CLOUD FIRESTORE</div>
+              </div>
+              <div className="p-5 font-mono text-xs sm:text-sm flex-1 bg-[#0D1117] text-slate-300 h-64 overflow-y-auto custom-scrollbar">
+                <div className="text-blue-400 mb-4">$ The Creators AI - Database listening on port 3000...</div>
+                {logs.map((log, idx) => {
+                  if (!log) return null;
+                  return (
+                    <div key={idx} className="mb-2 flex items-start gap-3 animate-fade-in-up">
+                      <span className="text-slate-500 shrink-0">[{log.time}]</span>
+                      <span className={`
+                        ${log.type === 'success' ? 'text-emerald-400' : ''}
+                        ${log.type === 'warn' ? 'text-amber-400' : ''}
+                        ${log.type === 'info' ? 'text-cyan-400' : ''}
+                      `}>
+                        {log.msg}
+                      </span>
+                    </div>
+                  );
+                })}
+                <div className="animate-pulse w-2 h-4 bg-slate-400 mt-2"></div>
+              </div>
+            </div>
+          </FadeInSection>
+
+          <FadeInSection delay={300}>
+            <div className="bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden shadow-2xl h-full flex flex-col">
+              <div className="bg-slate-800 px-4 py-3 border-b border-slate-700 flex items-center justify-between">
+                <div className="text-slate-200 text-sm font-bold flex items-center gap-2">
+                  <span className="text-xl">📊</span> Admin CRM Dashboard
+                </div>
+                <div className="text-emerald-400 text-xs font-black bg-emerald-400/10 px-2 py-1 rounded flex items-center gap-1">
+                  <span className="w-2 h-2 bg-emerald-400 rounded-full animate-ping"></span> Live Sync
+                </div>
+              </div>
+              <div className="p-5 flex-1 bg-slate-900 relative">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {leads.map((lead, idx) => {
+                    if (!lead) return null;
+                    return (
+                      <div key={lead.id} className={`bg-slate-800 border border-slate-600 rounded-xl p-4 shadow-lg transform transition-all duration-500 animate-fade-in-up
+                        ${idx === 0 ? 'border-cyan-500/50 shadow-[0_0_15px_rgba(34,211,238,0.2)] scale-105 z-10' : 'opacity-70'}
+                      `}>
+                        <div className="text-[10px] font-black text-cyan-400 mb-1 tracking-wider uppercase">{lead.status}</div>
+                        <div className="text-white font-bold text-sm mb-1">{lead.name}</div>
+                        <div className="text-slate-400 text-xs font-mono">{lead.phone}</div>
+                        {idx === 0 && <div className="mt-3 h-1 w-full bg-slate-700 rounded-full overflow-hidden"><div className="h-full bg-cyan-500 w-full animate-pulse"></div></div>}
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="absolute bottom-5 left-5 right-5 text-center mt-6 p-3 bg-blue-600/10 border border-blue-500/30 rounded-xl">
+                  <p className="text-blue-400 text-xs font-bold tracking-wide">
+                    ※ 마케팅 퍼널에서 수집된 DB가 딜레이 없이 100% 자동 라우팅 됩니다.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </FadeInSection>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// 💡 롤링 명언 섹션 모듈
 function ParadigmShiftSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [fade, setFade] = useState(true);
 
   const quotes = [
-    {
-      highlight: "곱셈",
-      text1: "비즈니스는 ",
-      text2: "입니다. 당신의 아이디어가 아무리 뛰어나도,",
-      text3: "결국 '실행'이 0이라면 결과는 영원히 0입니다."
-    },
-    {
-      highlight: "도태",
-      text1: "결정하지 않는 것도 하나의 결정입니다.",
-      text2: " 그리고 그 대가는 ",
-      text3: "라는 가장 잔인한 청구서로 돌아옵니다."
-    },
-    {
-      highlight: "행동",
-      text1: "생각만으로 바뀐 세상은 단 한 평도 없습니다.",
-      text2: " 변화를 증명하는 유일한 언어는 오직 ",
-      text3: "뿐입니다."
-    },
-    {
-      highlight: "독식",
-      text1: "기술은 당신을 기다려주지 않습니다.",
-      text2: " 오늘 핑계를 찾는 사이, 누군가는 시스템을 만들고 시장을 ",
-      text3: "합니다."
-    },
-    {
-      highlight: "예외는 없습니다",
-      text1: "모든 행동의 끝에는 결과라는 답이 기다리고 있습니다.",
-      text2: " 아무것도 하지 않은 자에게 주어지는 기적은 없습니다. ",
-      text3: "."
-    }
+    { highlight: "곱셈", text1: "비즈니스는 ", text2: "입니다. 당신의 아이디어가 아무리 뛰어나도,", text3: "결국 '실행'이 0이라면 결과는 영원히 0입니다." },
+    { highlight: "도태", text1: "결정하지 않는 것도 하나의 결정입니다.", text2: " 그리고 그 대가는 ", text3: "라는 가장 잔인한 청구서로 돌아옵니다." },
+    { highlight: "행동", text1: "생각만으로 바뀐 세상은 단 한 평도 없습니다.", text2: " 변화를 증명하는 유일한 언어는 오직 ", text3: "뿐입니다." },
+    { highlight: "독식", text1: "기술은 당신을 기다려주지 않습니다.", text2: " 오늘 핑계를 찾는 사이, 누군가는 시스템을 만들고 시장을 ", text3: "합니다." },
+    { highlight: "예외는 없습니다", text1: "모든 행동의 끝에는 결과라는 답이 기다리고 있습니다.", text2: " 아무것도 하지 않은 자에게 주어지는 기적은 없습니다. ", text3: "." }
   ];
 
   useEffect(() => {
@@ -288,20 +423,17 @@ function ParadigmShiftSection() {
         setFade(true); 
       }, 500); 
     }, 4500); 
-
     return () => clearInterval(timer);
   }, [quotes.length]);
 
   return (
-    <section className="py-20 md:py-32 px-4 md:px-6 bg-[#05080f] text-center relative overflow-hidden border-t border-slate-800">
+    <section className="py-20 md:py-32 px-4 md:px-6 bg-[#05080f] text-center relative overflow-hidden">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-40 bg-blue-600/10 blur-[120px] pointer-events-none"></div>
       
       <div className="max-w-4xl mx-auto relative z-10 min-h-[200px] flex flex-col justify-center items-center">
         <div className="text-blue-500/30 text-5xl md:text-7xl font-serif leading-none mb-[-10px] md:mb-[-20px]">&quot;</div>
         
-        <h2 
-          className={`text-xl sm:text-2xl md:text-4xl font-black text-white break-keep leading-tight mb-8 relative z-10 transition-opacity duration-500 ease-in-out ${fade ? 'opacity-100' : 'opacity-0'}`}
-        >
+        <h2 className={`text-xl sm:text-2xl md:text-4xl font-black text-white break-keep leading-tight mb-8 relative z-10 transition-opacity duration-500 ease-in-out ${fade ? 'opacity-100' : 'opacity-0'}`}>
           {quotes[currentIndex].text1}
           <span className="text-cyan-400">{quotes[currentIndex].highlight}</span>
           {quotes[currentIndex].text2}<br className="hidden md:block"/>
@@ -309,16 +441,11 @@ function ParadigmShiftSection() {
         </h2>
         
         <div className="w-12 h-1 bg-blue-500/50 mx-auto mb-6"></div>
-        <p className="text-slate-500 font-bold tracking-widest uppercase text-xs md:text-sm">
-          The Creators AI
-        </p>
+        <p className="text-slate-500 font-bold tracking-widest uppercase text-xs md:text-sm">The Creators AI</p>
 
         <div className="flex gap-2 mt-8">
           {quotes.map((_, idx) => (
-            <div 
-              key={idx} 
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${currentIndex === idx ? 'bg-cyan-400 w-6' : 'bg-slate-700'}`}
-            ></div>
+            <div key={idx} className={`w-2 h-2 rounded-full transition-all duration-300 ${currentIndex === idx ? 'bg-cyan-400 w-6' : 'bg-slate-700'}`}></div>
           ))}
         </div>
       </div>
@@ -326,15 +453,13 @@ function ParadigmShiftSection() {
   );
 }
 
-// 👑 [메인 함수] 랜딩페이지 뼈대
+// 👑 [메인 함수] 랜딩페이지 뼈대 (배치 순서 완벽 최적화)
 export default function BootcampSalesPage() {
   const [heroState, setHeroState] = useState(0);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [formData, setFormData] = useState({
-    clientName: '', clientTitle: '', clientContact: '', clientEmail: ''
-  });
+  const [formData, setFormData] = useState({ clientName: '', clientTitle: '', clientContact: '', clientEmail: '', businessGoal: '' });
 
   useEffect(() => {
     const interval = setInterval(() => setHeroState((prev) => (prev + 1) % 3), 3500);
@@ -344,21 +469,18 @@ export default function BootcampSalesPage() {
   const handleInputChange = (field, value) => setFormData(prev => ({ ...prev, [field]: value }));
 
   const handleSubmitForm = async () => {
-    if (!formData.clientName || !formData.clientContact) {
-      return alert("성함과 연락처를 정확히 입력해 주시면 감사하겠습니다.");
+    if (!formData.clientName || !formData.clientContact || !formData.businessGoal) {
+      return alert("성함, 연락처, 그리고 현재의 비즈니스 고민을 반드시 작성해 주셔야 심사가 가능합니다.");
     }
-    
     setIsSubmitting(true);
     try {
       await addDoc(collection(db, "bootcamp_leads"), {
-        ...formData,
-        status: "상담 대기",
-        createdAt: serverTimestamp(),
+        ...formData, status: "심사 대기", createdAt: serverTimestamp(),
       });
       setIsSuccess(true);
     } catch (error) {
       console.error("저장 실패:", error);
-      alert("접수 중 일시적인 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+      alert("지원서 제출 중 일시적인 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
     } finally {
       setIsSubmitting(false);
     }
@@ -378,12 +500,9 @@ export default function BootcampSalesPage() {
         }
       `}} />
 
-      {/* 🎯 플로팅 네비게이션 */}
+      {/* 플로팅 네비게이션 */}
       <div className="fixed top-4 left-4 md:top-6 md:left-6 z-50 animate-fade-in-up">
-        <Link 
-          href="/" 
-          className="group flex items-center gap-2 px-4 py-2 md:px-5 md:py-2.5 bg-slate-900/40 backdrop-blur-lg border border-white/10 rounded-full shadow-lg hover:bg-slate-900/70 hover:border-white/20 transition-all duration-300"
-        >
+        <Link href="/" className="group flex items-center gap-2 px-4 py-2 md:px-5 md:py-2.5 bg-slate-900/40 backdrop-blur-lg border border-white/10 rounded-full shadow-lg hover:bg-slate-900/70 hover:border-white/20 transition-all duration-300">
           <span className="text-white/70 group-hover:text-white group-hover:-translate-x-1 transition-transform">←</span>
           <span className="text-white/90 group-hover:text-white text-xs md:text-sm font-bold tracking-wide">이전 페이지로</span>
         </Link>
@@ -448,7 +567,6 @@ export default function BootcampSalesPage() {
       {/* 🎬 1.5. VSL 쇼케이스 */}
       <section className="relative py-16 md:py-24 px-4 md:px-6 bg-[#090E17] overflow-hidden flex flex-col items-center border-b border-slate-800">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-[#3B82F6]/10 rounded-[100%] blur-[150px] pointer-events-none"></div>
-
         <FadeInSection>
           <div className="max-w-4xl mx-auto text-center relative z-10 w-full">
             <div className="mb-8 md:mb-12">
@@ -458,21 +576,10 @@ export default function BootcampSalesPage() {
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-[#3B82F6]">비즈니스 자동화의 새로운 패러다임</span>
               </h2>
             </div>
-
             <div className="relative group w-full max-w-[280px] sm:max-w-xs md:max-w-sm mx-auto aspect-[9/16] rounded-[2.5rem] md:rounded-[3rem] overflow-hidden shadow-[0_0_40px_rgba(59,130,246,0.3)] border-[6px] md:border-[8px] border-slate-800 bg-black transition-all duration-500 hover:shadow-[0_0_60px_rgba(59,130,246,0.5)] hover:border-blue-500/50 hover:-translate-y-2">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 md:h-6 bg-slate-800 rounded-b-2xl z-20 pointer-events-none flex justify-center items-end pb-1">
-                <div className="w-10 h-1 bg-slate-700/50 rounded-full"></div>
-              </div>
-              <iframe 
-                className="absolute inset-0 w-full h-full z-10"
-                src="https://www.youtube.com/embed/j-Bo6WFvDAs?controls=1&rel=0&modestbranding=1&playsinline=1" 
-                title="The Creators AI VSL" 
-                frameBorder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                allowFullScreen
-              ></iframe>
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-5 md:h-6 bg-slate-800 rounded-b-2xl z-20 pointer-events-none flex justify-center items-end pb-1"><div className="w-10 h-1 bg-slate-700/50 rounded-full"></div></div>
+              <iframe className="absolute inset-0 w-full h-full z-10" src="https://www.youtube.com/embed/j-Bo6WFvDAs?controls=1&rel=0&modestbranding=1&playsinline=1" title="The Creators AI VSL" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
             </div>
-
             <p className="mt-8 text-slate-500 font-medium text-sm md:text-base break-keep">
               * 소수정예 오프라인 부트캠프 입니다, <span className="text-slate-700 font-bold">The Creators AI 바이브코딩 비즈니스 자동화는 생존스킬 입니다.</span>
             </p>
@@ -480,67 +587,41 @@ export default function BootcampSalesPage() {
         </FadeInSection>
       </section>
 
+      {/* 💡 [신규 이식: V4.0 옵션 A] 안티-학원 프레임 선언문 */}
+      <AntiAcademySection />
+
       {/* 🛑 2. 인강 VS 부트캠프 비교표 */}
       <section className="py-16 md:py-24 px-4 md:px-6 bg-white overflow-hidden">
         <div className="max-w-5xl mx-auto">
           <FadeInSection>
             <div className="text-center mb-10 md:mb-16">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-4 break-keep leading-tight text-slate-900">
-                수많은 온라인 코딩 강의,<br className="block sm:hidden"/> 왜 실전 적용에서 멈추게 될까요?
-              </h2>
-              <p className="text-slate-500 font-medium text-sm md:text-lg break-keep">
-                시스템을 구축하고 실제 비즈니스에 연동하는 고도화의 과정에는 수많은 변수가 존재합니다.<br className="hidden md:block"/>
-                저희는 영상 너머가 아닌, 현장에서 함께 고민하고 문제를 해결하는 방식을 선택했습니다.
-              </p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-4 break-keep leading-tight text-slate-900">수많은 온라인 코딩 강의,<br className="block sm:hidden"/> 왜 실전 적용에서 멈추게 될까요?</h2>
+              <p className="text-slate-500 font-medium text-sm md:text-lg break-keep">시스템을 구축하고 실제 비즈니스에 연동하는 고도화의 과정에는 수많은 변수가 존재합니다.<br className="hidden md:block"/>저희는 영상 너머가 아닌, 현장에서 함께 고민하고 문제를 해결하는 방식을 선택했습니다.</p>
             </div>
           </FadeInSection>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
             <FadeInSection delay={100}>
               <TiltCard className="h-full">
                 <div className="bg-slate-50 p-6 md:p-8 rounded-3xl border border-slate-200 relative h-full">
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-slate-700 text-white px-5 py-1.5 rounded-full text-xs font-bold shadow-sm">
-                    일반적인 온라인 VOD 교육
-                  </div>
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-slate-700 text-white px-5 py-1.5 rounded-full text-xs font-bold shadow-sm">일반적인 온라인 VOD 교육</div>
                   <h3 className="text-xl font-black text-slate-600 mb-6 text-center mt-4">일방향 지식 전달의 한계</h3>
                   <ul className="space-y-4">
-                    <li className="flex gap-3 items-start">
-                      <span className="text-slate-400 font-black mt-0.5">-</span>
-                      <p className="text-slate-600 text-sm font-medium leading-relaxed">예기치 못한 오류 발생 시 개별적인 해결책을 찾기 어려움</p>
-                    </li>
-                    <li className="flex gap-3 items-start">
-                      <span className="text-slate-400 font-black mt-0.5">-</span>
-                      <p className="text-slate-600 text-sm font-medium leading-relaxed">정해진 예제 코드를 실습하는 데 그쳐 자사 서비스 적용 한계</p>
-                    </li>
-                    <li className="flex gap-3 items-start">
-                      <span className="text-slate-400 font-black mt-0.5">-</span>
-                      <p className="text-slate-600 text-sm font-medium leading-relaxed">복잡한 서버 배포 및 도메인 연동 과정에서의 높은 포기율</p>
-                    </li>
+                    <li className="flex gap-3 items-start"><span className="text-slate-400 font-black mt-0.5">-</span><p className="text-slate-600 text-sm font-medium leading-relaxed">예기치 못한 오류 발생 시 개별적인 해결책을 찾기 어려움</p></li>
+                    <li className="flex gap-3 items-start"><span className="text-slate-400 font-black mt-0.5">-</span><p className="text-slate-600 text-sm font-medium leading-relaxed">정해진 예제 코드를 실습하는 데 그쳐 자사 서비스 적용 한계</p></li>
+                    <li className="flex gap-3 items-start"><span className="text-slate-400 font-black mt-0.5">-</span><p className="text-slate-600 text-sm font-medium leading-relaxed">복잡한 서버 배포 및 도메인 연동 과정에서의 높은 포기율</p></li>
                   </ul>
                 </div>
               </TiltCard>
             </FadeInSection>
-
             <FadeInSection delay={300}>
               <TiltCard className="h-full">
                 <div className="bg-gradient-to-b from-blue-50/50 to-indigo-50/50 p-6 md:p-8 rounded-3xl border border-blue-200 relative shadow-lg transform md:-translate-y-2 h-full">
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#3B82F6] text-white px-5 py-1.5 rounded-full text-xs font-bold shadow-md shadow-blue-500/20">
-                    The Creators 실전 부트캠프
-                  </div>
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#3B82F6] text-white px-5 py-1.5 rounded-full text-xs font-bold shadow-md shadow-blue-500/20">The Creators 실전 부트캠프</div>
                   <h3 className="text-xl font-black text-[#3B82F6] mb-6 text-center mt-4">실전 구현과 문제 해결에 집중</h3>
                   <ul className="space-y-4">
-                    <li className="flex gap-3 items-start">
-                      <span className="text-blue-500 font-black mt-0.5">✓</span>
-                      <p className="text-slate-800 text-sm font-bold leading-relaxed">현장에서 전문가와 함께 원인을 파악하는 실시간 트러블슈팅</p>
-                    </li>
-                    <li className="flex gap-3 items-start">
-                      <span className="text-blue-500 font-black mt-0.5">✓</span>
-                      <p className="text-slate-800 text-sm font-bold leading-relaxed">수강생의 실제 비즈니스 모델에 맞춘 CRM 시스템 맞춤 설계</p>
-                    </li>
-                    <li className="flex gap-3 items-start">
-                      <span className="text-blue-500 font-black mt-0.5">✓</span>
-                      <p className="text-slate-800 text-sm font-bold leading-relaxed">배포부터 실제 운영 환경 세팅까지 수료 후 즉시 활용 가능</p>
-                    </li>
+                    <li className="flex gap-3 items-start"><span className="text-blue-500 font-black mt-0.5">✓</span><p className="text-slate-800 text-sm font-bold leading-relaxed">현장에서 전문가와 함께 원인을 파악하는 실시간 트러블슈팅</p></li>
+                    <li className="flex gap-3 items-start"><span className="text-blue-500 font-black mt-0.5">✓</span><p className="text-slate-800 text-sm font-bold leading-relaxed">수강생의 실제 비즈니스 모델에 맞춘 CRM 시스템 맞춤 설계</p></li>
+                    <li className="flex gap-3 items-start"><span className="text-blue-500 font-black mt-0.5">✓</span><p className="text-slate-800 text-sm font-bold leading-relaxed">배포부터 실제 운영 환경 세팅까지 수료 후 즉시 활용 가능</p></li>
                   </ul>
                 </div>
               </TiltCard>
@@ -555,62 +636,15 @@ export default function BootcampSalesPage() {
           <FadeInSection>
             <div className="text-center mb-12 md:mb-16">
               <span className="text-[#3B82F6] font-black tracking-widest text-sm uppercase mb-2 block">Who is this for</span>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black break-keep leading-tight text-white">
-                빠르게 변화하는 AI 시대,<br/>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-indigo-300 font-bold">기술에 이끌려 갈 것인가, 기술을 리드할 것인가.</span>
-              </h2>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black break-keep leading-tight text-white">빠르게 변화하는 AI 시대,<br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-indigo-300 font-bold">기술에 이끌려 갈 것인가, 기술을 리드할 것인가.</span></h2>
               <p className="text-slate-400 mt-4 text-sm md:text-base">새로운 도약과 생산성의 혁신을 준비하는 분들과 함께합니다.</p>
             </div>
           </FadeInSection>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-            <FadeInSection delay={100}>
-              <TiltCard className="h-full">
-                <div className="bg-slate-800/30 p-8 rounded-3xl border border-slate-700 hover:border-slate-500 transition-colors h-full">
-                  <div className="text-2xl mb-4 opacity-80">🏢</div>
-                  <h3 className="text-xl font-bold text-white mb-2 break-keep">비용 효율화가 필요한 사업자 · 스타트업</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed break-keep">
-                    불필요한 외주 개발과 대행 리소스를 줄이고, 아이디어를 즉시 자체 시스템으로 구현하세요. 자동화된 업무 프로세스를 통해 조직 전체의 생산성과 매출 밀도를 높일 수 있습니다.
-                  </p>
-                </div>
-              </TiltCard>
-            </FadeInSection>
-
-            <FadeInSection delay={200}>
-              <TiltCard className="h-full">
-                <div className="bg-slate-800/30 p-8 rounded-3xl border border-slate-700 hover:border-slate-500 transition-colors h-full">
-                  <div className="text-2xl mb-4 opacity-80">💼</div>
-                  <h3 className="text-xl font-bold text-white mb-2 break-keep">성장을 주도하는 마케터 · 실무 기획자</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed break-keep">
-                    개발 부서와의 소통 지연으로 아쉬웠던 기획을 직접 실현해 보세요. 프롬프트를 활용해 세일즈 퍼널과 랜딩페이지를 신속하게 구축하며 실무 경쟁력을 한 차원 높일 수 있습니다.
-                  </p>
-                </div>
-              </TiltCard>
-            </FadeInSection>
-
-            <FadeInSection delay={300}>
-              <TiltCard className="h-full">
-                <div className="bg-slate-800/30 p-8 rounded-3xl border border-slate-700 hover:border-slate-500 transition-colors h-full">
-                  <div className="text-2xl mb-4 opacity-80">📸</div>
-                  <h3 className="text-xl font-bold text-white mb-2 break-keep">안정적인 수익 모델을 찾는 크리에이터</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed break-keep">
-                    채널의 트래픽을 일회성 조회수에 머물게 하지 마세요. 잠재 고객의 데이터를 수집하고 자연스러운 전환을 유도하는 &apos;나만의 수익화 자동화 시스템&apos;을 기획하는 방법을 안내합니다.
-                  </p>
-                </div>
-              </TiltCard>
-            </FadeInSection>
-
-            <FadeInSection delay={400}>
-              <TiltCard className="h-full">
-                <div className="bg-slate-800/30 p-8 rounded-3xl border border-slate-700 hover:border-slate-500 transition-colors h-full">
-                  <div className="text-2xl mb-4 opacity-80">🌱</div>
-                  <h3 className="text-xl font-bold text-white mb-2 break-keep">새로운 커리어를 준비하는 도약자</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed break-keep">
-                    코딩에 대한 진입 장벽을 낮추어 드립니다. 그동안 쌓아오신 각자의 도메인 경험과 노하우를 AI 기술과 결합하여, 유의미한 비즈니스 가치로 치환하는 여정을 돕겠습니다.
-                  </p>
-                </div>
-              </TiltCard>
-            </FadeInSection>
+            <FadeInSection delay={100}><TiltCard className="h-full"><div className="bg-slate-800/30 p-8 rounded-3xl border border-slate-700 hover:border-slate-500 transition-colors h-full"><div className="text-2xl mb-4 opacity-80">🏢</div><h3 className="text-xl font-bold text-white mb-2 break-keep">비용 효율화가 필요한 사업자 · 스타트업</h3><p className="text-slate-400 text-sm leading-relaxed break-keep">불필요한 외주 개발과 대행 리소스를 줄이고, 아이디어를 즉시 자체 시스템으로 구현하세요. 자동화된 업무 프로세스를 통해 조직 전체의 생산성과 매출 밀도를 높일 수 있습니다.</p></div></TiltCard></FadeInSection>
+            <FadeInSection delay={200}><TiltCard className="h-full"><div className="bg-slate-800/30 p-8 rounded-3xl border border-slate-700 hover:border-slate-500 transition-colors h-full"><div className="text-2xl mb-4 opacity-80">💼</div><h3 className="text-xl font-bold text-white mb-2 break-keep">성장을 주도하는 마케터 · 실무 기획자</h3><p className="text-slate-400 text-sm leading-relaxed break-keep">개발 부서와의 소통 지연으로 아쉬웠던 기획을 직접 실현해 보세요. 프롬프트를 활용해 세일즈 퍼널과 랜딩페이지를 신속하게 구축하며 실무 경쟁력을 한 차원 높일 수 있습니다.</p></div></TiltCard></FadeInSection>
+            <FadeInSection delay={300}><TiltCard className="h-full"><div className="bg-slate-800/30 p-8 rounded-3xl border border-slate-700 hover:border-slate-500 transition-colors h-full"><div className="text-2xl mb-4 opacity-80">📸</div><h3 className="text-xl font-bold text-white mb-2 break-keep">안정적인 수익 모델을 찾는 크리에이터</h3><p className="text-slate-400 text-sm leading-relaxed break-keep">채널의 트래픽을 일회성 조회수에 머물게 하지 마세요. 잠재 고객의 데이터를 수집하고 자연스러운 전환을 유도하는 &apos;나만의 수익화 자동화 시스템&apos;을 기획하는 방법을 안내합니다.</p></div></TiltCard></FadeInSection>
+            <FadeInSection delay={400}><TiltCard className="h-full"><div className="bg-slate-800/30 p-8 rounded-3xl border border-slate-700 hover:border-slate-500 transition-colors h-full"><div className="text-2xl mb-4 opacity-80">🌱</div><h3 className="text-xl font-bold text-white mb-2 break-keep">새로운 커리어를 준비하는 도약자</h3><p className="text-slate-400 text-sm leading-relaxed break-keep">코딩에 대한 진입 장벽을 낮추어 드립니다. 그동안 쌓아오신 각자의 도메인 경험과 노하우를 AI 기술과 결합하여, 유의미한 비즈니스 가치로 치환하는 여정을 돕겠습니다.</p></div></TiltCard></FadeInSection>
           </div>
         </div>
       </section>
@@ -621,105 +655,13 @@ export default function BootcampSalesPage() {
           <FadeInSection>
             <div className="text-center mb-12 md:mb-16">
               <span className="text-[#3B82F6] font-black tracking-widest text-sm uppercase mb-2 block">Expert Facilitators</span>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 break-keep">
-                안전하고 확실한 성장을 돕기 위해,<br/>각 분야의 현업 전문가들이 함께합니다.
-              </h2>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 break-keep">안전하고 확실한 성장을 돕기 위해,<br/>각 분야의 현업 전문가들이 함께합니다.</h2>
             </div>
           </FadeInSection>
-          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            <FadeInSection delay={100}>
-              <TiltCard className="h-full">
-                <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-200 flex flex-col relative h-full transition-shadow hover:shadow-md">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-14 h-14 bg-slate-100 rounded-full flex items-center justify-center text-xl text-slate-600 font-medium">LS</div>
-                    <div>
-                      <span className="text-slate-500 text-[10px] font-bold tracking-wider uppercase">Media & Content</span>
-                      <h3 className="text-xl font-black text-slate-900 mt-1">이상원 디렉터</h3>
-                    </div>
-                  </div>
-                  <div className="space-y-3 mb-6 flex-1 text-sm">
-                    <div className="flex justify-between items-center border-b border-slate-50 pb-2">
-                      <span className="font-medium text-slate-500">실무 배경</span>
-                      <span className="font-bold text-slate-700">뉴미디어 채널 기획 및 운영</span>
-                    </div>
-                    <div className="flex justify-between items-center border-b border-slate-50 pb-2">
-                      <span className="font-medium text-slate-500">주요 레퍼런스</span>
-                      <span className="font-bold text-slate-700">채널 합산 25만 구독자 확보</span>
-                    </div>
-                    <div className="flex justify-between items-center pb-2">
-                      <span className="font-medium text-slate-500">교육 포커스</span>
-                      <span className="font-bold text-slate-800">효율적인 오가닉 트래픽 확보</span>
-                    </div>
-                  </div>
-                  <p className="text-slate-600 text-sm leading-relaxed break-keep bg-slate-50 p-4 rounded-xl">
-                    &quot;시스템 구축만큼이나 중요한 것은 적절한 유입 전략입니다. 현업에서 직접 채널을 성장시키며 체득한 오가닉 트래픽 확보와 콘텐츠 기획의 인사이트를 투명하게 공유합니다.&quot;
-                  </p>
-                </div>
-              </TiltCard>
-            </FadeInSection>
-
-            <FadeInSection delay={300}>
-              <TiltCard className="h-full">
-                <div className="bg-white rounded-3xl p-8 shadow-sm border border-[#3B82F6]/30 flex flex-col relative h-full transition-shadow hover:shadow-md">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center text-xl text-blue-600 font-medium">JS</div>
-                    <div>
-                      <span className="text-[#3B82F6] text-[10px] font-bold tracking-wider uppercase">Vibe Coding</span>
-                      <h3 className="text-xl font-black text-slate-900 mt-1">정시후 디렉터</h3>
-                    </div>
-                  </div>
-                  <div className="space-y-3 mb-6 flex-1 text-sm">
-                    <div className="flex justify-between items-center border-b border-slate-50 pb-2">
-                      <span className="font-medium text-slate-500">실무 배경</span>
-                      <span className="font-bold text-slate-700">비즈니스 기획 및 전략 수립</span>
-                    </div>
-                    <div className="flex justify-between items-center border-b border-slate-50 pb-2">
-                      <span className="font-medium text-slate-500">강의 철학</span>
-                      <span className="font-bold text-slate-700">비개발자의 눈높이에 맞춘 소통</span>
-                    </div>
-                    <div className="flex justify-between items-center pb-2">
-                      <span className="font-medium text-slate-500">교육 포커스</span>
-                      <span className="font-bold text-slate-800">퍼널 기획 및 AI 툴 연동 실무</span>
-                    </div>
-                  </div>
-                  <p className="text-slate-600 text-sm leading-relaxed break-keep bg-blue-50/50 p-4 rounded-xl">
-                    &quot;복잡한 개발 언어 대신, 기획자의 언어로 AI와 소통하는 방법을 안내합니다. 비개발자도 충분히 비즈니스 자동화 모델을 설계하고 구현할 수 있도록 섬세하게 돕겠습니다.&quot;
-                  </p>
-                </div>
-              </TiltCard>
-            </FadeInSection>
-
-            <FadeInSection delay={500}>
-              <TiltCard className="h-full">
-                <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-200 flex flex-col relative h-full transition-shadow hover:shadow-md">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-14 h-14 bg-slate-100 rounded-full flex items-center justify-center text-xl text-slate-600 font-medium">LG</div>
-                    <div>
-                      <span className="text-slate-500 text-[10px] font-bold tracking-wider uppercase">Technical Support</span>
-                      <h3 className="text-xl font-black text-slate-900 mt-1">임건 테크리드</h3>
-                    </div>
-                  </div>
-                  <div className="space-y-3 mb-6 flex-1 text-sm">
-                    <div className="flex justify-between items-center border-b border-slate-50 pb-2">
-                      <span className="font-medium text-slate-500">실무 배경</span>
-                      <span className="font-bold text-slate-700">다년간의 IT 플랫폼 개발</span>
-                    </div>
-                    <div className="flex justify-between items-center border-b border-slate-50 pb-2">
-                      <span className="font-medium text-slate-500">부트캠프 역할</span>
-                      <span className="font-bold text-slate-700">실시간 이슈 대응 및 멘토링</span>
-                    </div>
-                    <div className="flex justify-between items-center pb-2">
-                      <span className="font-medium text-slate-500">교육 포커스</span>
-                      <span className="font-bold text-slate-800">안정적인 배포 환경 구축</span>
-                    </div>
-                  </div>
-                  <p className="text-slate-600 text-sm leading-relaxed break-keep bg-slate-50 p-4 rounded-xl">
-                    &quot;기초적인 오류부터 복잡한 서버 연동까지, 기술적인 허들에서 수강생분들이 좌절하지 않도록 든든한 가이드 역할을 수행하겠습니다. 구현의 완성도를 높이는 데 집중합니다.&quot;
-                  </p>
-                </div>
-              </TiltCard>
-            </FadeInSection>
+            <FadeInSection delay={100}><TiltCard className="h-full"><div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-200 flex flex-col relative h-full transition-shadow hover:shadow-md"><div className="flex items-center gap-4 mb-6"><div className="w-14 h-14 bg-slate-100 rounded-full flex items-center justify-center text-xl text-slate-600 font-medium">LS</div><div><span className="text-slate-500 text-[10px] font-bold tracking-wider uppercase">Media & Content</span><h3 className="text-xl font-black text-slate-900 mt-1">이상원 디렉터</h3></div></div><div className="space-y-3 mb-6 flex-1 text-sm"><div className="flex justify-between items-center border-b border-slate-50 pb-2"><span className="font-medium text-slate-500">실무 배경</span><span className="font-bold text-slate-700">뉴미디어 채널 기획 및 운영</span></div><div className="flex justify-between items-center border-b border-slate-50 pb-2"><span className="font-medium text-slate-500">주요 레퍼런스</span><span className="font-bold text-slate-700">채널 합산 25만 구독자 확보</span></div><div className="flex justify-between items-center pb-2"><span className="font-medium text-slate-500">교육 포커스</span><span className="font-bold text-slate-800">효율적인 오가닉 트래픽 확보</span></div></div><p className="text-slate-600 text-sm leading-relaxed break-keep bg-slate-50 p-4 rounded-xl">&quot;시스템 구축만큼이나 중요한 것은 적절한 유입 전략입니다. 현업에서 직접 채널을 성장시키며 체득한 오가닉 트래픽 확보와 콘텐츠 기획의 인사이트를 투명하게 공유합니다.&quot;</p></div></TiltCard></FadeInSection>
+            <FadeInSection delay={300}><TiltCard className="h-full"><div className="bg-white rounded-3xl p-8 shadow-sm border border-[#3B82F6]/30 flex flex-col relative h-full transition-shadow hover:shadow-md"><div className="flex items-center gap-4 mb-6"><div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center text-xl text-blue-600 font-medium">JS</div><div><span className="text-[#3B82F6] text-[10px] font-bold tracking-wider uppercase">Vibe Coding</span><h3 className="text-xl font-black text-slate-900 mt-1">정시후 디렉터</h3></div></div><div className="space-y-3 mb-6 flex-1 text-sm"><div className="flex justify-between items-center border-b border-slate-50 pb-2"><span className="font-medium text-slate-500">실무 배경</span><span className="font-bold text-slate-700">비즈니스 기획 및 전략 수립</span></div><div className="flex justify-between items-center border-b border-slate-50 pb-2"><span className="font-medium text-slate-500">강의 철학</span><span className="font-bold text-slate-700">비개발자의 눈높이에 맞춘 소통</span></div><div className="flex justify-between items-center pb-2"><span className="font-medium text-slate-500">교육 포커스</span><span className="font-bold text-slate-800">퍼널 기획 및 AI 툴 연동 실무</span></div></div><p className="text-slate-600 text-sm leading-relaxed break-keep bg-blue-50/50 p-4 rounded-xl">&quot;복잡한 개발 언어 대신, 기획자의 언어로 AI와 소통하는 방법을 안내합니다. 비개발자도 충분히 비즈니스 자동화 모델을 설계하고 구현할 수 있도록 섬세하게 돕겠습니다.&quot;</p></div></TiltCard></FadeInSection>
+            <FadeInSection delay={500}><TiltCard className="h-full"><div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-200 flex flex-col relative h-full transition-shadow hover:shadow-md"><div className="flex items-center gap-4 mb-6"><div className="w-14 h-14 bg-slate-100 rounded-full flex items-center justify-center text-xl text-slate-600 font-medium">LG</div><div><span className="text-slate-500 text-[10px] font-bold tracking-wider uppercase">Technical Support</span><h3 className="text-xl font-black text-slate-900 mt-1">임건 테크리드</h3></div></div><div className="space-y-3 mb-6 flex-1 text-sm"><div className="flex justify-between items-center border-b border-slate-50 pb-2"><span className="font-medium text-slate-500">실무 배경</span><span className="font-bold text-slate-700">다년간의 IT 플랫폼 개발</span></div><div className="flex justify-between items-center border-b border-slate-50 pb-2"><span className="font-medium text-slate-500">부트캠프 역할</span><span className="font-bold text-slate-700">실시간 이슈 대응 및 멘토링</span></div><div className="flex justify-between items-center pb-2"><span className="font-medium text-slate-500">교육 포커스</span><span className="font-bold text-slate-800">안정적인 배포 환경 구축</span></div></div><p className="text-slate-600 text-sm leading-relaxed break-keep bg-slate-50 p-4 rounded-xl">&quot;기초적인 오류부터 복잡한 서버 연동까지, 기술적인 허들에서 수강생분들이 좌절하지 않도록 든든한 가이드 역할을 수행하겠습니다. 구현의 완성도를 높이는 데 집중합니다.&quot;</p></div></TiltCard></FadeInSection>
           </div>
         </div>
       </section>
@@ -738,7 +680,6 @@ export default function BootcampSalesPage() {
               </h2>
             </div>
 
-            {/* 실증적 Fact Check 배너 */}
             <div className="bg-blue-900/20 border border-blue-500/30 p-5 md:p-6 rounded-2xl max-w-3xl mx-auto mb-16 text-center relative overflow-hidden shadow-[0_0_20px_rgba(59,130,246,0.15)]">
               <div className="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>
               <span className="animate-pulse inline-block w-2.5 h-2.5 bg-rose-500 rounded-full mr-3 translate-y-[1px]"></span>
@@ -749,10 +690,7 @@ export default function BootcampSalesPage() {
             </div>
           </FadeInSection>
 
-          {/* 📊 하이테크 인포그래픽 파이프라인 */}
           <div className="relative space-y-16 max-w-4xl mx-auto">
-            
-            {/* 1단계: 엔진 빌딩 */}
             <FadeInSection>
               <div className="bg-slate-900/60 border border-slate-800 p-6 md:p-8 rounded-[2rem] flex flex-col md:flex-row gap-6 items-start md:items-center relative">
                 <div className="w-14 h-14 shrink-0 bg-blue-600/10 border border-blue-500/30 rounded-2xl flex items-center justify-center font-black text-blue-400 text-xl shadow-[0_0_15px_rgba(59,130,246,0.2)]">01</div>
@@ -766,10 +704,8 @@ export default function BootcampSalesPage() {
               </div>
             </FadeInSection>
 
-            {/* 💡 2단계: 5대 핵심 실물 자산 전면 배치 */}
             <FadeInSection>
               <div className="relative">
-                {/* 섹션 연결용 가상 인디케이터 선 */}
                 <div className="absolute left-6 md:left-[35px] -top-16 w-0.5 h-16 bg-gradient-to-b from-blue-500/50 to-cyan-500/50"></div>
                 
                 <div className="bg-slate-900/90 border-2 border-cyan-500/30 p-6 md:p-10 rounded-[2.5rem] shadow-[0_0_40px_rgba(34,211,238,0.1)] relative">
@@ -780,49 +716,40 @@ export default function BootcampSalesPage() {
                     <p className="text-slate-400 text-xs md:text-sm font-medium">이론 강의는 없습니다. 수료와 동시에 당신의 비즈니스에 즉시 배포되는 실물 프로그램 라인업입니다.</p>
                   </div>
 
-                  {/* 5대 산출물 인포그래픽 카드 그리드 */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-left">
-                    
                     <div className="bg-slate-800/40 border border-slate-700/40 p-5 rounded-2xl hover:border-cyan-500/50 transition-all group">
                       <div className="text-2xl mb-3 group-hover:scale-110 transition-transform">🌐</div>
                       <h4 className="text-white font-black text-base mb-1.5">원하는 웹 / 앱 페이지</h4>
                       <p className="text-slate-400 text-xs leading-relaxed font-medium">현재 보고 계신 퀄리티의 고효율 전환형 랜딩페이지와 비즈니스 웹사이트를 내 손으로 직접 커스텀 빌딩 및 배포합니다.</p>
                     </div>
-
                     <div className="bg-slate-800/40 border border-slate-700/40 p-5 rounded-2xl hover:border-cyan-500/50 transition-all group">
                       <div className="text-2xl mb-3 group-hover:scale-110 transition-transform">🛠️</div>
                       <h4 className="text-white font-black text-base mb-1.5">업무용 맞춤 프로그램</h4>
                       <p className="text-slate-400 text-xs leading-relaxed font-medium">매번 수작업으로 처리하던 반복 업무, 복잡한 데이터 수집 및 가공 리포트를 단 10분 만에 끝내는 나만의 백엔드 프로그램을 완성합니다.</p>
                     </div>
-
                     <div className="bg-slate-800/40 border border-slate-700/40 p-5 rounded-2xl hover:border-cyan-500/50 transition-all group">
                       <div className="text-2xl mb-3 group-hover:scale-110 transition-transform">📱</div>
                       <h4 className="text-white font-black text-base mb-1.5">나만의 독립 어플(App)</h4>
                       <p className="text-slate-400 text-xs leading-relaxed font-medium">단순 링크 이동을 넘어 실제 유저들이 모바일 기기에 직접 설치하고 유기적으로 작동하는 크로스 플랫폼 형태의 어플리케이션을 소유합니다.</p>
                     </div>
-
                     <div className="bg-slate-800/40 border border-slate-700/40 p-5 rounded-2xl hover:border-cyan-500/50 transition-all group">
                       <div className="text-2xl mb-3 group-hover:scale-110 transition-transform">⚡</div>
                       <h4 className="text-white font-black text-base mb-1.5">상세페이지 전면 자동화</h4>
                       <p className="text-slate-400 text-xs leading-relaxed font-medium">수많은 상품 라인업과 크리에이티브 요소를 AI가 자동으로 결합하고, 매체별 맞춤형 세일즈 카피와 상세페이지를 대량 생산하는 무인 오토메이션 시스템을 개통합니다.</p>
                     </div>
-
                     <div className="bg-slate-800/40 border border-slate-700/40 p-5 rounded-2xl hover:border-cyan-500/50 transition-all group sm:col-span-2 md:col-span-1">
                       <div className="text-2xl mb-3 group-hover:scale-110 transition-transform">🎯</div>
                       <h4 className="text-white font-black text-base mb-1.5">하이엔드 마케팅 퍼널 구축</h4>
                       <p className="text-slate-400 text-xs leading-relaxed font-medium">유입된 잠재 고객의 이탈을 막고 실시간으로 DB를 수집하여, 어드민 칸반보드 대시보드로 자동 라우팅시키는 최고 효율의 세일즈 직렬 주로를 확보합니다.</p>
                     </div>
-
                   </div>
                 </div>
               </div>
             </FadeInSection>
 
-            {/* 3단계: 무인 상호작용 */}
             <FadeInSection>
               <div className="relative">
                 <div className="absolute left-6 md:left-[35px] -top-16 w-0.5 h-16 bg-gradient-to-b from-cyan-500/50 to-indigo-500/50"></div>
-                
                 <div className="bg-slate-900/60 border border-slate-800 p-6 md:p-8 rounded-[2rem] flex flex-col md:flex-row gap-6 items-start md:items-center relative">
                   <div className="w-14 h-14 shrink-0 bg-indigo-600/10 border border-indigo-500/30 rounded-2xl flex items-center justify-center font-black text-indigo-400 text-xl shadow-[0_0_15px_rgba(99,102,241,0.2)]">03</div>
                   <div>
@@ -835,7 +762,6 @@ export default function BootcampSalesPage() {
                 </div>
               </div>
             </FadeInSection>
-
           </div>
         </div>
       </section>
@@ -843,8 +769,8 @@ export default function BootcampSalesPage() {
       {/* 💡 듀얼 리뷰 섹션 삽입 */}
       <ReviewSection />
 
-      {/* 💡 신규 이식: 5가지 롤링 명언 섹션 */}
-      <ParadigmShiftSection />
+      {/* 💡 백엔드 데이터 쇼케이스 */}
+      <BackendShowcaseSection />
 
       {/* 6. 환불 보장 */}
       <section className="py-16 md:py-24 px-4 md:px-6 bg-slate-900 text-white overflow-hidden">
@@ -863,7 +789,10 @@ export default function BootcampSalesPage() {
         </div>
       </section>
 
-      {/* 🚀 7. 최종 Pricing 및 상담 접수 CTA (V3.5 가격 피벗 및 조건 구체화) */}
+      {/* 💡 [재배치 완료] 결제창 직전 감정적 쐐기: 롤링 명언 섹션 */}
+      <ParadigmShiftSection />
+
+      {/* 🚀 7. 최종 Pricing 및 상담 접수 CTA */}
       <section className="py-20 md:py-32 px-4 md:px-6 bg-slate-900 text-white overflow-hidden border-t border-slate-800 relative">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-64 bg-blue-600/10 blur-[120px] pointer-events-none"></div>
         
@@ -879,7 +808,6 @@ export default function BootcampSalesPage() {
               </p>
             </div>
 
-            {/* 📊 압도적 조건 대시보드 (바둑판형 레이아웃) */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mb-12 text-left">
               <div className="bg-slate-800/40 border border-white/5 p-5 rounded-2xl">
                 <p className="text-slate-500 text-xs font-bold mb-1">⏱️ 총 교육 시간</p>
@@ -903,7 +831,6 @@ export default function BootcampSalesPage() {
               </div>
             </div>
 
-            {/* 💸 최종 가격 카드 (30% 특별 할인가 반영: 693,000원) */}
             <div className="bg-white text-slate-900 p-8 md:p-12 rounded-[2.5rem] border border-slate-200 shadow-2xl relative max-w-2xl mx-auto overflow-hidden">
               <div className="absolute top-0 right-0 bg-rose-500 text-white font-black text-xs px-6 py-2 uppercase tracking-wider rounded-bl-2xl shadow-md">
                 30% SPECIAL OFF
@@ -912,74 +839,77 @@ export default function BootcampSalesPage() {
               <div className="text-slate-500 font-bold mb-2 text-xs md:text-sm tracking-wide uppercase">The Creators AI Bootcamp 1st Crew</div>
               <div className="text-slate-400 line-through text-base md:text-lg mb-1">정상가 2,200,000원 (기존가 990,000원)</div>
               
-              {/* 30% 할인이 정확히 계산된 파격가 노출 */}
               <div className="text-4xl sm:text-5xl md:text-6xl font-black text-[#3B82F6] mb-8 tracking-tight">
                 693,000<span className="text-xl md:text-2xl text-slate-500 font-bold ml-1">원</span>
               </div>
               
+              {/* 결제창 마감 및 심사 지원 유도 버튼 */}
               <button 
                 onClick={() => setIsFormOpen(true)}
-                className="w-full bg-[#3B82F6] text-white px-4 md:px-8 py-4 md:py-5 rounded-2xl text-base md:text-xl font-black shadow-lg hover:bg-blue-600 transition-all transform hover:-translate-y-0.5 break-keep"
+                className="w-full bg-rose-600 text-white px-4 md:px-8 py-4 md:py-5 rounded-2xl text-base md:text-xl font-black shadow-lg hover:bg-rose-700 transition-all transform hover:-translate-y-0.5 break-keep flex items-center justify-center gap-2"
               >
-                가격 저항선 파괴 1기 사전 상담 신청하기
+                <span>🔒 결제창 마감 (1기 크루 심사 지원하기)</span>
               </button>
               
               <p className="text-slate-500 text-xs md:text-sm mt-6 font-medium break-keep leading-relaxed text-left md:text-center">
                 * 고밀도 밀착 케어 및 인프라 제공 퀄리티 유지를 위해 <strong className="text-rose-500 font-black">정원은 최대 10명 소수 정예</strong>로 엄격히 제한됩니다.<br className="hidden sm:block"/>
-                선착순 마감 시 즉시 접수가 종료되며, 제출해 주신 연락처로 개별 안내를 도와드리겠습니다.
+                현재 결제창은 닫혀있으며, 제출해 주신 지원서 심사 후 합격자에 한해 개별 연락을 드립니다.
               </p>
             </div>
           </FadeInSection>
         </div>
       </section>
 
-      {/* 💡 상담 접수 모달 */}
+      {/* 💡 심사 지원서 폼 모달 */}
       {isFormOpen && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex justify-center items-center p-4">
-          <div className="bg-white rounded-[2rem] w-full max-w-md shadow-2xl p-6 md:p-8 relative animate-fade-in-up max-h-[90vh] overflow-y-auto border border-slate-100">
+          <div className="bg-white rounded-[2rem] w-full max-w-md shadow-2xl p-6 md:p-8 relative animate-fade-in-up max-h-[90vh] overflow-y-auto border border-slate-100 custom-scrollbar">
             {!isSuccess && (
               <button onClick={() => setIsFormOpen(false)} className="absolute top-4 md:top-6 right-4 md:right-6 w-8 h-8 bg-slate-100 rounded-full font-bold hover:bg-slate-200 text-slate-500 transition-colors">✕</button>
             )}
             
             {!isSuccess ? (
               <div>
-                <h2 className="text-xl md:text-2xl font-black text-slate-800 mb-2 break-keep">사전 상담 신청서</h2>
-                <p className="text-slate-500 text-xs md:text-sm mb-6 md:mb-8 break-keep">원활한 소통을 위해 정확한 정보를 기재해 주시면 감사하겠습니다.</p>
+                <h2 className="text-xl md:text-2xl font-black text-slate-800 mb-2 break-keep">🔥 1기 크루 합류 심사 지원서</h2>
+                <p className="text-slate-500 text-xs md:text-sm mb-6 md:mb-8 break-keep font-medium">단순 결제로 수강할 수 없습니다. 귀하의 비즈니스와 The Creators AI의 시너지를 판단하기 위해 아래 문항을 진솔하게 작성해 주십시오.</p>
                 
                 <div className="space-y-3 md:space-y-4">
                   <input type="text" placeholder="기업명 또는 브랜드명" value={formData.clientName} onChange={e => handleInputChange('clientName', e.target.value)}
-                    className="w-full p-3 md:p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-[#3B82F6] outline-none text-sm transition-colors" />
+                    className="w-full p-3 md:p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-rose-500 outline-none text-sm transition-colors" />
                   <input type="text" placeholder="성함 및 직함 (예: 홍길동 대표)" value={formData.clientTitle} onChange={e => handleInputChange('clientTitle', e.target.value)}
-                    className="w-full p-3 md:p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-[#3B82F6] outline-none text-sm transition-colors" />
+                    className="w-full p-3 md:p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-rose-500 outline-none text-sm transition-colors" />
                   <input type="text" placeholder="연락처 (010-0000-0000)" value={formData.clientContact} onChange={e => handleInputChange('clientContact', e.target.value)}
-                    className="w-full p-3 md:p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-[#3B82F6] outline-none text-sm transition-colors" />
+                    className="w-full p-3 md:p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-rose-500 outline-none text-sm transition-colors" />
                   <input type="email" placeholder="이메일 주소" value={formData.clientEmail} onChange={e => handleInputChange('clientEmail', e.target.value)}
-                    className="w-full p-3 md:p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-[#3B82F6] outline-none text-sm transition-colors" />
+                    className="w-full p-3 md:p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-rose-500 outline-none text-sm transition-colors" />
+                  
+                  <textarea placeholder="현재 비즈니스의 가장 큰 고민과, 4주 후 자동화 시스템으로 달성하고 싶은 목표를 적어주세요. (심사 핵심 기준)" value={formData.businessGoal} onChange={e => handleInputChange('businessGoal', e.target.value)}
+                    className="w-full p-3 md:p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-rose-500 outline-none text-sm transition-colors h-32 custom-scrollbar resize-none" />
                   
                   <button 
                     onClick={handleSubmitForm}
                     disabled={isSubmitting}
-                    className="w-full h-12 md:h-14 bg-[#3B82F6] text-white rounded-xl font-bold text-base hover:bg-blue-600 disabled:bg-slate-300 transition-colors mt-2 md:mt-4"
+                    className="w-full h-12 md:h-14 bg-slate-900 text-white rounded-xl font-bold text-base hover:bg-black disabled:bg-slate-300 transition-colors mt-2 md:mt-4 shadow-lg"
                   >
-                    {isSubmitting ? '접수 중입니다...' : '상담 신청 완료하기'}
+                    {isSubmitting ? '데이터 전송 중...' : '심사 지원서 최종 제출하기'}
                   </button>
                 </div>
               </div>
             ) : (
               <div className="text-center py-4 md:py-6">
-                <div className="w-12 h-12 md:w-16 md:h-16 bg-blue-50 text-[#3B82F6] rounded-full flex items-center justify-center text-xl md:text-2xl mx-auto mb-4 md:mb-6 font-black">✓</div>
-                <h2 className="text-xl md:text-2xl font-black text-slate-800 mb-3 md:mb-4 break-keep">접수가 완료되었습니다.</h2>
+                <div className="w-12 h-12 md:w-16 md:h-16 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center text-xl md:text-2xl mx-auto mb-4 md:mb-6 font-black">✓</div>
+                <h2 className="text-xl md:text-2xl font-black text-slate-800 mb-3 md:mb-4 break-keep">지원서가 제출되었습니다.</h2>
                 <p className="text-slate-600 mb-6 md:mb-8 leading-relaxed text-sm md:text-base break-keep">
-                  소중한 정보를 남겨주셔서 감사합니다.<br className="hidden sm:block"/>
-                  담당자가 내용을 꼼꼼히 확인 후 신속하게 연락드리겠습니다.
+                  진솔한 고민을 남겨주셔서 감사합니다.<br className="hidden sm:block"/>
+                  대표가 직접 내용을 심사한 후, <strong>시너지가 날 수 있는 합격자에 한해</strong> 남겨주신 연락처로 개별 연락을 드리겠습니다.
                 </p>
                 
                 <div className="space-y-2 md:space-y-3">
                   <a href="https://open.kakao.com/o/sw0Qhz5b" target="_blank" rel="noopener noreferrer" className="w-full flex items-center justify-center gap-2 h-12 bg-[#FEE500] text-[#191919] rounded-xl font-bold text-sm hover:bg-[#FADA0A] transition-colors">
-                    💬 카카오톡 채널로 바로 문의하기
+                    💬 긴급 카카오톡 문의
                   </a>
                   <a href="tel:051-633-3812" className="w-full flex items-center justify-center gap-2 h-12 bg-slate-100 text-slate-700 border border-slate-200 rounded-xl font-bold text-sm hover:bg-slate-200 transition-colors">
-                    📞 유선으로 문의하기 (051-633-3812)
+                    📞 유선 센터 문의 (051-633-3812)
                   </a>
                 </div>
                 
