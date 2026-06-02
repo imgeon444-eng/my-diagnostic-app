@@ -2,17 +2,18 @@
 
 import React, { useState, useEffect } from 'react';
 import { db } from '../../lib/firebase';
-import { collection, onSnapshot, addDoc, updateDoc, doc, query, orderBy } from 'firebase/firestore';
+// 💡 추가: deleteDoc 모듈 임포트
+import { collection, onSnapshot, addDoc, updateDoc, doc, deleteDoc, query, orderBy } from 'firebase/firestore';
 
 // ----------------------------------------------------------------------
-// 🏷️ 리드 전용 카드 컴포넌트 (클릭 이벤트 추가)
-function LeadCard({ lead, onDragStart, onClick }) {
+// 🏷️ 리드 전용 카드 컴포넌트
+function LeadCard({ lead, onDragStart, onClick, onDelete }) {
   return (
     <div
       draggable
       onDragStart={(e) => onDragStart(e, lead.id)}
-      onClick={() => onClick(lead)} // 💡 추가: 카드 클릭 시 모달 열기
-      className="bg-slate-800/80 border border-slate-700 p-4 rounded-xl cursor-grab active:cursor-grabbing hover:border-blue-500/50 hover:shadow-[0_0_15px_rgba(59,130,246,0.2)] transition-all group"
+      onClick={() => onClick(lead)}
+      className="bg-slate-800/80 border border-slate-700 p-4 rounded-xl cursor-grab active:cursor-grabbing hover:border-blue-500/50 hover:shadow-[0_0_15px_rgba(59,130,246,0.2)] transition-all group relative"
     >
       <div className="flex justify-between items-start mb-3 pointer-events-none">
         <div>
@@ -30,17 +31,33 @@ function LeadCard({ lead, onDragStart, onClick }) {
         )}
       </div>
       
-      <div className="space-y-2 mt-4 pointer-events-none">
-        <div className="flex items-center gap-2 text-slate-300 text-xs">
-          <span>📞</span> {lead.contact}
+      {/* 💡 하단 영역: 클릭 방지(pointer-events) 레이아웃 분리 */}
+      <div className="flex justify-between items-end mt-4">
+        <div className="space-y-2 pointer-events-none">
+          <div className="flex items-center gap-2 text-slate-300 text-xs">
+            <span>📞</span> {lead.contact}
+          </div>
+          <div className="flex items-center gap-2 text-slate-400 text-[10px]">
+            <span>⏱️</span> {lead.date}
+          </div>
         </div>
-        <div className="flex items-center gap-2 text-slate-400 text-[10px]">
-          <span>⏱️</span> {lead.date}
-        </div>
+        
+        {/* 🚨 삭제 버튼: e.stopPropagation() 으로 모달 열림 방지 */}
+        <button 
+          onClick={(e) => {
+            e.stopPropagation(); 
+            onDelete(lead.id);
+          }}
+          className="opacity-0 group-hover:opacity-100 p-2 text-slate-500 hover:text-rose-500 hover:bg-rose-500/10 rounded-lg transition-all"
+          title="데이터 삭제"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+          </svg>
+        </button>
       </div>
       
-      {/* 💡 추가: 마우스를 올렸을 때만 살짝 보이는 클릭 유도 힌트 */}
-      <div className="mt-3 pt-3 border-t border-slate-700/50 opacity-0 group-hover:opacity-100 transition-opacity text-center">
+      <div className="mt-3 pt-3 border-t border-slate-700/50 opacity-0 group-hover:opacity-100 transition-opacity text-center pointer-events-none">
         <span className="text-[10px] font-bold text-blue-400 tracking-wider uppercase">상세 보기 클릭</span>
       </div>
     </div>
@@ -48,7 +65,7 @@ function LeadCard({ lead, onDragStart, onClick }) {
 }
 
 // ----------------------------------------------------------------------
-// 🔍 [신규 생성] 고객 상세 프로필 모달 (선택지 A 완수)
+// 🔍 고객 상세 프로필 모달 
 function LeadDetailModal({ lead, isOpen, onClose }) {
   if (!isOpen || !lead) return null;
 
@@ -56,17 +73,14 @@ function LeadDetailModal({ lead, isOpen, onClose }) {
     <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-[100] flex justify-center items-center p-4 animate-fade-in-up">
       <div className="bg-[#090E17] border border-slate-700 rounded-[2rem] w-full max-w-2xl shadow-2xl relative overflow-hidden">
         
-        {/* 상단 장식 효과 */}
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-cyan-400 to-emerald-500"></div>
         <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl"></div>
 
-        {/* 닫기 버튼 */}
         <button onClick={onClose} className="absolute top-6 right-6 text-slate-400 hover:text-white transition-colors p-2">
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
 
         <div className="p-8 md:p-10">
-          {/* 헤더 섹션 */}
           <div className="flex items-start gap-4 mb-8">
             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 flex items-center justify-center shadow-inner">
               <span className="text-2xl font-black text-white">{lead.name.charAt(0)}</span>
@@ -82,7 +96,6 @@ function LeadDetailModal({ lead, isOpen, onClose }) {
             </div>
           </div>
 
-          {/* 핵심 데이터 3분할 그리기 */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <div className="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50">
               <p className="text-slate-500 text-xs font-bold uppercase mb-1">진단 스코어</p>
@@ -98,7 +111,6 @@ function LeadDetailModal({ lead, isOpen, onClose }) {
             </div>
           </div>
 
-          {/* 1층 진단기 세부 고민 (진단 데이터가 있을 때만 표시) */}
           {lead.painPoint && (
             <div className="bg-blue-900/10 border border-blue-500/20 p-5 rounded-2xl mb-8 relative">
               <span className="absolute -top-3 left-4 bg-[#090E17] text-blue-400 text-[10px] font-black uppercase px-2 tracking-widest border border-blue-500/20 rounded-md">
@@ -110,7 +122,6 @@ function LeadDetailModal({ lead, isOpen, onClose }) {
             </div>
           )}
 
-          {/* 시스템 정보 (접수일 등) */}
           <div className="border-t border-slate-800 pt-6 flex justify-between items-center text-xs font-medium text-slate-500">
             <p>데이터 ID : {lead.id}</p>
             <p>최초 접수일 : {lead.date}</p>
@@ -122,7 +133,7 @@ function LeadDetailModal({ lead, isOpen, onClose }) {
 }
 
 // ----------------------------------------------------------------------
-// ➕ 수동 추가 모달 컴포넌트 (기존 코드 100% 보존)
+// ➕ 수동 추가 모달 컴포넌트 
 function AddLeadModal({ isOpen, onClose, onAdd }) {
   const [formData, setFormData] = useState({ name: '', company: '', contact: '', email: '' });
 
@@ -164,11 +175,9 @@ export default function KanbanBoard({
   const [leads, setLeads] = useState([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   
-  // 💡 신규 상태: 상세 보기 모달을 위한 상태 관리
   const [selectedLead, setSelectedLead] = useState(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
-  // 1. 실시간 데이터 가져오기 (고민 데이터 추가)
   useEffect(() => {
     const q = query(collection(db, collectionName), orderBy("createdAt", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -181,7 +190,7 @@ export default function KanbanBoard({
           contact: data.clientContact || '연락처 없음',
           email: data.clientEmail || '',
           score: data.totalScore || 0,
-          painPoint: data.shortPainPoint || '', // 💡 1층 진단기 주관식 고민 데이터 추출
+          painPoint: data.shortPainPoint || '', 
           status: data.status || columns[0], 
           date: data.createdAt?.toDate().toLocaleString() || new Date().toLocaleString(),
         };
@@ -219,10 +228,21 @@ export default function KanbanBoard({
     await addDoc(collection(db, collectionName), formattedLead);
   };
 
-  // 💡 상세 보기 모달 열기 함수
   const handleCardClick = (lead) => {
     setSelectedLead(lead);
     setIsDetailModalOpen(true);
+  };
+
+  // 💡 신규 기능: 데이터베이스에서 삭제하는 함수
+  const handleDeleteLead = async (leadId) => {
+    if (window.confirm("이 고객 데이터를 완전히 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.")) {
+      try {
+        await deleteDoc(doc(db, collectionName, leadId));
+      } catch (error) {
+        console.error("삭제 실패:", error);
+        alert("데이터 삭제 중 오류가 발생했습니다.");
+      }
+    }
   };
 
   return (
@@ -243,7 +263,6 @@ export default function KanbanBoard({
         </button>
       </header>
 
-      {/* 칸반보드 그리드 */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 overflow-x-auto pb-4">
         {columns.map(status => (
           <div 
@@ -267,7 +286,8 @@ export default function KanbanBoard({
                   key={lead.id} 
                   lead={lead} 
                   onDragStart={handleDragStart}
-                  onClick={handleCardClick} // 💡 클릭 이벤트 연결
+                  onClick={handleCardClick}
+                  onDelete={handleDeleteLead} // 💡 추가: 삭제 이벤트 전달
                 />
               ))}
               
@@ -283,7 +303,6 @@ export default function KanbanBoard({
       
       <AddLeadModal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} onAdd={handleAddLead} />
       
-      {/* 💡 신규 렌더링: 상세 프로필 모달 */}
       <LeadDetailModal 
         lead={selectedLead} 
         isOpen={isDetailModalOpen} 

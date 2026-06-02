@@ -16,7 +16,25 @@ export default function B2BTargetSniperAnalyzer() {
     // 💡 2층 URL 분석기 데이터베이스 연동
     const q = query(collection(db, "url_analysis"), orderBy("createdAt", "desc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const logs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      
+      // 🚀 신형 백엔드 데이터 호환 어댑터 적용
+      const logs = snapshot.docs.map(doc => {
+        const data = doc.data();
+        
+        // 1. 플랫폼 명칭 호환 처리 (instagram -> insta, website -> web)
+        let mappedChannel = 'web';
+        if (data.platform === 'youtube') mappedChannel = 'youtube';
+        if (data.platform === 'instagram' || data.channel === 'insta') mappedChannel = 'insta';
+
+        return {
+          id: doc.id,
+          channel: mappedChannel,
+          // 오늘 수정한 백엔드 구조에 맞춰 URL과 키워드(카테고리) 강제 매핑
+          url: data.targetUrl ? decodeURIComponent(data.targetUrl) : (data.url || 'URL 없음'),
+          keyword: data.publicReport?.category || data.keyword || '미분류',
+          createdAt: data.createdAt || { toDate: () => new Date() }
+        };
+      });
       
       // 임시 목업 데이터 믹스 (초기 화면이 비어보이지 않도록 시각화)
       const displayLogs = logs.length > 0 ? logs : [
@@ -129,7 +147,7 @@ export default function B2BTargetSniperAnalyzer() {
                   <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black ${idx === 0 ? 'bg-amber-500 text-amber-900' : idx === 1 ? 'bg-slate-300 text-slate-700' : idx === 2 ? 'bg-amber-700 text-amber-100' : 'bg-slate-800 text-slate-400'}`}>
                     {idx + 1}
                   </span>
-                  <span className="text-sm font-bold text-slate-300 group-hover:text-white transition-colors">{kw.name}</span>
+                  <span className="text-sm font-bold text-slate-300 group-hover:text-white transition-colors truncate max-w-[120px]">{kw.name}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-slate-500">{kw.count}건</span>
@@ -176,10 +194,10 @@ export default function B2BTargetSniperAnalyzer() {
                     {log.channel === 'web' && <span className="bg-blue-500/10 text-blue-400 text-[10px] font-black px-2 py-1 rounded border border-blue-500/20">WEB</span>}
                   </td>
                   <td className="px-6 py-4 text-sm text-slate-300 font-mono truncate max-w-[200px] md:max-w-xs">
-                    {log.url || 'URL 파싱 실패'}
+                    {log.url}
                   </td>
-                  <td className="px-6 py-4 text-sm text-white font-bold">
-                    {log.keyword || '미분류'}
+                  <td className="px-6 py-4 text-sm text-white font-bold truncate max-w-[150px]">
+                    {log.keyword}
                   </td>
                 </tr>
               ))}

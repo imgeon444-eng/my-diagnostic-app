@@ -36,7 +36,17 @@ export async function POST(request) {
       generationConfig: { responseMimeType: "application/json" }
     });
 
-    const aiData = JSON.parse(result.response.text());
+    const responseText = result.response.text();
+    let aiData;
+    
+    try {
+      // 제미나이의 마크다운 기호(```json 등) 완벽 제거 및 순수 JSON 추출
+      const cleanedJson = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
+      aiData = JSON.parse(cleanedJson);
+    } catch (parseError) {
+      console.error("🚨 JSON 파싱 실패 원본 텍스트:", responseText);
+      return NextResponse.json({ success: false, error: "AI 응답 파싱 실패" }, { status: 500 });
+    }
 
     // 📧 2. 대표님 스마트폰(Gmail) VIP 리드 즉시 전송
     try {
