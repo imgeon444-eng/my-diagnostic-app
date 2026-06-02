@@ -32,7 +32,7 @@ export async function POST(request) {
     }
 
     // ==========================================
-    // 🧠 STEP 2: 제미나이 2.5 전용 고도화 프롬프트
+    // 🧠 STEP 2: 제미나이 2.5 전용 고도화 프롬프트 (수정됨)
     // ==========================================
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
     
@@ -44,6 +44,7 @@ export async function POST(request) {
 
       위 정보를 바탕으로 'The Creators AI'의 분석 기준에 따라 정밀 진단 리포트를 생성해.
       반드시 아래 JSON 형식을 100% 준수하고, 마크다운 기호 없이 순수 JSON만 출력해.
+      단, 각 항목의 내용과 점수, 누수 비용은 대상 채널의 맥락에 맞게 네가 직접 추론하여 논리적인 수치와 텍스트로 채워 넣어.
 
       {
         "publicReport": {
@@ -61,13 +62,13 @@ export async function POST(request) {
           "direction": "수익화를 위한 비즈니스 피보팅 방향 제안",
           "futureTask": "당장 실행해야 할 퍼널 구축 과제",
           "painPoint": "현재 채널이 겪고 있는 가장 치명적인 문제점 지적",
-          "monthlyLeakageCost": 3850000,
+          "monthlyLeakageCost": [3000000에서 15000000 사이의 정수 값 중 하나를 논리적으로 추정하여 숫자만 입력],
           "chartData": [
-            { "subject": "콘텐츠 매력", "score": 85 },
-            { "subject": "브랜딩 통일", "score": 70 },
-            { "subject": "트래픽 확보", "score": 60 },
-            { "subject": "퍼널/수익화", "score": 30 },
-            { "subject": "전환율", "score": 25 }
+            { "subject": "콘텐츠 매력", "score": [40에서 95 사이의 정수] },
+            { "subject": "브랜딩 통일", "score": [40에서 95 사이의 정수] },
+            { "subject": "트래픽 확보", "score": [40에서 95 사이의 정수] },
+            { "subject": "퍼널/수익화", "score": [40에서 95 사이의 정수] },
+            { "subject": "전환율", "score": [40에서 95 사이의 정수] }
           ]
         }
       }
