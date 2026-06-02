@@ -264,7 +264,7 @@ function ReviewSection() {
   );
 }
 
-// 💡 [V4.0 이식] 백엔드 데이터 쇼케이스 모듈 (CLS 에러/높이튐 방어 패치 완료)
+// 💡 [V4.0 이식] 백엔드 데이터 쇼케이스 모듈
 function BackendShowcaseSection() {
   const [logs, setLogs] = useState([]);
   const [leads, setLeads] = useState([]);
@@ -402,60 +402,38 @@ function BackendShowcaseSection() {
   );
 }
 
-// 💡 [V4.6 고도화] 게임형 메타버스 AI 오피스 시뮬레이터 (클릭 이동 & 동적 말풍선)
+// 💡 [V4.6 고도화] 게임형 메타버스 AI 오피스 시뮬레이터
 function VirtualAgencySection() {
   const [ceoName, setCeoName] = useState("");
   const [isLogged, setIsLogged] = useState(false);
   const [agents, setAgents] = useState([]);
-  const [userPos, setUserPos] = useState({ x: 50, y: 50 }); // CEO(유저) 초기 좌표
+  const [userPos, setUserPos] = useState({ x: 50, y: 50 }); 
 
-  // AI 직원 초기 세팅 및 실무 멘트 배열
   const initialAgents = [
-    { 
-      id: 1, role: '기획 에이전트', icon: '🧠', color: 'bg-indigo-600', x: 20, y: 30, 
-      messages: ['대표님, 페르소나 분석 끝났습니다.', 'A/B 테스트 기획안 올렸습니다.', '경쟁사 랜딩페이지 크롤링 중입니다.'] 
-    },
-    { 
-      id: 2, role: '마케팅 에이전트', icon: '🎯', color: 'bg-rose-600', x: 75, y: 25, 
-      messages: ['어제 세팅한 퍼널 전환율 12% 상승했습니다!', '인스타그램 스폰서드 광고 세팅 완료.', '이탈 고객 리타겟팅 캠페인 가동합니다.'] 
-    },
-    { 
-      id: 3, role: '디자인 에이전트', icon: '🎨', color: 'bg-amber-600', x: 80, y: 70, 
-      messages: ['상세페이지 UI 수정 완료했습니다.', '광고 소재 베리에이션 생성 중...', 'A안 썸네일 서버에 배포했습니다.'] 
-    },
-    { 
-      id: 4, role: '개발 에이전트', icon: '💻', color: 'bg-cyan-600', x: 25, y: 75, 
-      messages: ['서버 연동 이상 없습니다.', 'CRM 칸반보드에 신규 DB 꽂혔습니다.', 'API 에러 자동 디버깅 완료.'] 
-    },
+    { id: 1, role: '기획 에이전트', icon: '🧠', color: 'bg-indigo-600', x: 20, y: 30, messages: ['대표님, 페르소나 분석 끝났습니다.', 'A/B 테스트 기획안 올렸습니다.', '경쟁사 랜딩페이지 크롤링 중입니다.'] },
+    { id: 2, role: '마케팅 에이전트', icon: '🎯', color: 'bg-rose-600', x: 75, y: 25, messages: ['어제 세팅한 퍼널 전환율 12% 상승했습니다!', '인스타그램 스폰서드 광고 세팅 완료.', '이탈 고객 리타겟팅 캠페인 가동합니다.'] },
+    { id: 3, role: '디자인 에이전트', icon: '🎨', color: 'bg-amber-600', x: 80, y: 70, messages: ['상세페이지 UI 수정 완료했습니다.', '광고 소재 베리에이션 생성 중...', 'A안 썸네일 서버에 배포했습니다.'] },
+    { id: 4, role: '개발 에이전트', icon: '💻', color: 'bg-cyan-600', x: 25, y: 75, messages: ['서버 연동 이상 없습니다.', 'CRM 칸반보드에 신규 DB 꽂혔습니다.', 'API 에러 자동 디버깅 완료.'] },
   ];
 
-  // AI 직원의 자율 이동 및 말풍선 갱신 엔진
   useEffect(() => {
     if (!isLogged) return;
-    
-    // 초기 입장 시 첫 번째 멘트 장전
     setAgents(initialAgents.map(a => ({...a, currentMsg: a.messages[0]})));
-
     const logicInterval = setInterval(() => {
       setAgents(prev => prev.map(agent => {
-        // 35% 확률로 말풍선 멘트 변경
         const changeMsg = Math.random() > 0.65;
         const newMsg = changeMsg ? agent.messages[Math.floor(Math.random() * agent.messages.length)] : agent.currentMsg;
-
         return {
           ...agent,
-          // 자기 자리 주변을 맴도는 무작위 이동 (바운더리 제한)
           x: Math.max(10, Math.min(90, agent.x + (Math.random() * 8 - 4))),
           y: Math.max(10, Math.min(90, agent.y + (Math.random() * 8 - 4))),
           currentMsg: newMsg
         };
       }));
     }, 2500);
-
     return () => clearInterval(logicInterval);
   }, [isLogged]);
 
-  // 유저 클릭 시 맵 좌표로 캐릭터 부드럽게 이동
   const handleMapClick = (e) => {
     if (!isLogged) return;
     const rect = e.currentTarget.getBoundingClientRect();
@@ -476,21 +454,15 @@ function VirtualAgencySection() {
           </div>
         </FadeInSection>
 
-        {/* 🎮 게임 컨테이너 */}
         <div className="bg-slate-900 border-4 border-slate-700 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden shadow-[0_0_50px_rgba(168,85,247,0.15)] relative h-[450px] md:h-[550px] font-mono">
-          
           {!isLogged ? (
-            /* 로그인 화면 (레트로 게임 스타일) */
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#0B1120] z-20 px-4">
               <div className="w-20 h-20 bg-slate-800 rounded-2xl flex items-center justify-center text-4xl mb-6 shadow-inner border-[3px] border-slate-700 animate-bounce">🕹️</div>
               <h3 className="text-white font-black text-xl mb-6 text-center break-keep">당신의 AI 군단을 지휘할 이름을 입력하십시오.</h3>
               <div className="flex w-full max-w-sm gap-2">
                 <input 
-                  type="text" 
-                  maxLength="8"
-                  placeholder="예: 임건 대표" 
-                  value={ceoName}
-                  onChange={(e) => setCeoName(e.target.value)}
+                  type="text" maxLength="8" placeholder="예: 임건 대표" 
+                  value={ceoName} onChange={(e) => setCeoName(e.target.value)}
                   className="flex-1 bg-slate-800 border-2 border-slate-600 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-purple-500 font-bold"
                 />
                 <button 
@@ -502,63 +474,35 @@ function VirtualAgencySection() {
               </div>
             </div>
           ) : (
-            /* 메타버스 인게임 화면 */
             <div className="absolute inset-0 bg-[#1e293b] cursor-crosshair overflow-hidden" onClick={handleMapClick}>
-              
-              {/* 조작 안내 UI */}
               <div className="absolute top-4 right-4 z-30 bg-black/50 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-lg text-white/70 text-[10px] sm:text-xs font-bold pointer-events-none flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                 마우스(터치)로 빈 공간을 클릭하여 이동하세요
               </div>
-
-              {/* 바닥 그리드 타일 (아이소메트릭 착시) */}
               <div className="absolute inset-0" style={{ 
                 backgroundImage: 'linear-gradient(#334155 1px, transparent 1px), linear-gradient(90deg, #334155 1px, transparent 1px)', 
-                backgroundSize: '40px 40px',
-                transform: 'perspective(600px) rotateX(60deg) scale(2.5)',
-                transformOrigin: 'top center',
-                opacity: 0.3
+                backgroundSize: '40px 40px', transform: 'perspective(600px) rotateX(60deg) scale(2.5)', transformOrigin: 'top center', opacity: 0.3
               }}></div>
-
-              {/* 👑 중앙: 유저 (CEO) 캐릭터 (클릭 좌표로 동적 이동) */}
               <div 
                 className="absolute z-20 flex flex-col items-center transition-all duration-700 ease-out transform -translate-x-1/2 -translate-y-1/2 pointer-events-none"
                 style={{ top: `${userPos.y}%`, left: `${userPos.x}%` }}
               >
-                <div className="bg-yellow-400 text-[#191919] text-[10px] md:text-xs font-black px-2 py-0.5 rounded shadow-lg mb-1 whitespace-nowrap border border-yellow-500">
-                  CEO {ceoName}
-                </div>
-                {/* 도트 느낌의 아바타 껍데기 */}
-                <div className="w-10 h-10 md:w-12 md:h-12 bg-white rounded-lg border-[3px] border-slate-800 shadow-[0_4px_0_rgba(0,0,0,0.3)] flex items-center justify-center text-xl md:text-2xl z-20 bg-gradient-to-b from-white to-slate-200">
-                  😎
-                </div>
-                {/* 캐릭터 그림자 */}
+                <div className="bg-yellow-400 text-[#191919] text-[10px] md:text-xs font-black px-2 py-0.5 rounded shadow-lg mb-1 whitespace-nowrap border border-yellow-500">CEO {ceoName}</div>
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-white rounded-lg border-[3px] border-slate-800 shadow-[0_4px_0_rgba(0,0,0,0.3)] flex items-center justify-center text-xl md:text-2xl z-20 bg-gradient-to-b from-white to-slate-200">😎</div>
                 <div className="w-6 h-2 bg-black/40 rounded-[100%] mt-1 blur-[1px]"></div>
               </div>
-
-              {/* 🤖 주변: 상호작용하는 AI 직원들 */}
               {agents.map(agent => (
                 <div 
                   key={agent.id} 
                   className="absolute z-10 flex flex-col items-center transition-all duration-1000 ease-in-out transform -translate-x-1/2 -translate-y-1/2 pointer-events-none"
                   style={{ top: `${agent.y}%`, left: `${agent.x}%` }}
                 >
-                  {/* 동적 말풍선 UI */}
                   <div className="mb-2 bg-white text-slate-800 text-[10px] md:text-xs font-bold px-3 py-1.5 rounded-2xl rounded-br-sm shadow-xl whitespace-nowrap border border-slate-200 animate-fade-in-up relative">
                     {agent.currentMsg}
                     <div className="absolute -bottom-1 right-2 w-2 h-2 bg-white border-b border-r border-slate-200 transform rotate-45"></div>
                   </div>
-                  
-                  {/* AI 직함 태그 */}
-                  <div className="bg-slate-800/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded border border-slate-600 mb-1 whitespace-nowrap shadow-sm">
-                    {agent.role}
-                  </div>
-                  
-                  {/* AI 아바타 박스 (레트로 스타일) */}
-                  <div className={`w-8 h-8 md:w-10 md:h-10 ${agent.color} rounded-lg flex items-center justify-center text-base md:text-xl border-2 border-slate-800 shadow-[0_3px_0_rgba(0,0,0,0.4)]`}>
-                    {agent.icon}
-                  </div>
-                  {/* AI 그림자 */}
+                  <div className="bg-slate-800/90 text-white text-[9px] font-bold px-1.5 py-0.5 rounded border border-slate-600 mb-1 whitespace-nowrap shadow-sm">{agent.role}</div>
+                  <div className={`w-8 h-8 md:w-10 md:h-10 ${agent.color} rounded-lg flex items-center justify-center text-base md:text-xl border-2 border-slate-800 shadow-[0_3px_0_rgba(0,0,0,0.4)]`}>{agent.icon}</div>
                   <div className="w-5 h-1.5 bg-black/30 rounded-[100%] mt-1 blur-[1px]"></div>
                 </div>
               ))}
@@ -566,7 +510,6 @@ function VirtualAgencySection() {
           )}
         </div>
 
-        {/* 💡 [신규 추가] 목적 설명 카피라이팅 */}
         <FadeInSection delay={200}>
           <div className="mt-6 md:mt-8 bg-blue-900/10 border border-blue-500/20 p-5 md:p-6 rounded-2xl max-w-4xl mx-auto text-left md:text-center relative overflow-hidden shadow-sm">
             <div className="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>
@@ -577,13 +520,12 @@ function VirtualAgencySection() {
             </p>
           </div>
         </FadeInSection>
-
       </div>
     </section>
   );
 }
 
-// 💡 롤링 명언 섹션 모듈 (결제창 직전으로 재배치됨)
+// 💡 롤링 명언 섹션 모듈
 function ParadigmShiftSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [fade, setFade] = useState(true);
@@ -610,20 +552,16 @@ function ParadigmShiftSection() {
   return (
     <section className="py-20 md:py-32 px-4 md:px-6 bg-[#05080f] text-center relative overflow-hidden border-t border-slate-800">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-40 bg-blue-600/10 blur-[120px] pointer-events-none"></div>
-      
       <div className="max-w-4xl mx-auto relative z-10 min-h-[200px] flex flex-col justify-center items-center">
         <div className="text-blue-500/30 text-5xl md:text-7xl font-serif leading-none mb-[-10px] md:mb-[-20px]">&quot;</div>
-        
         <h2 className={`text-xl sm:text-2xl md:text-4xl font-black text-white break-keep leading-tight mb-8 relative z-10 transition-opacity duration-500 ease-in-out ${fade ? 'opacity-100' : 'opacity-0'}`}>
           {quotes[currentIndex].text1}
           <span className="text-cyan-400">{quotes[currentIndex].highlight}</span>
           {quotes[currentIndex].text2}<br className="hidden md:block"/>
           <span className="text-slate-300">{quotes[currentIndex].text3}</span>
         </h2>
-        
         <div className="w-12 h-1 bg-blue-500/50 mx-auto mb-6"></div>
         <p className="text-slate-500 font-bold tracking-widest uppercase text-xs md:text-sm">The Creators AI</p>
-
         <div className="flex gap-2 mt-8">
           {quotes.map((_, idx) => (
             <div key={idx} className={`w-2 h-2 rounded-full transition-all duration-300 ${currentIndex === idx ? 'bg-cyan-400 w-6' : 'bg-slate-700'}`}></div>
@@ -634,38 +572,154 @@ function ParadigmShiftSection() {
   );
 }
 
-// 👑 [메인 함수] 랜딩페이지 뼈대 (배치 순서 완벽 최적화 완료)
+// 💡 1:1 무료 컨설팅 지원 모달 폼 모듈
+const CONSULTING_TOPICS = [
+  '🚀 자기계발 및 역량 강화',
+  '🏢 회사 업무 자동화/고도화',
+  '💰 프리랜서 수익화 파이프라인',
+  '✨ 퍼스널 브랜딩 구축',
+  '📈 세일즈/마케팅 효율화',
+  '💡 내 아이디어 플랫폼 개발',
+  '🤖 AI 에이전트 기반 인건비 절감'
+];
+
+function ConsultingApplyModal({ isOpen, onClose }) {
+  const [formData, setFormData] = useState({
+    name: '', contact: '', email: '', topic: '', jobAndReason: '' 
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  if (!isOpen) return null;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.topic) return alert("중점적으로 컨설팅받고 싶은 분야를 하나 선택해주세요.");
+    
+    setIsSubmitting(true);
+
+    try {
+      // 💡 [핵심 해결책] 백엔드 자동화 툴이 에러를 뱉지 않도록 줄바꿈 및 특수기호 제거 (순정 텍스트 변환)
+      const safeBusinessGoal = formData.jobAndReason 
+        ? `관심분야: ${formData.topic} / 직무 및 고민: ${formData.jobAndReason}` 
+        : `관심분야: ${formData.topic}`;
+
+      // 💡 기존 오리지널 스키마와 100% 동일하게 순정 상태로 전송
+      await addDoc(collection(db, "bootcamp_leads"), {
+        clientName: "무료컨설팅 신청",
+        clientTitle: formData.name,
+        clientContact: formData.contact,
+        clientEmail: formData.email,
+        businessGoal: safeBusinessGoal, // 특수기호가 제거된 순정 텍스트
+        status: "심사 대기",
+        createdAt: serverTimestamp()
+      });
+      
+      alert(`신청이 완료되었습니다!\n빠른 시일 내에 ${formData.contact} 번호로 일정 조율 연락을 드리겠습니다.`);
+      onClose();
+      setFormData({ name: '', contact: '', email: '', topic: '', jobAndReason: '' });
+    } catch (error) {
+      console.error("제출 에러:", error);
+      alert(`시스템 오류가 발생했습니다.\n\n(참고: DB 보안 규칙 오류일 경우 Firebase 콘솔에서 외부 쓰기 권한을 확인해주세요.)`);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-[100] flex justify-center items-end md:items-center p-0 md:p-4 animate-fade-in-up">
+      <div className="bg-[#090E17] border border-slate-700 rounded-t-[2rem] md:rounded-[2rem] w-full max-w-2xl shadow-2xl relative overflow-hidden flex flex-col max-h-[90vh]">
+        
+        <div className="w-12 h-1.5 bg-slate-700 rounded-full mx-auto mt-3 mb-1 md:hidden"></div>
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-cyan-400 to-emerald-500 z-10"></div>
+
+        <button onClick={onClose} className="absolute top-4 right-4 md:top-6 md:right-6 text-slate-400 hover:text-white transition-colors p-2 z-10">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+
+        <div className="p-6 md:p-10 overflow-y-auto custom-scrollbar">
+          <div className="text-center mb-8">
+            <span className="bg-blue-500/20 text-blue-400 text-xs font-black px-3 py-1 rounded-full border border-blue-500/30 tracking-widest uppercase mb-4 inline-block">
+              VIP 1:1 Consulting
+            </span>
+            <h2 className="text-2xl md:text-3xl font-black text-white mb-3 break-keep">
+              1기 크루 참여 무료 컨설팅 지원
+            </h2>
+            <p className="text-slate-400 text-sm md:text-base leading-relaxed break-keep">
+              결제 전 1시간 무료 컨설팅을 통해 나에게 맞는 수업인지<br className="hidden md:block"/> 강사님과 직접 상담해 보시고 결정하세요.
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-slate-400 text-xs font-bold mb-2">이름 <span className="text-rose-500">*</span></label>
+                <input type="text" required placeholder="홍길동" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3.5 text-white outline-none focus:border-blue-500" />
+              </div>
+              <div>
+                <label className="block text-slate-400 text-xs font-bold mb-2">연락처 <span className="text-rose-500">*</span></label>
+                <input type="tel" required placeholder="010-1234-5678" value={formData.contact} onChange={e => setFormData({...formData, contact: e.target.value})} className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3.5 text-white outline-none focus:border-blue-500 font-mono" />
+              </div>
+              <div>
+                <label className="block text-slate-400 text-xs font-bold mb-2">이메일 <span className="text-rose-500">*</span></label>
+                <input type="email" required placeholder="example@mail.com" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3.5 text-white outline-none focus:border-blue-500 font-mono" />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-slate-400 text-xs font-bold mb-3">중점적으로 컨설팅 받고 싶은 내용 <span className="text-rose-500">*</span></label>
+              <div className="flex flex-wrap gap-2">
+                {CONSULTING_TOPICS.map(topic => (
+                  <button
+                    key={topic} type="button"
+                    onClick={() => setFormData({...formData, topic})}
+                    className={`px-4 py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all border ${
+                      formData.topic === topic 
+                        ? 'bg-blue-600 text-white border-blue-500 shadow-[0_0_15px_rgba(37,99,235,0.4)]' 
+                        : 'bg-slate-800 text-slate-300 border-slate-700 hover:border-slate-500'
+                    }`}
+                  >
+                    {topic}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-slate-400 text-xs font-bold mb-2 flex justify-between">
+                <span>현재 직무 및 이 교육이 필요한 이유</span>
+                <span className="text-slate-500 font-medium">(선택 사항)</span>
+              </label>
+              <textarea 
+                placeholder="예: 마케팅 에이전시 대표입니다. 직원들의 단순 반복 업무를 AI 에이전트로 자동화하여 인건비를 절감하고 싶습니다." 
+                value={formData.jobAndReason} onChange={e => setFormData({...formData, jobAndReason: e.target.value})}
+                className="w-full bg-slate-800 border border-slate-700 rounded-xl p-4 text-white outline-none focus:border-blue-500 text-sm h-24 resize-none custom-scrollbar"
+              />
+            </div>
+
+            <button 
+              type="submit" disabled={isSubmitting}
+              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black py-4 rounded-xl text-lg shadow-[0_0_20px_rgba(59,130,246,0.4)] transition-all disabled:opacity-50 mt-4"
+            >
+              {isSubmitting ? '신청 처리 중...' : '1:1 무료 컨설팅 지원하기'}
+            </button>
+            <p className="text-center text-slate-500 text-[11px] mt-3">신청이 접수되면 확인 후 기재해주신 연락처로 스케줄 조율 차 연락드립니다.</p>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// 👑 [메인 함수] 랜딩페이지 뼈대
 export default function BootcampSalesPage() {
   const [heroState, setHeroState] = useState(0);
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [formData, setFormData] = useState({ clientName: '', clientTitle: '', clientContact: '', clientEmail: '', businessGoal: '' });
+  const [isModalOpen, setIsModalOpen] = useState(false); 
 
   useEffect(() => {
     const interval = setInterval(() => setHeroState((prev) => (prev + 1) % 3), 3500);
     return () => clearInterval(interval);
   }, []);
-
-  const handleInputChange = (field, value) => setFormData(prev => ({ ...prev, [field]: value }));
-
-  const handleSubmitForm = async () => {
-    if (!formData.clientName || !formData.clientContact || !formData.businessGoal) {
-      return alert("성함, 연락처, 그리고 현재의 비즈니스 고민을 반드시 작성해 주셔야 심사가 가능합니다.");
-    }
-    setIsSubmitting(true);
-    try {
-      await addDoc(collection(db, "bootcamp_leads"), {
-        ...formData, status: "심사 대기", createdAt: serverTimestamp(),
-      });
-      setIsSuccess(true);
-    } catch (error) {
-      console.error("저장 실패:", error);
-      alert("지원서 제출 중 일시적인 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   return (
     <div className="bg-[#F8FAFC] text-slate-900 antialiased selection:bg-[#3B82F6] selection:text-white relative font-sans break-keep overflow-x-hidden">
@@ -732,7 +786,6 @@ export default function BootcampSalesPage() {
                 <span className="bg-[#3B82F6] text-white px-3 py-1 rounded text-[8px] md:text-[10px] font-bold shadow-[0_0_10px_rgba(59,130,246,0.3)]">Active Sessions</span>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4 flex-1 overflow-hidden relative">
-                {/* 💡 서버-클라이언트 불일치 방지를 위해 고정된 배열 데이터 사용 */}
                 {[1911, 1121, 1199, 1390, 1374, 1202].map((num, i) => (
                   <div key={i} className="bg-[#1E293B] rounded-lg md:rounded-xl p-2 md:p-3 shadow-sm border border-slate-700 h-16 md:h-20 flex flex-col justify-center">
                     <div className="text-[8px] md:text-[10px] font-bold text-blue-300 mb-1">상담 대기 | 리드 스코어 92</div>
@@ -848,7 +901,7 @@ export default function BootcampSalesPage() {
         </div>
       </section>
 
-      {/* 🚀 5. 수료 후의 변화 (V3.8 5대 실물 산출물 중심 인포그래픽 로드맵) */}
+      {/* 🚀 5. 수료 후의 변화 */}
       <section className="py-20 md:py-32 px-4 md:px-6 bg-[#0B1120] border-y border-slate-800 overflow-hidden relative">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] h-64 bg-[#3B82F6]/10 blur-[150px] pointer-events-none"></div>
 
@@ -977,7 +1030,7 @@ export default function BootcampSalesPage() {
       {/* 💡 [이동 완료] 결제창 직전 감정적 쐐기: 롤링 명언 섹션 */}
       <ParadigmShiftSection />
 
-      {/* 🚀 7. 최종 Pricing 및 상담 접수 CTA (V4.6 정상가 220만원 제거 마크다운 반영) */}
+      {/* 🚀 7. 최종 Pricing 및 컨설팅 지원 CTA */}
       <section className="py-20 md:py-32 px-4 md:px-6 bg-slate-900 text-white overflow-hidden border-t border-slate-800 relative">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-64 bg-blue-600/10 blur-[120px] pointer-events-none"></div>
         
@@ -1017,7 +1070,7 @@ export default function BootcampSalesPage() {
               </div>
             </div>
 
-            {/* 💸 가격 카드 수정 영역 */}
+            {/* 💸 가격 카드 및 무료 컨설팅 지원 버튼 영역 */}
             <div className="bg-white text-slate-900 p-8 md:p-12 rounded-[2.5rem] border border-slate-200 shadow-2xl relative max-w-2xl mx-auto overflow-hidden">
               <div className="absolute top-0 right-0 bg-rose-500 text-white font-black text-xs px-6 py-2 uppercase tracking-wider rounded-bl-2xl shadow-md">
                 30% SPECIAL OFF
@@ -1025,7 +1078,6 @@ export default function BootcampSalesPage() {
               
               <div className="text-slate-500 font-bold mb-2 text-xs md:text-sm tracking-wide uppercase">The Creators AI Bootcamp 1st Crew</div>
               
-              {/* 💡 [수정완료] 정상가 220만원을 흔적도 없이 제거하고 기존가 라인으로 심플하게 압축 */}
               <div className="text-slate-400 line-through text-base md:text-lg mb-1">기존가 990,000원</div>
               
               <div className="text-4xl sm:text-5xl md:text-6xl font-black text-[#3B82F6] mb-8 tracking-tight">
@@ -1033,82 +1085,26 @@ export default function BootcampSalesPage() {
               </div>
               
               <button 
-                onClick={() => setIsFormOpen(true)}
-                className="w-full bg-rose-600 text-white px-4 md:px-8 py-4 md:py-5 rounded-2xl text-base md:text-xl font-black shadow-lg hover:bg-rose-700 transition-all transform hover:-translate-y-0.5 break-keep flex items-center justify-center gap-2"
+                onClick={() => setIsModalOpen(true)}
+                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-4 md:px-8 py-4 md:py-5 rounded-2xl text-base md:text-xl font-black shadow-lg transition-all transform hover:-translate-y-0.5 break-keep flex items-center justify-center gap-2"
               >
-                <span>🔒 결제창 마감 (1기 크루 심사 지원하기)</span>
+                <span>🎁 결제 전 1:1 무료 컨설팅 신청하기</span>
               </button>
               
               <p className="text-slate-500 text-xs md:text-sm mt-6 font-medium break-keep leading-relaxed text-left md:text-center">
-                * 고밀도 밀착 케어 및 인프라 제공 퀄리티 유지를 위해 <strong className="text-rose-500 font-black">정원은 최대 10명 소수 정예</strong>로 엄격히 제한됩니다.<br className="hidden sm:block"/>
-                현재 결제창은 닫혀있으며, 제출해 주신 지원서 심사 후 합격자에 한해 개별 연락을 드립니다.
+                * 결제 전 1시간 무료 컨설팅을 통해 나에게 맞는 수업인지 강사님과 직접 상담해 보시고 결정하세요.<br className="hidden sm:block"/>
+                신청을 남겨주시면 스케줄 조율을 위해 개별 연락을 드립니다. (정원 10명 마감 시 조기 종료)
               </p>
             </div>
           </FadeInSection>
         </div>
       </section>
 
-      {/* 💡 심사 지원서 폼 모달 */}
-      {isFormOpen && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex justify-center items-center p-4">
-          <div className="bg-white rounded-[2rem] w-full max-w-md shadow-2xl p-6 md:p-8 relative animate-fade-in-up max-h-[90vh] overflow-y-auto border border-slate-100 custom-scrollbar">
-            {!isSuccess && (
-              <button onClick={() => setIsFormOpen(false)} className="absolute top-4 md:top-6 right-4 md:right-6 w-8 h-8 bg-slate-100 rounded-full font-bold hover:bg-slate-200 text-slate-500 transition-colors">✕</button>
-            )}
-            
-            {!isSuccess ? (
-              <div>
-                <h2 className="text-xl md:text-2xl font-black text-slate-800 mb-2 break-keep">🔥 1기 크루 합류 심사 지원서</h2>
-                <p className="text-slate-500 text-xs md:text-sm mb-6 md:mb-8 break-keep font-medium">단순 결제로 수강할 수 없습니다. 귀하의 비즈니스와 The Creators AI의 시너지를 판단하기 위해 아래 문항을 진솔하게 작성해 주십시오.</p>
-                
-                <div className="space-y-3 md:space-y-4">
-                  <input type="text" placeholder="기업명 또는 브랜드명" value={formData.clientName} onChange={e => handleInputChange('clientName', e.target.value)}
-                    className="w-full p-3 md:p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-rose-500 outline-none text-sm transition-colors" />
-                  <input type="text" placeholder="성함 및 직함 (예: 홍길동 대표)" value={formData.clientTitle} onChange={e => handleInputChange('clientTitle', e.target.value)}
-                    className="w-full p-3 md:p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-rose-500 outline-none text-sm transition-colors" />
-                  <input type="text" placeholder="연락처 (010-0000-0000)" value={formData.clientContact} onChange={e => handleInputChange('clientContact', e.target.value)}
-                    className="w-full p-3 md:p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-rose-500 outline-none text-sm transition-colors" />
-                  <input type="email" placeholder="이메일 주소" value={formData.clientEmail} onChange={e => handleInputChange('clientEmail', e.target.value)}
-                    className="w-full p-3 md:p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-rose-500 outline-none text-sm transition-colors" />
-                  
-                  <textarea placeholder="현재 비즈니스의 가장 큰 고민과, 4주 후 자동화 시스템으로 달성하고 싶은 목표를 적어주세요. (심사 핵심 기준)" value={formData.businessGoal} onChange={e => handleInputChange('businessGoal', e.target.value)}
-                    className="w-full p-3 md:p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-1 focus:ring-rose-500 outline-none text-sm transition-colors h-32 custom-scrollbar resize-none" />
-                  
-                  <button 
-                    onClick={handleSubmitForm}
-                    disabled={isSubmitting}
-                    className="w-full h-12 md:h-14 bg-slate-900 text-white rounded-xl font-bold text-base hover:bg-black disabled:bg-slate-300 transition-colors mt-2 md:mt-4 shadow-lg"
-                  >
-                    {isSubmitting ? '데이터 전송 중...' : '심사 지원서 최종 제출하기'}
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="text-center py-4 md:py-6">
-                <div className="w-12 h-12 md:w-16 md:h-16 bg-rose-50 text-rose-500 rounded-full flex items-center justify-center text-xl md:text-2xl mx-auto mb-4 md:mb-6 font-black">✓</div>
-                <h2 className="text-xl md:text-2xl font-black text-slate-800 mb-3 md:mb-4 break-keep">지원서가 제출되었습니다.</h2>
-                <p className="text-slate-600 mb-6 md:mb-8 leading-relaxed text-sm md:text-base break-keep">
-                  진솔한 고민을 남겨주셔서 감사합니다.<br className="hidden sm:block"/>
-                  대표가 직접 내용을 심사한 후, <strong>시너지가 날 수 있는 합격자에 한해</strong> 남겨주신 연락처로 개별 연락을 드리겠습니다.
-                </p>
-                
-                <div className="space-y-2 md:space-y-3">
-                  <a href="https://open.kakao.com/o/sw0Qhz5b" target="_blank" rel="noopener noreferrer" className="w-full flex items-center justify-center gap-2 h-12 bg-[#FEE500] text-[#191919] rounded-xl font-bold text-sm hover:bg-[#FADA0A] transition-colors">
-                    💬 긴급 카카오톡 문의
-                  </a>
-                  <a href="tel:051-633-3812" className="w-full flex items-center justify-center gap-2 h-12 bg-slate-100 text-slate-700 border border-slate-200 rounded-xl font-bold text-sm hover:bg-slate-200 transition-colors">
-                    📞 유선 센터 문의 (051-633-3812)
-                  </a>
-                </div>
-                
-                <button onClick={() => {setIsFormOpen(false); setIsSuccess(false);}} className="mt-6 md:mt-8 text-slate-400 font-bold hover:text-slate-600 text-sm">
-                  창 닫기
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+      {/* 💡 [신규 탑재] 무료 컨설팅 지원서 모달 */}
+      <ConsultingApplyModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
 
     </div>
   );
