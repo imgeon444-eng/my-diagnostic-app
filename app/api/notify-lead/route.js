@@ -2,6 +2,10 @@ import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
 export async function POST(request) {
+  // 💡 아래 3줄 추가 (비밀번호가 인식되는지 확인)
+  console.log("DEBUG: Gmail User exists:", !!process.env.GMAIL_USER);
+  console.log("DEBUG: Gmail PW exists:", !!process.env.GMAIL_APP_PW);
+  
   try {
     const { name, contact, email, topic, jobAndReason } = await request.json();
 
