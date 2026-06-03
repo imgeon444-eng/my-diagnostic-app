@@ -285,12 +285,12 @@ function ResultContent() {
         </div>
 
         <Link 
-          href="/" 
-          className="group relative w-full h-20 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-3xl font-black text-xl md:text-2xl transition-all shadow-[0_10px_30px_rgba(6,182,212,0.3)] flex items-center justify-center gap-3 overflow-hidden active:scale-[0.98]"
-        >
-          <div className="absolute inset-0 w-1/4 h-full bg-white/20 skew-x-12 -translate-x-full group-hover:translate-x-[400%] transition-transform duration-1000 ease-in-out"></div>
-          🔍 내 채널 URL 진단하러 가기
-        </Link>
+  href="/bootcamp-funnel" 
+  className="group relative w-full h-20 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-3xl font-black text-xl md:text-2xl transition-all shadow-[0_10px_30px_rgba(6,182,212,0.3)] flex items-center justify-center gap-3 overflow-hidden active:scale-[0.98]"
+>
+  <div className="absolute inset-0 w-1/4 h-full bg-white/20 skew-x-12 -translate-x-full group-hover:translate-x-[400%] transition-transform duration-1000 ease-in-out"></div>
+  🔍 내 채널 URL 진단하러 가기
+</Link>
 
         <p className="text-slate-600 text-xs mt-6 font-medium">© 2026 The Creators AI. All rights reserved.</p>
       </footer>
