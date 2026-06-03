@@ -598,28 +598,41 @@ function ConsultingApplyModal({ isOpen, onClose }) {
     setIsSubmitting(true);
 
     try {
-      // 💡 [핵심 해결책] 백엔드 자동화 툴이 에러를 뱉지 않도록 줄바꿈 및 특수기호 제거 (순정 텍스트 변환)
+      // 1. 칸반보드 DB 저장
       const safeBusinessGoal = formData.jobAndReason 
         ? `관심분야: ${formData.topic} / 직무 및 고민: ${formData.jobAndReason}` 
         : `관심분야: ${formData.topic}`;
 
-      // 💡 기존 오리지널 스키마와 100% 동일하게 순정 상태로 전송
       await addDoc(collection(db, "bootcamp_leads"), {
         clientName: "무료컨설팅 신청",
         clientTitle: formData.name,
         clientContact: formData.contact,
         clientEmail: formData.email,
-        businessGoal: safeBusinessGoal, // 특수기호가 제거된 순정 텍스트
+        businessGoal: safeBusinessGoal,
         status: "심사 대기",
         createdAt: serverTimestamp()
       });
-      
+
+      // 2. 이메일 발송 스위치 (누락되었던 핵심 연결부)
+      await fetch('/api/notify-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          contact: formData.contact,
+          email: formData.email,
+          topic: formData.topic,
+          jobAndReason: formData.jobAndReason
+        })
+      }).catch(err => console.error("알람 발송 우회 실패:", err));
+
       alert(`신청이 완료되었습니다!\n빠른 시일 내에 ${formData.contact} 번호로 일정 조율 연락을 드리겠습니다.`);
       onClose();
       setFormData({ name: '', contact: '', email: '', topic: '', jobAndReason: '' });
+
     } catch (error) {
       console.error("제출 에러:", error);
-      alert(`시스템 오류가 발생했습니다.\n\n(참고: DB 보안 규칙 오류일 경우 Firebase 콘솔에서 외부 쓰기 권한을 확인해주세요.)`);
+      alert(`시스템 오류가 발생했습니다.`);
     } finally {
       setIsSubmitting(false);
     }
