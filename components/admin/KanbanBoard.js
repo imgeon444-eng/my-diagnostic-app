@@ -186,16 +186,28 @@ export default function KanbanBoard({
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const leadData = snapshot.docs.map(doc => {
         const data = doc.data();
+        let formattedDate = '방금 전';
+        if (data.createdAt) {
+          try {
+            const dateObj = data.createdAt.toDate ? data.createdAt.toDate() : (data.createdAt instanceof Date ? data.createdAt : new Date(data.createdAt));
+            if (!isNaN(dateObj.getTime())) {
+              formattedDate = dateObj.toLocaleString('ko-KR', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            }
+          } catch (e) {
+            formattedDate = '방금 전';
+          }
+        }
+
         return {
           id: doc.id,
-          name: data.clientTitle || '이름 없음',
-          company: data.clientName || '회사명 없음',
+          name: data.clientTitle || data.clientName || '이름 없음',
+          company: data.clientName || data.clientTitle || '회사명 없음',
           contact: data.clientContact || '연락처 없음',
           email: data.clientEmail || '',
           score: data.totalScore || 0,
           painPoint: data.shortPainPoint || '', 
           status: data.status || columns[0], 
-          date: data.createdAt?.toDate().toLocaleString('ko-KR', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) || '방금 전',
+          date: formattedDate,
         };
       });
       setLeads(leadData);

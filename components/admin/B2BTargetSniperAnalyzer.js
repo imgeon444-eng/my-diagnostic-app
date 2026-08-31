@@ -186,7 +186,15 @@ export default function B2BTargetSniperAnalyzer() {
               {analysisLogs.slice(0, 10).map((log, idx) => (
                 <tr key={log.id || idx} className="hover:bg-slate-800/50 transition-colors">
                   <td className="px-6 py-4 text-xs text-slate-500 whitespace-nowrap">
-                    {log.createdAt?.toDate ? log.createdAt.toDate().toLocaleString() : '시간 정보 없음'}
+                    {(() => {
+                      if (!log.createdAt) return '방금 전';
+                      try {
+                        const d = log.createdAt.toDate ? log.createdAt.toDate() : (log.createdAt instanceof Date ? log.createdAt : new Date(log.createdAt));
+                        return isNaN(d.getTime()) ? '방금 전' : d.toLocaleString('ko-KR');
+                      } catch (e) {
+                        return '방금 전';
+                      }
+                    })()}
                   </td>
                   <td className="px-6 py-4">
                     {log.channel === 'youtube' && <span className="bg-red-500/10 text-red-400 text-[10px] font-black px-2 py-1 rounded border border-red-500/20">YOUTUBE</span>}

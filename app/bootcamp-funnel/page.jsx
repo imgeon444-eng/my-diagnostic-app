@@ -3,6 +3,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 import StorybookModal from './components/StorybookModal';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../../lib/firebase';
 
 export default function BootcampFunnelPage() {
   const router = useRouter();
@@ -47,10 +49,22 @@ export default function BootcampFunnelPage() {
 
       if (!res.ok || data.error) {
         alert(`🚨 AI 진단 실패: ${data.error}`);
-        setIsLoading(false);
         return;
       }
       setAnalysisResult(data);
+
+      // 🗄️ 2층 데이터랩 어드민 연동: Firestore url_analysis 컬렉션에 자동 기록
+      try {
+        await addDoc(collection(db, "url_analysis"), {
+          platform,
+          targetUrl: payload.targetUrl || payload.manualData?.brandName || 'URL 없음',
+          publicReport: data.publicReport,
+          keyword: data.publicReport?.category || '미분류',
+          createdAt: serverTimestamp(),
+        });
+      } catch (logErr) {
+        console.log("url_analysis logging non-blocking:", logErr);
+      }
     } catch (error) {
       alert("서버 통신 오류가 발생했습니다.");
     } finally {
