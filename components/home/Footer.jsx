@@ -40,7 +40,12 @@ export default function Footer({ onOpenDiagnostic }) {
               </li>
               <li>
                 <Link href="/synergy-test" className="hover:text-cyan-300 transition-colors">
-                  1.5층: AI 메타인지 진단기
+                  1층: AI 메타인지 진단기
+                </Link>
+              </li>
+              <li>
+                <Link href="/storybook" className="hover:text-emerald-300 transition-colors">
+                  1.5층: 퍼널마케팅 공식 스토리북
                 </Link>
               </li>
               <li>

@@ -2,7 +2,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
-import StorybookModal from './components/StorybookModal';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 
@@ -16,7 +15,6 @@ export default function BootcampFunnelPage() {
   const [instaData, setInstaData] = useState({ brandName: '', followerCount: '', mainContent: '', coreProblem: '' });
   const [analysisResult, setAnalysisResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isStorybookOpen, setIsStorybookOpen] = useState(false);
 
   // 2. 자동 스크롤
   useEffect(() => {
@@ -246,17 +244,6 @@ export default function BootcampFunnelPage() {
                 ))}
               </div>
 
-              <div className="bg-gradient-to-r from-blue-900/40 to-indigo-900/40 rounded-3xl p-6 md:p-10 border border-blue-500/20 mb-8 md:mb-10 text-center flex flex-col items-center">
-                <h4 className="text-xl md:text-2xl font-black text-white mb-3 break-keep">이 채널의 문제점을 어떻게 해결할까요?</h4>
-                <p className="text-blue-200 text-sm md:text-base mb-8 break-keep">AI가 분석한 맞춤형 퍼널 스토리북을 확인해 보세요.</p>
-                <button 
-                  onClick={() => setIsStorybookOpen(true)}
-                  className="w-full md:w-auto bg-white text-indigo-900 px-8 md:px-10 py-4 md:py-5 rounded-2xl font-black text-base md:text-lg hover:bg-slate-100 transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] flex items-center justify-center gap-2 hover:scale-105"
-                >
-                  📖 내 채널 퍼널 스토리북 열람하기
-                </button>
-              </div>
-
               <div className="pt-8 border-t border-white/10 text-center mb-10">
                 <p className="text-slate-500 text-[10px] md:text-xs font-bold uppercase tracking-widest mb-4">AI Identity Analysis</p>
                 <p className="text-slate-200 text-sm md:text-base font-bold leading-relaxed break-keep px-4">{report.identity}</p>
@@ -279,10 +266,6 @@ export default function BootcampFunnelPage() {
           </div>
         )}
       </div>
-
-      {isStorybookOpen && report && (
-        <StorybookModal report={report} onClose={() => setIsStorybookOpen(false)} />
-      )}
     </div>
   );
 }

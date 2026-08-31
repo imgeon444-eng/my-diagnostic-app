@@ -70,12 +70,20 @@ export default function FunnelGateways({ onOpenDiagnostic }) {
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
               </button>
               
-              <Link
-                href="/synergy-test"
-                className="w-full py-3.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-cyan-300 hover:text-cyan-200 font-bold text-xs transition-all flex items-center justify-center gap-1.5"
-              >
-                🧠 AI 메타인지 진단 바로가기
-              </Link>
+              <div className="grid grid-cols-2 gap-2">
+                <Link
+                  href="/synergy-test"
+                  className="py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-cyan-300 hover:text-cyan-200 font-bold text-xs transition-all flex items-center justify-center gap-1"
+                >
+                  🧠 메타인지
+                </Link>
+                <Link
+                  href="/storybook"
+                  className="py-3 rounded-xl bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-500/30 text-emerald-300 hover:text-emerald-200 font-bold text-xs transition-all flex items-center justify-center gap-1"
+                >
+                  📖 스토리북
+                </Link>
+              </div>
             </div>
           </div>
 

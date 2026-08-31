@@ -48,25 +48,31 @@ export default function Navbar({ onOpenDiagnostic }) {
         <nav className="hidden md:flex items-center gap-1 bg-slate-900/60 border border-white/10 px-4 py-1.5 rounded-full backdrop-blur-md">
           <button
             onClick={onOpenDiagnostic}
-            className="text-xs lg:text-sm font-bold text-slate-300 hover:text-white px-3.5 py-2 rounded-full hover:bg-white/5 transition-colors"
+            className="text-xs lg:text-sm font-bold text-slate-300 hover:text-white px-3 py-2 rounded-full hover:bg-white/5 transition-colors"
           >
-            📋 1층 마케팅 진단
+            📋 1층 진단
           </button>
           <Link
             href="/synergy-test"
-            className="text-xs lg:text-sm font-bold text-slate-300 hover:text-white px-3.5 py-2 rounded-full hover:bg-white/5 transition-colors"
+            className="text-xs lg:text-sm font-bold text-slate-300 hover:text-white px-3 py-2 rounded-full hover:bg-white/5 transition-colors"
           >
             🧠 AI 메타인지
           </Link>
           <Link
+            href="/storybook"
+            className="text-xs lg:text-sm font-bold text-emerald-300 hover:text-emerald-100 px-3 py-2 rounded-full hover:bg-emerald-500/10 transition-colors"
+          >
+            📖 1.5층 스토리북
+          </Link>
+          <Link
             href="/bootcamp-funnel"
-            className="text-xs lg:text-sm font-bold text-slate-300 hover:text-white px-3.5 py-2 rounded-full hover:bg-white/5 transition-colors"
+            className="text-xs lg:text-sm font-bold text-slate-300 hover:text-white px-3 py-2 rounded-full hover:bg-white/5 transition-colors"
           >
             📊 2층 URL 데이터랩
           </Link>
           <Link
             href="/bootcamp-sales"
-            className="text-xs lg:text-sm font-bold text-cyan-300 hover:text-cyan-100 px-3.5 py-2 rounded-full hover:bg-cyan-500/10 transition-colors"
+            className="text-xs lg:text-sm font-bold text-cyan-300 hover:text-cyan-100 px-3 py-2 rounded-full hover:bg-cyan-500/10 transition-colors"
           >
             🔥 3층 부트캠프 VIP
           </Link>
@@ -133,7 +139,14 @@ export default function Navbar({ onOpenDiagnostic }) {
               onClick={() => setMobileMenuOpen(false)}
               className="py-3 px-4 rounded-xl bg-white/5 text-slate-200 font-bold text-sm"
             >
-              🧠 1.5층 AI 메타인지 진단기
+              🧠 1층 AI 메타인지 진단기
+            </Link>
+            <Link
+              href="/storybook"
+              onClick={() => setMobileMenuOpen(false)}
+              className="py-3 px-4 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 font-bold text-sm"
+            >
+              📖 1.5층 퍼널마케팅 공식 스토리북
             </Link>
             <Link
               href="/bootcamp-funnel"
