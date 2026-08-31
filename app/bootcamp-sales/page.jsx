@@ -762,44 +762,47 @@ export default function BootcampSalesPage() {
       {/* 🚀 1. 히어로 섹션 (투명 사령탑 + AI 로봇 배경 줌인 모션) */}
       <header className="relative w-full min-h-screen flex flex-col items-center justify-center pt-24 pb-16 px-4 md:px-6 overflow-hidden">
         
-        {/* 🎬 배경: 고화질 시네마틱 AI 코어 루프 비디오 + 프리미엄 딥 다크 글래스 오버레이 */}
+        {/* 🎬 배경: 선명하고 밝은 고화질 시네마틱 AI 코어 루프 비디오 */}
         <div className="absolute inset-0 z-0 overflow-hidden">
           <video
             autoPlay
             loop
             muted
             playsInline
-            className="absolute inset-0 w-full h-full object-cover scale-105 opacity-60"
+            className="absolute inset-0 w-full h-full object-cover scale-100 opacity-90 md:opacity-95"
             src="/videos/Glowing_AI_core_in_landscape_202608310749.mp4"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#05080f]/90 via-[#05080f]/65 to-[#05080f] backdrop-blur-[1px]"></div>
+          {/* 영상의 선명함을 유지하면서 상하 경계만 부드럽게 이어주는 비네팅 오버레이 */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#05080f]/60 via-transparent to-[#05080f]/95"></div>
         </div>
         
         <div className="max-w-5xl mx-auto relative z-10 text-center flex flex-col items-center w-full">
           {/* 확정 로드 모션 적용 (.hero-up 등) */}
           <div className="hero-up mb-6">
-            <span className="inline-block py-1.5 px-5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md text-white font-bold text-xs md:text-sm tracking-widest uppercase shadow-lg">
+            <span className="inline-block py-1.5 px-5 rounded-full bg-black/60 border border-cyan-400/50 backdrop-blur-md text-cyan-300 font-bold text-xs md:text-sm tracking-widest uppercase shadow-[0_0_25px_rgba(6,182,212,0.4)]">
               The Creators AI Bootcamp 2nd
             </span>
           </div>
           
-          <div className="flex flex-col items-center text-3xl sm:text-5xl md:text-7xl font-black mb-8 leading-[1.2] tracking-tight break-keep overflow-hidden w-full">
+          <div className="flex flex-col items-center text-3xl sm:text-5xl md:text-7xl font-black mb-8 leading-[1.2] tracking-tight break-keep overflow-hidden w-full drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]">
             <div className="hero-left">
-              <span className="block mb-2 text-white drop-shadow-lg">코딩은 단 한 줄도 가르치지 않습니다.</span>
+              <span className="block mb-2 text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.9)]">코딩은 단 한 줄도 가르치지 않습니다.</span>
             </div>
             <div className="hero-right" style={{ animationDelay: '0.2s' }}>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-cyan-300 drop-shadow-[0_0_25px_rgba(59,130,246,0.6)]">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-cyan-200 to-indigo-300 drop-shadow-[0_0_35px_rgba(59,130,246,0.8)]">
                 오직 스스로 돌아갈 '시스템'만 짓겠습니다.
               </span>
             </div>
           </div>
 
-          <div className="hero-up w-full" style={{ animationDelay: '0.4s' }}>
-            <p className="text-sm sm:text-base md:text-lg text-slate-300 mb-12 font-medium max-w-3xl mx-auto leading-relaxed break-keep drop-shadow-md">
-              외주 개발사에 끌려다니던 시간, 이제 대표님이 'AI'를 통제하여 직접 배포하십시오.<br className="hidden md:block"/>
-              기획서를 넘기고, 소통 오류에 지치며, 단순 수정에도 비용을 지불하던 악순환을 끊어내야 합니다. 개발 지식이 없어도 괜찮습니다.<br className="hidden lg:block"/>
-              <strong>Agentic AI</strong>를 나만의 수석 개발자로 고용하여, 단 4주 만에 세일즈 퍼널과 맞춤형 백엔드를 직접 구축하는 실전 환경을 제공합니다.
-            </p>
+          <div className="hero-up w-full mb-10" style={{ animationDelay: '0.4s' }}>
+            <div className="bg-black/55 backdrop-blur-md p-6 sm:p-8 rounded-2xl border border-white/15 shadow-[0_10px_35px_rgba(0,0,0,0.7)] max-w-3xl mx-auto">
+              <p className="text-sm sm:text-base md:text-lg text-slate-100 font-medium leading-relaxed break-keep">
+                외주 개발사에 끌려다니던 시간, 이제 대표님이 'AI'를 통제하여 직접 배포하십시오.<br className="hidden md:block"/>
+                기획서를 넘기고, 소통 오류에 지치며, 단순 수정에도 비용을 지불하던 악순환을 끊어내야 합니다. 개발 지식이 없어도 괜찮습니다.<br className="hidden lg:block"/>
+                <strong className="text-cyan-300 font-black">Agentic AI</strong>를 나만의 수석 개발자로 고용하여, 단 4주 만에 세일즈 퍼널과 맞춤형 백엔드를 직접 구축하는 실전 환경을 제공합니다.
+              </p>
+            </div>
           </div>
 
           {/* 💻 투명 사령탑 (Glassmorphism 시뮬레이터 거대화) */}
