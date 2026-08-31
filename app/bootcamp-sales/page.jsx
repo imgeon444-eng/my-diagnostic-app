@@ -762,13 +762,17 @@ export default function BootcampSalesPage() {
       {/* 🚀 1. 히어로 섹션 (투명 사령탑 + AI 로봇 배경 줌인 모션) */}
       <header className="relative w-full min-h-screen flex flex-col items-center justify-center pt-24 pb-16 px-4 md:px-6 overflow-hidden">
         
-        {/* 🎬 배경: 줌인(Ken Burns) AI 로봇 이미지 + 가독성 보정 그라데이션 */}
+        {/* 🎬 배경: 고화질 시네마틱 AI 코어 루프 비디오 + 프리미엄 딥 다크 글래스 오버레이 */}
         <div className="absolute inset-0 z-0 overflow-hidden">
-          <div 
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat animate-ken-burns"
-            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=2865&auto=format&fit=crop')" }}
-          ></div>
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/90 via-slate-900/60 to-[#05080f]"></div>
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover scale-105 opacity-60"
+            src="/videos/Glowing_AI_core_in_landscape_202608310749.mp4"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#05080f]/90 via-[#05080f]/65 to-[#05080f] backdrop-blur-[1px]"></div>
         </div>
         
         <div className="max-w-5xl mx-auto relative z-10 text-center flex flex-col items-center w-full">

@@ -142,7 +142,19 @@ export default function SynergyTestPage() {
   const pyramidTiers = [{ lvl: 6, name: "Grandmaster" }, { lvl: 5, name: "Master" }, { lvl: 4, name: "Director" }, { lvl: 3, name: "Manager" }, { lvl: 2, name: "Staff" }, { lvl: 1, name: "Intern" }];
 
   return (
-    <div className="min-h-screen bg-[#090E17] text-slate-200 font-sans flex items-center justify-center p-4 selection:bg-[#3B82F6] selection:text-white pb-24 pt-12 relative overflow-hidden">
+    <div className="min-h-screen bg-[#090E17] text-slate-200 font-sans flex items-center justify-center p-4 selection:bg-[#3B82F6] selection:text-white pb-24 pt-16 relative overflow-hidden">
+      
+      {/* 🚀 좌측 상단: 메인 홈으로 되돌아가기 플로팅 버튼 */}
+      <div className="fixed top-4 left-4 md:top-6 md:left-6 z-50">
+        <Link 
+          href="/" 
+          className="group flex items-center gap-2 px-4 py-2 md:px-5 md:py-2.5 bg-black/50 backdrop-blur-md border border-white/20 rounded-full shadow-lg hover:bg-black/80 hover:border-cyan-400/50 transition-all duration-300 ease-lux"
+        >
+          <span className="text-cyan-400 group-hover:-translate-x-1 transition-transform">←</span>
+          <span className="text-white/90 group-hover:text-white text-xs md:text-sm font-bold tracking-wide">메인으로 돌아가기</span>
+        </Link>
+      </div>
+
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[90%] h-[600px] bg-blue-600/10 rounded-full blur-[150px] pointer-events-none"></div>
 
       <div className="max-w-4xl w-full relative z-10 animate-fade-in-up">
@@ -345,9 +357,15 @@ export default function SynergyTestPage() {
               <Link href="/bootcamp-sales" className="w-full inline-flex items-center justify-center py-5 px-6 rounded-2xl font-black text-white text-base md:text-lg bg-cyan-600 hover:bg-cyan-500 shadow-[0_0_30px_rgba(6,182,212,0.3)] transition-all hover:-translate-y-1">
                 MCP와 하네스 장착하고 Grandmaster로 스케일업 하기
               </Link>
-              <button onClick={handleReset} className="mt-8 text-slate-600 hover:text-slate-400 text-xs font-bold uppercase tracking-widest transition-colors">
-                [ 시스템 재진단 ]
-              </button>
+              <div className="mt-8 flex items-center justify-center gap-6">
+                <button onClick={handleReset} className="text-slate-500 hover:text-slate-300 text-xs font-bold uppercase tracking-widest transition-colors">
+                  [ 시스템 재진단 ]
+                </button>
+                <span className="text-slate-700">|</span>
+                <Link href="/" className="text-cyan-400 hover:text-cyan-300 text-xs font-bold tracking-widest transition-colors">
+                  [ 🏠 메인 타이틀로 이동 ]
+                </Link>
+              </div>
             </div>
           </div>
         )}
