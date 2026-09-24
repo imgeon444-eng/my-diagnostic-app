@@ -760,16 +760,33 @@ function BootcampSalesContent() {
       
       <style dangerouslySetInnerHTML={{__html: globalStyles}} />
 
-      {/* 🚀 좌측 상단: 플로팅 네비게이션 및 진단 연동 뱃지 */}
-      <div className="fixed top-4 left-4 md:top-6 md:left-6 z-50 flex items-center gap-2">
+      {/* 🚀 좌측 상단: 플로팅 네비게이션 (뒤로가기, 1층 로비, 본사 포털, 진단 연동 뱃지) */}
+      <div className="fixed top-4 left-4 md:top-6 md:left-6 z-50 flex items-center gap-1.5 sm:gap-2">
         <button
           type="button"
           onClick={handleSmartBack}
-          className="group flex items-center gap-2 px-4 py-2 md:px-5 md:py-2.5 bg-black/40 backdrop-blur-md border border-white/20 rounded-full shadow-lg hover:bg-black/60 transition-all duration-300 ease-lux"
+          className="group flex items-center gap-1.5 px-3 py-2 md:px-4 md:py-2.5 bg-black/50 backdrop-blur-md border border-white/20 rounded-full shadow-lg hover:bg-black/70 transition-all duration-300 ease-lux"
+          title="이전 화면으로 이동"
         >
           <span className="text-white/70 group-hover:text-white transition-transform group-hover:-translate-x-1 ease-lux">←</span>
-          <span className="text-white/90 group-hover:text-white text-xs md:text-sm font-bold tracking-wide">뒤로가기</span>
+          <span className="text-white/90 group-hover:text-white text-xs md:text-sm font-bold tracking-wide">뒤로</span>
         </button>
+
+        <Link
+          href="/"
+          className="flex items-center gap-1 px-3 py-2 md:px-4 md:py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full shadow-lg hover:bg-white/20 text-white text-xs md:text-sm font-bold transition-all duration-300 ease-lux"
+          title="진단기 플랫폼 1층 통합 로비로 이동"
+        >
+          <span>1층 로비</span>
+        </Link>
+
+        <a
+          href="http://thecreator-mcn.com/"
+          className="flex items-center gap-1 px-3 py-2 md:px-4 md:py-2.5 bg-gradient-to-r from-cyan-600/70 to-indigo-600/70 hover:from-cyan-500 hover:to-indigo-500 text-white rounded-full shadow-lg text-xs md:text-sm font-bold border border-cyan-400/30 transition-all duration-300 ease-lux"
+          title="더크리에이터즈AI 본사 공식 포털로 이동"
+        >
+          <span>본사 포털</span>
+        </a>
 
         {brandParam && (
           <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-indigo-950/80 backdrop-blur-md border border-indigo-500/40 rounded-full text-xs font-bold text-slate-200 shadow-lg">

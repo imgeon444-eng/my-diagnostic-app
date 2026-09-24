@@ -78,17 +78,26 @@ export default function Navbar({ onOpenDiagnostic }) {
           </Link>
         </nav>
 
-        {/* 우측 CTA 및 관리자 바로가기 */}
-        <div className="hidden md:flex items-center gap-3">
+        {/* 우측 CTA 및 본사 포털 바로가기 */}
+        <div className="hidden md:flex items-center gap-2 lg:gap-3">
+          <a
+            href="http://thecreator-mcn.com/"
+            className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600/80 to-indigo-600/80 hover:from-cyan-500 hover:to-indigo-500 text-white transition-all text-xs font-bold shadow-md shadow-indigo-600/20 border border-cyan-400/30"
+            title="더크리에이터즈AI 본사 공식 포털로 이동"
+          >
+            <span>본사 포털</span>
+            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+          </a>
+
           <button
             onClick={onOpenDiagnostic}
-            className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white text-xs lg:text-sm font-black px-5 py-2.5 rounded-xl shadow-[0_0_20px_rgba(59,130,246,0.4)] transition-all hover:scale-105 active:scale-95"
+            className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white text-xs lg:text-sm font-black px-4 lg:px-5 py-2.5 rounded-xl shadow-[0_0_20px_rgba(59,130,246,0.4)] transition-all hover:scale-105 active:scale-95"
           >
             무료 진단 시작
           </button>
           <Link
             href="/admin/login"
-            className="bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white text-xs font-bold px-3.5 py-2.5 rounded-xl transition-colors"
+            className="bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white text-xs font-bold px-3 py-2.5 rounded-xl transition-colors"
             title="관리자 CRM 관제탑"
           >
             🔒 CRM
@@ -97,6 +106,12 @@ export default function Navbar({ onOpenDiagnostic }) {
 
         {/* 모바일 햄버거 버튼 */}
         <div className="flex md:hidden items-center gap-2">
+          <a
+            href="http://thecreator-mcn.com/"
+            className="bg-cyan-600/80 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg border border-cyan-400/30"
+          >
+            본사
+          </a>
           <button
             onClick={onOpenDiagnostic}
             className="bg-blue-600 text-white text-xs font-black px-3 py-2 rounded-lg"
@@ -125,6 +140,13 @@ export default function Navbar({ onOpenDiagnostic }) {
       {mobileMenuOpen && (
         <div className="md:hidden bg-[#090E17]/95 border-b border-white/10 backdrop-blur-2xl px-6 py-6 space-y-4 animate-fade-in-up">
           <div className="flex flex-col space-y-2">
+            <a
+              href="http://thecreator-mcn.com/"
+              className="py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-900/40 to-indigo-900/40 border border-cyan-500/30 text-cyan-300 font-bold text-sm flex items-center justify-between"
+            >
+              <span>더크리에이터즈AI 본사 공식 포털</span>
+              <span>&rarr;</span>
+            </a>
             <button
               onClick={() => {
                 setMobileMenuOpen(false);

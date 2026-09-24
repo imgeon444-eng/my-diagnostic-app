@@ -144,15 +144,21 @@ export default function SynergyTestPage() {
   return (
     <div className="min-h-screen bg-[#090E17] text-slate-200 font-sans flex items-center justify-center p-4 selection:bg-[#3B82F6] selection:text-white pb-24 pt-16 relative overflow-hidden">
       
-      {/* 🚀 좌측 상단: 메인 홈으로 되돌아가기 플로팅 버튼 */}
-      <div className="fixed top-4 left-4 md:top-6 md:left-6 z-50">
+      {/* 🚀 좌측 상단: 1층 로비 및 본사 포털 복귀 듀얼 버튼 */}
+      <div className="fixed top-4 left-4 md:top-6 md:left-6 z-50 flex items-center gap-2">
         <Link 
           href="/" 
-          className="group flex items-center gap-2 px-4 py-2 md:px-5 md:py-2.5 bg-black/50 backdrop-blur-md border border-white/20 rounded-full shadow-lg hover:bg-black/80 hover:border-cyan-400/50 transition-all duration-300 ease-lux"
+          className="group flex items-center gap-1.5 px-3.5 py-2 md:px-4 md:py-2.5 bg-black/60 backdrop-blur-md border border-white/20 rounded-full shadow-lg hover:bg-black/80 hover:border-cyan-400/50 transition-all duration-300 ease-lux"
         >
           <span className="text-cyan-400 group-hover:-translate-x-1 transition-transform">←</span>
-          <span className="text-white/90 group-hover:text-white text-xs md:text-sm font-bold tracking-wide">메인으로 돌아가기</span>
+          <span className="text-white/90 group-hover:text-white text-xs md:text-sm font-bold tracking-wide">1층 로비</span>
         </Link>
+        <a
+          href="http://thecreator-mcn.com/"
+          className="flex items-center gap-1.5 px-3.5 py-2 md:px-4 md:py-2.5 bg-gradient-to-r from-cyan-600/70 to-indigo-600/70 hover:from-cyan-500 hover:to-indigo-500 text-white rounded-full shadow-lg text-xs md:text-sm font-bold border border-cyan-400/30 transition-all duration-300 ease-lux"
+        >
+          <span>본사 포털</span>
+        </a>
       </div>
 
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[90%] h-[600px] bg-blue-600/10 rounded-full blur-[150px] pointer-events-none"></div>

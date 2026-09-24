@@ -171,11 +171,17 @@ export default function StorybookPage() {
         </button>
         <Link 
           href="/" 
-          className="group flex items-center gap-2 px-4 py-2 bg-black/60 backdrop-blur-md border border-white/20 rounded-full shadow-lg hover:bg-black/80 hover:border-cyan-400/50 transition-all duration-300"
+          className="group flex items-center gap-1.5 px-3.5 py-2 bg-black/60 backdrop-blur-md border border-white/20 rounded-full shadow-lg hover:bg-black/80 hover:border-cyan-400/50 transition-all duration-300"
         >
           <span className="text-cyan-400 group-hover:-translate-x-1 transition-transform">←</span>
-          <span className="text-white/90 group-hover:text-white text-xs md:text-sm font-bold tracking-wide">메인으로</span>
+          <span className="text-white/90 group-hover:text-white text-xs md:text-sm font-bold tracking-wide">1층 로비</span>
         </Link>
+        <a
+          href="http://thecreator-mcn.com/"
+          className="flex items-center gap-1.5 px-3.5 py-2 bg-gradient-to-r from-cyan-600/70 to-indigo-600/70 hover:from-cyan-500 hover:to-indigo-500 text-white rounded-full shadow-lg text-xs md:text-sm font-bold border border-cyan-400/30 transition-all duration-300"
+        >
+          <span>본사 포털</span>
+        </a>
       </div>
 
       <div className="fixed top-4 right-4 z-50">

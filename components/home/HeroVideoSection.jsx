@@ -1,27 +1,159 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
+
+// 60fps GPU 가속 사이버네틱 뉴럴 인터랙티브 모션그래픽 캔버스
+function CyberLobbyMotionCanvas() {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animationFrameId;
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    const isMobile = width < 768;
+    const nodeCount = isMobile ? 35 : 70;
+    const maxLinkDist = isMobile ? 100 : 150;
+
+    let mouse = { x: null, y: null, radius: 140 };
+
+    class QuantumNode {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.6;
+        this.vy = (Math.random() - 0.5) * 0.6;
+        this.radius = Math.random() * 2 + 1;
+        this.isCyan = Math.random() > 0.45;
+        this.alpha = Math.random() * 0.5 + 0.25;
+        this.pulseSpeed = Math.random() * 0.02 + 0.01;
+        this.pulseAngle = Math.random() * Math.PI * 2;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.pulseAngle += this.pulseSpeed;
+
+        if (this.x < 0 || this.x > width) this.vx *= -1;
+        if (this.y < 0 || this.y > height) this.vy *= -1;
+
+        if (mouse.x !== null && mouse.y !== null) {
+          const dx = mouse.x - this.x;
+          const dy = mouse.y - this.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < mouse.radius) {
+            const force = (mouse.radius - dist) / mouse.radius;
+            this.x -= (dx / dist) * force * 3;
+            this.y -= (dy / dist) * force * 3;
+          }
+        }
+      }
+      draw() {
+        const dynamicAlpha = this.alpha + Math.sin(this.pulseAngle) * 0.15;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.isCyan
+          ? `rgba(56, 189, 248, ${Math.max(0.1, dynamicAlpha)})`
+          : `rgba(99, 102, 241, ${Math.max(0.1, dynamicAlpha)})`;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = this.isCyan ? 'rgba(56, 189, 248, 0.6)' : 'rgba(99, 102, 241, 0.6)';
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+    }
+
+    let nodes = Array.from({ length: nodeCount }, () => new QuantumNode());
+
+    const handleResize = () => {
+      if (!canvas) return;
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      const count = width < 768 ? 35 : 70;
+      nodes = Array.from({ length: count }, () => new QuantumNode());
+    };
+
+    const handleMouseMove = (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    };
+
+    const handleMouseLeave = () => {
+      mouse.x = null;
+      mouse.y = null;
+    };
+
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseleave', handleMouseLeave);
+
+    const animate = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      // 노드 간 네트워크 링크 라인
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < maxLinkDist) {
+            const alpha = (1 - dist / maxLinkDist) * 0.25;
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.strokeStyle = `rgba(56, 189, 248, ${alpha})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // 노드 업데이트 및 렌더링
+      nodes.forEach((node) => {
+        node.update();
+        node.draw();
+      });
+
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseleave', handleMouseLeave);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 w-full h-full pointer-events-none z-0"
+    />
+  );
+}
 
 export default function HeroVideoSection({ onOpenDiagnostic }) {
   return (
-    <section className="relative min-h-[95vh] flex items-center justify-center pt-28 pb-20 md:pt-36 md:pb-28 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <section className="relative min-h-[95vh] flex items-center justify-center pt-28 pb-20 md:pt-36 md:pb-28 px-4 sm:px-6 lg:px-8 overflow-hidden bg-[#070B14]">
       
-      {/* 🎬 배경: 선명하고 밝은 고화질 시네마틱 AI 코어 루프 비디오 */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover scale-100 opacity-90 md:opacity-95"
-          src="/videos/Glowing_AI_core_in_landscape_202608310749.mp4"
-        />
-        {/* 영상의 선명함을 유지하면서 상하 경계만 자연스럽게 이어주는 비네팅 그라데이션 */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#090E17]/60 via-transparent to-[#090E17]/95"></div>
-      </div>
+      {/* 1층 로비 전용: 60fps 인터랙티브 사이버네틱 모션그래픽 배경 */}
+      <CyberLobbyMotionCanvas />
 
-      {/* 🔮 센터 앰비언트 글로우 조명 */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] sm:w-[700px] h-[350px] bg-blue-500/15 rounded-full blur-[120px] pointer-events-none z-0" />
+      {/* 미래지향적 사이버 오로라 앰비언트 글로우 */}
+      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-cyan-600/10 rounded-full blur-[160px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[160px] pointer-events-none" />
+
+      {/* 상하 부드러운 비네팅 그라데이션 */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#070B14] via-transparent to-[#090E17] pointer-events-none z-0" />
 
       <div className="max-w-6xl mx-auto text-center relative z-10 w-full">
         
