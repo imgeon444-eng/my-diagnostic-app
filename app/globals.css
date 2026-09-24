@@ -68,3 +68,82 @@ body {
 .animate-fade-in-up {
   animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* =======================================================
+   2026 미래지향적 AI 사이버네틱 테크놀로지 모션그래픽
+   ======================================================= */
+
+/* 1. 텍스트 키네틱 쉬머 (Shimmer) */
+@keyframes cyber-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.animate-cyber-shimmer {
+  background: linear-gradient(90deg, #60A5FA 0%, #E0E7FF 25%, #38BDF8 50%, #818CF8 75%, #60A5FA 100%);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: cyber-shimmer 6s linear infinite;
+}
+
+/* 2. 홀로그램 동심원 회전 모션 */
+@keyframes hologram-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes hologram-spin-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+.animate-hologram-spin {
+  animation: hologram-spin 8s linear infinite;
+}
+.animate-hologram-spin-fast {
+  animation: hologram-spin 3s linear infinite;
+}
+.animate-hologram-spin-reverse {
+  animation: hologram-spin-reverse 12s linear infinite;
+}
+
+/* 3. 레이저 스캔 빔 (Scan Line) */
+@keyframes laser-scan {
+  0% { top: -10%; opacity: 0; }
+  15% { opacity: 0.8; }
+  85% { opacity: 0.8; }
+  100% { top: 110%; opacity: 0; }
+}
+.animate-laser-scan {
+  animation: laser-scan 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* 4. 네온 펄스 호흡 (Neon Pulse) */
+@keyframes neon-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.2), inset 0 0 15px rgba(59, 130, 246, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.45), 0 0 50px rgba(99, 102, 241, 0.25), inset 0 0 20px rgba(59, 130, 246, 0.2);
+  }
+}
+.neon-glow-box {
+  animation: neon-glow 3.5s ease-in-out infinite;
+}
+
+/* 5. 사이버 그리드 배경 */
+.cyber-grid-bg {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* 6. 레이더 스위프 */
+@keyframes radar-sweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.animate-radar-sweep {
+  transform-origin: center center;
+  animation: radar-sweep 2.5s linear infinite;
+}

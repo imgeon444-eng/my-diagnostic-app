@@ -69,6 +69,268 @@ const LOADING_STEPS = [
   '맞춤형 7일 긴급 개선 처방전 및 SWOT 리포트 완성 중...',
 ];
 
+// ==========================================
+// 🌌 1. 인터랙티브 뉴럴 네트워크 캔버스 (60fps GPU 가속)
+// ==========================================
+function NeuralNetworkCanvas() {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animationFrameId;
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    const isMobile = width < 768;
+    const particleCount = isMobile ? 32 : 65;
+    const maxDistance = isMobile ? 90 : 130;
+
+    let mouse = { x: null, y: null, radius: 120 };
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.radius = Math.random() * 1.8 + 0.8;
+        this.isCyan = Math.random() > 0.4;
+        this.alpha = Math.random() * 0.45 + 0.2;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if (this.x < 0 || this.x > width) this.vx *= -1;
+        if (this.y < 0 || this.y > height) this.vy *= -1;
+
+        if (mouse.x !== null && mouse.y !== null) {
+          const dx = mouse.x - this.x;
+          const dy = mouse.y - this.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < mouse.radius) {
+            const force = (mouse.radius - dist) / mouse.radius;
+            this.x -= (dx / dist) * force * 2;
+            this.y -= (dy / dist) * force * 2;
+          }
+        }
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.isCyan
+          ? `rgba(56, 189, 248, ${this.alpha})`
+          : `rgba(129, 140, 248, ${this.alpha})`;
+        ctx.fill();
+      }
+    }
+
+    let particles = Array.from({ length: particleCount }, () => new Particle());
+
+    const handleResize = () => {
+      if (!canvas) return;
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      const mobile = width < 768;
+      const count = mobile ? 32 : 65;
+      particles = Array.from({ length: count }, () => new Particle());
+    };
+
+    const handleMouseMove = (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    };
+
+    const handleMouseLeave = () => {
+      mouse.x = null;
+      mouse.y = null;
+    };
+
+    const handleTouchMove = (e) => {
+      if (e.touches && e.touches[0]) {
+        mouse.x = e.touches[0].clientX;
+        mouse.y = e.touches[0].clientY;
+      }
+    };
+
+    const handleTouchEnd = () => {
+      mouse.x = null;
+      mouse.y = null;
+    };
+
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseleave', handleMouseLeave);
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd);
+
+    const animate = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < maxDistance) {
+            const opacity = (1 - dist / maxDistance) * 0.22;
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(99, 102, 241, ${opacity})`;
+            ctx.lineWidth = 0.7;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      particles.forEach((p) => {
+        p.update();
+        p.draw();
+      });
+
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 pointer-events-none z-0 opacity-40 sm:opacity-50"
+      style={{ width: '100%', height: '100%' }}
+    />
+  );
+}
+
+// ==========================================
+// 🔢 2. 매끄러운 롤링 카운트업 숫자 컴포넌트
+// ==========================================
+function AnimatedNumber({ value, duration = 1200 }) {
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useEffect(() => {
+    const end = Number(value) || 0;
+    if (end === 0) {
+      setDisplayValue(0);
+      return;
+    }
+    const startTime = performance.now();
+
+    const updateCounter = (currentTime) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // easeOutCubic
+      const easeProgress = 1 - Math.pow(1 - progress, 3);
+      const current = Math.floor(easeProgress * end);
+      setDisplayValue(current);
+
+      if (progress < 1) {
+        requestAnimationFrame(updateCounter);
+      } else {
+        setDisplayValue(end);
+      }
+    };
+
+    requestAnimationFrame(updateCounter);
+  }, [value, duration]);
+
+  return <span>{displayValue.toLocaleString()}</span>;
+}
+
+// ==========================================
+// 🛡️ 3. 사이버네틱 HUD 코너 브래킷
+// ==========================================
+function CyberCornerBracket() {
+  return (
+    <>
+      <span className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-cyan-400/70 pointer-events-none" />
+      <span className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-cyan-400/70 pointer-events-none" />
+      <span className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-cyan-400/70 pointer-events-none" />
+      <span className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-cyan-400/70 pointer-events-none" />
+    </>
+  );
+}
+
+// ==========================================
+// 🔮 4. 홀로그래픽 퀀텀 스캐너 로딩 HUD
+// ==========================================
+function HolographicScanner({ stepIndex }) {
+  const codeSnippets = [
+    'SCANNING_PACKET_LOSS_RATE: 0.85',
+    'AI_AX_ENGINE_INFERENCE: GEMINI_2.5_PRO',
+    'EXTRACTING_GEO_AFFINITY_VECTORS...',
+    'SYNTHESIZING_7DAY_ROADMAP...',
+    'FIREBASE_AUDIT_LOG_INITIALIZED',
+  ];
+
+  return (
+    <div className="relative my-6 p-6 sm:p-8 rounded-3xl bg-[#060D1A]/90 border border-cyan-500/40 text-center overflow-hidden shadow-[0_0_40px_rgba(6,182,212,0.15)]">
+      {/* 4개 코너 HUD 브래킷 */}
+      <CyberCornerBracket />
+
+      {/* 홀로그래픽 다중 회전 링 & 레이더 */}
+      <div className="relative w-28 h-28 sm:w-36 sm:h-36 mx-auto mb-5 flex items-center justify-center">
+        {/* 외곽 회전 링 1 */}
+        <div className="absolute inset-0 rounded-full border border-dashed border-cyan-400/40 animate-hologram-spin" />
+        {/* 내부 역회전 링 2 */}
+        <div className="absolute inset-3 rounded-full border border-indigo-400/50 border-t-transparent border-b-transparent animate-hologram-spin-reverse" />
+        {/* 내부 고속 회전 링 3 */}
+        <div className="absolute inset-6 rounded-full border-2 border-cyan-300/60 border-l-transparent border-r-transparent animate-hologram-spin-fast" />
+        
+        {/* 레이더 스위프 빔 */}
+        <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
+          <div className="w-full h-full bg-gradient-to-tr from-cyan-500/20 via-transparent to-transparent animate-radar-sweep" />
+        </div>
+
+        {/* 중앙 코어 펄스 */}
+        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-cyan-400 to-indigo-600 flex items-center justify-center shadow-[0_0_20px_rgba(6,182,212,0.8)] animate-pulse">
+          <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+        </div>
+      </div>
+
+      {/* 상태 인디케이터 배지 */}
+      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-[11px] font-black tracking-widest uppercase mb-2">
+        <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+        <span>QUANTUM SCAN STEP {stepIndex + 1} / 5</span>
+      </div>
+
+      {/* 실시간 단계 텍스트 */}
+      <h3 className="text-base sm:text-lg font-black text-white mb-2 tracking-tight">
+        {LOADING_STEPS[stepIndex]}
+      </h3>
+
+      {/* 사이버네틱 바이너리/매트릭스 데이터 스트림 */}
+      <div className="font-mono text-[11px] text-cyan-400/70 tracking-wider truncate px-4 py-1.5 rounded-lg bg-black/40 border border-cyan-500/20 inline-block max-w-full">
+        {`>> ${codeSnippets[stepIndex % codeSnippets.length]}`}
+      </div>
+
+      {/* 프로그레스 바 */}
+      <div className="w-full bg-white/5 h-1.5 rounded-full mt-5 overflow-hidden">
+        <div
+          className="h-full bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 transition-all duration-700 ease-out shadow-[0_0_10px_rgba(6,182,212,0.8)]"
+          style={{ width: `${((stepIndex + 1) / 5) * 100}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
 export default function BootcampFunnelPage() {
   const router = useRouter();
   const resultRef = useRef(null);
@@ -244,22 +506,28 @@ export default function BootcampFunnelPage() {
   const annualCost = Number(report?.annualLeakageCost || monthlyCost * 12);
 
   return (
-    <div className="min-h-screen w-full max-w-full bg-[#070B14] text-slate-100 font-sans break-words flex flex-col items-center selection:bg-blue-600 selection:text-white relative overflow-x-hidden">
-      {/* 백그라운드 앰비언트 글로우 */}
-      <div className="fixed top-[-15%] left-[-10%] w-[55%] h-[55%] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none"></div>
-      <div className="fixed bottom-[-15%] right-[-10%] w-[55%] h-[55%] bg-indigo-600/10 rounded-full blur-[140px] pointer-events-none"></div>
+    <div className="min-h-screen w-full max-w-full bg-[#050811] text-slate-100 font-sans break-words flex flex-col items-center selection:bg-cyan-500 selection:text-black relative overflow-x-hidden cyber-grid-bg">
+      {/* 1. 인터랙티브 뉴럴 네트워크 캔버스 (60fps GPU 가속) */}
+      <NeuralNetworkCanvas />
+
+      {/* 2. 미래지향적 레이저 스캔 광학 빔 */}
+      <div className="fixed inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent pointer-events-none animate-laser-scan z-20" />
+
+      {/* 3. 백그라운드 앰비언트 사이버 오로라 글로우 */}
+      <div className="fixed top-[-15%] left-[-10%] w-[60%] h-[60%] bg-cyan-600/10 rounded-full blur-[160px] pointer-events-none" />
+      <div className="fixed bottom-[-15%] right-[-10%] w-[60%] h-[60%] bg-indigo-600/10 rounded-full blur-[160px] pointer-events-none" />
 
       {/* =========================================
           네비게이션 헤더 바 (스마트 뒤로가기 탑재)
           ========================================= */}
-      <header className="sticky top-0 z-50 w-full backdrop-blur-xl bg-[#070B14]/80 border-b border-white/10 px-3 sm:px-8 py-2.5 sm:py-3.5 flex items-center justify-between">
+      <header className="sticky top-0 z-50 w-full backdrop-blur-2xl bg-[#050811]/85 border-b border-cyan-500/20 px-3 sm:px-8 py-2.5 sm:py-3.5 flex items-center justify-between shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
         <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={handleSmartBack}
-            className="flex items-center gap-1 sm:gap-2 px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white transition-all text-xs font-bold shadow-sm"
+            className="group flex items-center gap-1 sm:gap-2 px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-cyan-500/10 border border-white/10 hover:border-cyan-500/40 text-slate-300 hover:text-cyan-300 transition-all text-xs font-bold shadow-sm"
             title="본사 홈페이지 또는 이전 화면으로 이동"
           >
-            <ArrowLeft className="w-3.5 h-3.5" />
+            <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" />
             <span>뒤로가기</span>
           </button>
 
@@ -267,9 +535,9 @@ export default function BootcampFunnelPage() {
             href="http://thecreator-mcn.com/"
             className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-white transition-colors"
           >
-            <span>The Creators AI</span>
-            <span className="text-slate-600">/</span>
-            <span className="text-blue-400">데이터랩</span>
+            <span className="tracking-wide">The Creators AI</span>
+            <span className="text-cyan-500/40">/</span>
+            <span className="text-cyan-400 font-extrabold">데이터랩</span>
           </a>
         </div>
 
@@ -278,7 +546,7 @@ export default function BootcampFunnelPage() {
             href="http://thecreator-mcn.com/subpage.php?sd=2&sc=2_3"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 text-blue-300 hover:text-blue-200 transition-all text-xs font-bold"
+            className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 hover:text-cyan-200 transition-all text-xs font-bold shadow-[0_0_15px_rgba(6,182,212,0.15)]"
           >
             <span>모두의크루 파트너십</span>
             <ExternalLink className="w-3 h-3" />
@@ -286,7 +554,7 @@ export default function BootcampFunnelPage() {
 
           <a
             href="http://thecreator-mcn.com/"
-            className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white transition-all text-xs font-bold shadow-md shadow-indigo-600/30"
+            className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-gradient-to-r from-cyan-600 via-indigo-600 to-indigo-700 hover:from-cyan-500 hover:to-indigo-600 text-white transition-all text-xs font-bold shadow-md shadow-indigo-600/30 border border-cyan-400/30"
           >
             <span>본사 포털</span>
             <ExternalLink className="w-3 h-3" />
@@ -299,16 +567,17 @@ export default function BootcampFunnelPage() {
           ========================================= */}
       <main className="w-full max-w-5xl px-3 sm:px-6 py-8 sm:py-16 relative z-10 flex flex-col items-center min-w-0">
         {/* 상단 인트로 히어로 */}
-        <div ref={inputRef} className="w-full text-center max-w-2xl mb-8 sm:mb-10">
-          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-[11px] sm:text-xs font-extrabold tracking-widest uppercase mb-4 sm:mb-5 shadow-[0_0_15px_rgba(59,130,246,0.15)]">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>AI Transformation Funnel Lab</span>
+        <div ref={inputRef} className="w-full text-center max-w-2xl mb-8 sm:mb-12">
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-[11px] sm:text-xs font-black tracking-widest uppercase mb-4 sm:mb-5 shadow-[0_0_20px_rgba(6,182,212,0.2)]">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+            <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
+            <span>AI Transformation Quantum Lab</span>
           </div>
 
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-white mb-3 sm:mb-4 leading-tight tracking-tight">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-white mb-3 sm:mb-5 leading-tight tracking-tight">
             비즈니스 세일즈 퍼널
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-indigo-500">
+            <span className="animate-cyber-shimmer text-transparent bg-clip-text font-black drop-shadow-[0_0_25px_rgba(56,189,248,0.3)]">
               정밀 진단 & 누수액 측정
             </span>
           </h1>
@@ -321,19 +590,23 @@ export default function BootcampFunnelPage() {
         </div>
 
         {/* =========================================
-            입력 폼 카드 (1단계: 진단기 입력 패널)
+            입력 폼 카드 (1단계: 사이버 HUD 입력 패널)
             ========================================= */}
-        <div className="w-full max-w-xl bg-[#0F172A]/90 backdrop-blur-2xl border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-10 shadow-2xl relative overflow-hidden mb-12 min-w-0">
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400"></div>
+        <div className="w-full max-w-xl bg-[#090F1E]/90 backdrop-blur-2xl border border-cyan-500/30 rounded-2xl sm:rounded-3xl p-5 sm:p-10 shadow-2xl relative overflow-hidden mb-12 min-w-0 neon-glow-box">
+          {/* 4개 코너 HUD 브래킷 */}
+          <CyberCornerBracket />
+
+          {/* 상단 레이저 엣지 라인 */}
+          <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-cyan-400 via-indigo-500 to-cyan-400"></div>
 
           {/* 플랫폼 선택 탭 */}
-          <div className="grid grid-cols-3 gap-1 sm:gap-2 p-1 sm:p-1.5 rounded-2xl bg-[#090E17] border border-white/5 mb-6 sm:mb-8">
+          <div className="grid grid-cols-3 gap-1 sm:gap-2 p-1 sm:p-1.5 rounded-2xl bg-[#040711] border border-white/10 mb-6 sm:mb-8">
             <button
               type="button"
               onClick={() => setPlatform('youtube')}
               className={`flex items-center justify-center gap-1 sm:gap-2 py-2.5 sm:py-3 px-1 sm:px-2 rounded-xl text-[11px] sm:text-xs md:text-sm font-bold transition-all ${
                 platform === 'youtube'
-                  ? 'bg-red-600/90 text-white shadow-lg shadow-red-600/30 border border-red-500/50'
+                  ? 'bg-red-600/90 text-white shadow-[0_0_20px_rgba(220,38,38,0.5)] border border-red-500'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
@@ -346,7 +619,7 @@ export default function BootcampFunnelPage() {
               onClick={() => setPlatform('web')}
               className={`flex items-center justify-center gap-1 sm:gap-2 py-2.5 sm:py-3 px-1 sm:px-2 rounded-xl text-[11px] sm:text-xs md:text-sm font-bold transition-all ${
                 platform === 'web'
-                  ? 'bg-indigo-600/90 text-white shadow-lg shadow-indigo-600/30 border border-indigo-500/50'
+                  ? 'bg-cyan-600/90 text-white shadow-[0_0_20px_rgba(6,182,212,0.5)] border border-cyan-400'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
@@ -359,7 +632,7 @@ export default function BootcampFunnelPage() {
               onClick={() => setPlatform('instagram')}
               className={`flex items-center justify-center gap-1 sm:gap-2 py-2.5 sm:py-3 px-1 sm:px-2 rounded-xl text-[11px] sm:text-xs md:text-sm font-bold transition-all ${
                 platform === 'instagram'
-                  ? 'bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-lg shadow-pink-600/30 border border-pink-500/50'
+                  ? 'bg-gradient-to-r from-pink-600 to-purple-600 text-white shadow-[0_0_20px_rgba(236,72,153,0.5)] border border-pink-500'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
@@ -372,7 +645,7 @@ export default function BootcampFunnelPage() {
           <div className="space-y-4 sm:space-y-5 mb-6 sm:mb-8">
             {platform !== 'instagram' ? (
               <div>
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-bold text-cyan-300 uppercase tracking-wider mb-2">
                   {platform === 'youtube' ? '유튜브 채널 URL 또는 핸들(@)' : '웹사이트 / 쇼핑몰 URL'}
                 </label>
                 <div className="relative">
@@ -388,7 +661,7 @@ export default function BootcampFunnelPage() {
                         ? '예: https://www.youtube.com/@TheCreators'
                         : '예: https://thecreator-mcn.com'
                     }
-                    className="w-full bg-[#090E17] border border-white/10 px-4 py-4 rounded-xl text-white text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-slate-600"
+                    className="w-full bg-[#050811] border border-cyan-500/30 focus:border-cyan-400 px-4 py-4 rounded-xl text-white text-sm outline-none focus:ring-2 focus:ring-cyan-500/30 transition-all placeholder:text-slate-600 shadow-inner"
                   />
                 </div>
                 <p className="text-[11px] text-slate-500 mt-2">
@@ -398,7 +671,7 @@ export default function BootcampFunnelPage() {
             ) : (
               <div className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-bold text-pink-300 uppercase tracking-wider mb-1.5">
                     브랜드명 또는 계정명
                   </label>
                   <input
@@ -408,13 +681,13 @@ export default function BootcampFunnelPage() {
                       setInstaData({ ...instaData, brandName: e.target.value })
                     }
                     placeholder="예: 더크리에이터즈"
-                    className="w-full bg-[#090E17] border border-white/10 px-4 py-3 rounded-xl text-white text-sm outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500 transition-all placeholder:text-slate-600"
+                    className="w-full bg-[#050811] border border-pink-500/30 focus:border-pink-400 px-4 py-3 rounded-xl text-white text-sm outline-none focus:ring-2 focus:ring-pink-500/30 transition-all placeholder:text-slate-600 shadow-inner"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+                    <label className="block text-xs font-bold text-pink-300 uppercase tracking-wider mb-1.5">
                       팔로워 수
                     </label>
                     <input
@@ -424,11 +697,11 @@ export default function BootcampFunnelPage() {
                         setInstaData({ ...instaData, followerCount: e.target.value })
                       }
                       placeholder="예: 2.3만"
-                      className="w-full bg-[#090E17] border border-white/10 px-4 py-3 rounded-xl text-white text-sm outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500 transition-all placeholder:text-slate-600"
+                      className="w-full bg-[#050811] border border-pink-500/30 focus:border-pink-400 px-4 py-3 rounded-xl text-white text-sm outline-none focus:ring-2 focus:ring-pink-500/30 transition-all placeholder:text-slate-600 shadow-inner"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+                    <label className="block text-xs font-bold text-pink-300 uppercase tracking-wider mb-1.5">
                       핵심 콘텐츠 분야
                     </label>
                     <input
@@ -438,13 +711,13 @@ export default function BootcampFunnelPage() {
                         setInstaData({ ...instaData, mainContent: e.target.value })
                       }
                       placeholder="예: 지식창업, 교육, 서비스"
-                      className="w-full bg-[#090E17] border border-white/10 px-4 py-3 rounded-xl text-white text-sm outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500 transition-all placeholder:text-slate-600"
+                      className="w-full bg-[#050811] border border-pink-500/30 focus:border-pink-400 px-4 py-3 rounded-xl text-white text-sm outline-none focus:ring-2 focus:ring-pink-500/30 transition-all placeholder:text-slate-600 shadow-inner"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-bold text-pink-300 uppercase tracking-wider mb-1.5">
                     현재 가장 심각한 비즈니스 고민
                   </label>
                   <input
@@ -454,40 +727,29 @@ export default function BootcampFunnelPage() {
                       setInstaData({ ...instaData, coreProblem: e.target.value })
                     }
                     placeholder="예: 조회수는 나오는데 문의 및 실제 결제로 이어지지 않음"
-                    className="w-full bg-[#090E17] border border-white/10 px-4 py-3 rounded-xl text-white text-sm outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500 transition-all placeholder:text-slate-600"
+                    className="w-full bg-[#050811] border border-pink-500/30 focus:border-pink-400 px-4 py-3 rounded-xl text-white text-sm outline-none focus:ring-2 focus:ring-pink-500/30 transition-all placeholder:text-slate-600 shadow-inner"
                   />
                 </div>
               </div>
             )}
           </div>
 
-          {/* 로딩 연출 화면 */}
-          {isLoading && (
-            <div className="mb-6 p-5 rounded-2xl bg-blue-950/40 border border-blue-500/30 text-center animate-pulse">
-              <div className="flex justify-center mb-3">
-                <div className="w-8 h-8 rounded-full border-2 border-blue-400 border-t-transparent animate-spin"></div>
-              </div>
-              <p className="text-xs font-extrabold text-blue-300 tracking-wider uppercase mb-1">
-                STEP {loadingStepIndex + 1} / 5
-              </p>
-              <p className="text-sm font-bold text-white">
-                {LOADING_STEPS[loadingStepIndex]}
-              </p>
-            </div>
-          )}
+          {/* 홀로그래픽 퀀텀 스캐너 로딩 화면 (교체 완료) */}
+          {isLoading && <HolographicScanner stepIndex={loadingStepIndex} />}
 
           {/* 진단 실행 버튼 */}
           <button
             type="button"
             onClick={handleAnalyze}
             disabled={isLoading}
-            className="w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-700 hover:from-blue-500 hover:to-indigo-600 text-white py-3.5 sm:py-5 px-3 rounded-xl sm:rounded-2xl font-black text-sm sm:text-lg transition-all shadow-xl shadow-blue-600/30 disabled:opacity-50 flex items-center justify-center gap-1.5 sm:gap-2 border border-blue-400/40"
+            className="w-full bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white py-4 sm:py-5 px-3 rounded-xl sm:rounded-2xl font-black text-sm sm:text-lg transition-all shadow-[0_0_25px_rgba(6,182,212,0.4)] disabled:opacity-50 flex items-center justify-center gap-1.5 sm:gap-2 border border-cyan-400/40 relative overflow-hidden group"
           >
+            <div className="absolute inset-0 w-1/2 h-full bg-white/20 skew-x-12 -translate-x-full group-hover:translate-x-[300%] transition-transform duration-1000" />
             {isLoading ? (
-              <span>데이터 정밀 해부 중...</span>
+              <span className="tracking-wider">양자 연산 정밀 해부 중...</span>
             ) : (
               <>
-                <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-300 fill-cyan-300 shrink-0" />
+                <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-200 fill-cyan-200 shrink-0" />
                 <span className="sm:hidden">AI 정밀 진단 시작</span>
                 <span className="hidden sm:inline">AI 정밀 진단 & 누수액 계산 시작</span>
               </>
@@ -499,15 +761,15 @@ export default function BootcampFunnelPage() {
             <button
               type="button"
               onClick={() => router.push('/bootcamp-sales')}
-              className="py-2.5 sm:py-3 px-2 sm:px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 text-[11px] sm:text-xs font-bold transition-all text-center truncate"
+              className="py-2.5 sm:py-3 px-2 sm:px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 text-[11px] sm:text-xs font-bold transition-all text-center truncate hover:border-cyan-500/30"
             >
               부트캠프 정규과정
             </button>
             <a
               href="tel:051-633-3812"
-              className="py-2.5 sm:py-3 px-2 sm:px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1 truncate"
+              className="py-2.5 sm:py-3 px-2 sm:px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 text-[11px] sm:text-xs font-bold transition-all flex items-center justify-center gap-1 truncate hover:border-cyan-500/30"
             >
-              <Phone className="w-3 h-3 text-blue-400 shrink-0" />
+              <Phone className="w-3 h-3 text-cyan-400 shrink-0" />
               <span>직통 유선 상담</span>
             </a>
           </div>
@@ -564,14 +826,20 @@ export default function BootcampFunnelPage() {
             </div>
 
             {/* 카드 1: 브랜드 프로필 및 진단 요약 */}
-            <section className="bg-[#0F172A]/85 backdrop-blur-2xl rounded-3xl p-6 sm:p-10 border border-white/10 shadow-2xl relative overflow-hidden">
+            <section className="bg-[#090F1E]/90 backdrop-blur-2xl rounded-3xl p-6 sm:p-10 border border-cyan-500/30 shadow-2xl relative overflow-hidden neon-glow-box">
+              {/* 4개 모서리 사이버 HUD 브래킷 */}
+              <CyberCornerBracket />
+
+              {/* 상단 앰비언트 라인 */}
+              <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-cyan-400 via-indigo-500 to-cyan-400" />
+
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
                 <div>
                   <div className="flex items-center gap-2 mb-1.5">
-                    <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">
+                    <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider">
                       Target Brand
                     </span>
-                    <span className="px-2 py-0.5 rounded bg-white/10 text-[11px] text-slate-300 font-medium">
+                    <span className="px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/30 text-[11px] text-cyan-300 font-medium">
                       {report.category || '비즈니스 퍼널'}
                     </span>
                   </div>
@@ -581,7 +849,7 @@ export default function BootcampFunnelPage() {
                 </div>
 
                 <div className="flex items-center gap-2 self-stretch sm:self-auto">
-                  <div className="flex-1 sm:flex-none px-4 py-2 rounded-2xl bg-red-500/10 border border-red-500/30 text-center">
+                  <div className="flex-1 sm:flex-none px-4 py-2 rounded-2xl bg-red-500/10 border border-red-500/30 text-center shadow-[0_0_15px_rgba(239,68,68,0.15)]">
                     <span className="text-[10px] font-bold text-red-400 block uppercase">
                       누수 심각도
                     </span>
@@ -590,7 +858,7 @@ export default function BootcampFunnelPage() {
                     </span>
                   </div>
 
-                  <div className="flex-1 sm:flex-none px-4 py-2 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-center">
+                  <div className="flex-1 sm:flex-none px-4 py-2 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-center shadow-[0_0_15px_rgba(245,158,11,0.15)]">
                     <span className="text-[10px] font-bold text-amber-400 block uppercase">
                       최우선 병목 단계
                     </span>
@@ -601,20 +869,20 @@ export default function BootcampFunnelPage() {
                 </div>
               </div>
 
-              {/* 누수 비용 KPI 배너 */}
+              {/* 누수 비용 KPI 배너 (롤링 카운트업 넘버 탑재) */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
-                <div className="p-6 rounded-2xl bg-gradient-to-br from-red-950/40 via-red-900/20 to-black/60 border border-red-500/30 relative overflow-hidden">
+                <div className="p-6 rounded-2xl bg-gradient-to-br from-red-950/50 via-red-900/30 to-black/70 border border-red-500/40 relative overflow-hidden shadow-[0_0_30px_rgba(239,68,68,0.2)]">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-black text-red-400 tracking-wider uppercase flex items-center gap-1.5">
-                      <AlertTriangle className="w-4 h-4" />
+                      <AlertTriangle className="w-4 h-4 animate-bounce" />
                       <span>월간 추정 세일즈 누수 비용</span>
                     </span>
-                    <span className="text-[11px] text-red-400/80 font-semibold">
+                    <span className="text-[11px] text-red-400/80 font-semibold px-2 py-0.5 rounded-full bg-red-500/20 border border-red-500/30">
                       월간 이탈 손실
                     </span>
                   </div>
                   <div className="text-3xl sm:text-4xl font-black text-red-400 tracking-tight my-2">
-                    {monthlyCost.toLocaleString()}
+                    <AnimatedNumber value={monthlyCost} />
                     <span className="text-xl sm:text-2xl text-red-300 font-bold ml-1">
                       원
                     </span>
@@ -624,19 +892,19 @@ export default function BootcampFunnelPage() {
                   </p>
                 </div>
 
-                <div className="p-6 rounded-2xl bg-[#090E17] border border-white/10 relative overflow-hidden flex flex-col justify-between">
+                <div className="p-6 rounded-2xl bg-[#040711] border border-cyan-500/20 relative overflow-hidden flex flex-col justify-between shadow-[0_0_20px_rgba(6,182,212,0.1)]">
                   <div>
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs font-black text-slate-400 tracking-wider uppercase flex items-center gap-1.5">
-                        <TrendingUp className="w-4 h-4 text-indigo-400" />
+                      <span className="text-xs font-black text-cyan-400 tracking-wider uppercase flex items-center gap-1.5">
+                        <TrendingUp className="w-4 h-4 text-cyan-400" />
                         <span>연간 누적 예상 손실액</span>
                       </span>
-                      <span className="text-[11px] text-slate-500 font-semibold">
+                      <span className="text-[11px] text-slate-400 font-semibold">
                         12개월 방치 기준
                       </span>
                     </div>
                     <div className="text-3xl sm:text-4xl font-black text-white tracking-tight my-2">
-                      {annualCost.toLocaleString()}
+                      <AnimatedNumber value={annualCost} />
                       <span className="text-xl sm:text-2xl text-slate-400 font-bold ml-1">
                         원
                       </span>
