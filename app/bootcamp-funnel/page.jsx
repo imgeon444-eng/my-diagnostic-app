@@ -568,8 +568,20 @@ export default function BootcampFunnelPage() {
       <main className="w-full max-w-5xl px-3 sm:px-6 py-8 sm:py-16 relative z-10 flex flex-col items-center min-w-0">
         {/* 상단 인트로 히어로 */}
         <div ref={inputRef} className="w-full text-center max-w-2xl mb-8 sm:mb-12">
+          {/* 실시간 시스템 관제탑 HUD 인디케이터 */}
+          <div className="flex items-center justify-center gap-2 mb-4 flex-wrap">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] sm:text-xs font-mono font-bold tracking-wider shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+              <span>AI Engine: Gemini 2.5 Flash Online</span>
+            </div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-[10px] sm:text-xs font-mono font-bold tracking-wider shadow-[0_0_15px_rgba(6,182,212,0.2)]">
+              <span>Latency: 18ms</span>
+              <span className="text-cyan-500/40">|</span>
+              <span>Open-SEO v4.2</span>
+            </div>
+          </div>
+
           <div className="inline-flex items-center gap-1.5 sm:gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-[11px] sm:text-xs font-black tracking-widest uppercase mb-4 sm:mb-5 shadow-[0_0_20px_rgba(6,182,212,0.2)]">
-            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
             <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
             <span>AI Transformation Quantum Lab</span>
           </div>
@@ -582,8 +594,8 @@ export default function BootcampFunnelPage() {
             </span>
           </h1>
 
-          <p className="text-slate-400 text-xs sm:text-base font-normal leading-relaxed px-2">
-            단 하나의 URL 또는 채널 데이터로 실시간 세일즈 전환 병목을 해부하고,
+          <p className="text-slate-300 text-xs sm:text-base font-normal leading-relaxed px-2">
+            단 하나의 URL 또는 채널 데이터로 실시간 세일즈 전환 병목을 <span className="text-cyan-300 font-bold underline decoration-cyan-500/50 underline-offset-4">정밀 역추적(Trace)</span>하고,
             <br className="hidden sm:block" />
             매월 증발하는 누수 비용과 7일 긴급 실행 처방전을 팩트 기반으로 도출합니다.
           </p>
@@ -981,9 +993,9 @@ export default function BootcampFunnelPage() {
 
               {/* 5대 역량 레이더 차트 및 역량 지표 */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center pt-2">
-                <div className="bg-[#090E17]/80 rounded-2xl p-4 sm:p-6 border border-white/5 flex flex-col items-center justify-center min-h-[300px]">
-                  <span className="text-xs font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-1.5">
-                    <Layers className="w-3.5 h-3.5 text-blue-400" />
+                <div className="bg-[#050811]/90 rounded-2xl p-4 sm:p-6 border border-cyan-500/20 flex flex-col items-center justify-center min-h-[300px] shadow-inner relative overflow-hidden">
+                  <span className="text-xs font-black text-cyan-300 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+                    <Layers className="w-3.5 h-3.5 text-cyan-400" />
                     <span>5대 비즈니스 역량 분석 레이더</span>
                   </span>
                   <div className="w-full h-[240px]">
@@ -995,24 +1007,24 @@ export default function BootcampFunnelPage() {
                           outerRadius="70%"
                           data={report.chartData}
                         >
-                          <PolarGrid stroke="#334155" />
+                          <PolarGrid stroke="#1E293B" />
                           <PolarAngleAxis
                             dataKey="subject"
-                            tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 'bold' }}
+                            tick={{ fill: '#38BDF8', fontSize: 11, fontWeight: 'bold' }}
                           />
                           <PolarRadiusAxis
                             angle={30}
                             domain={[0, 100]}
-                            stroke="#475569"
-                            tick={{ fill: '#64748b', fontSize: 9 }}
+                            stroke="#334155"
+                            tick={{ fill: '#64748B', fontSize: 9 }}
                           />
                           <Radar
                             name="역량 점수"
                             dataKey="score"
-                            stroke="#3B82F6"
+                            stroke="#06B6D4"
                             strokeWidth={2.5}
-                            fill="#3B82F6"
-                            fillOpacity={0.4}
+                            fill="#06B6D4"
+                            fillOpacity={0.35}
                           />
                         </RadarChart>
                       </ResponsiveContainer>
@@ -1026,36 +1038,36 @@ export default function BootcampFunnelPage() {
 
                 {/* 역량 스코어 바 */}
                 <div className="space-y-3.5">
-                  <span className="text-xs font-black text-slate-400 uppercase tracking-widest block mb-2">
+                  <span className="text-xs font-black text-cyan-300 uppercase tracking-widest block mb-2">
                     항목별 전환 취약 지표
                   </span>
                   {report.chartData?.map((item, idx) => (
                     <div
                       key={idx}
-                      className="bg-[#090E17]/60 p-3 rounded-xl border border-white/5"
+                      className="bg-[#050811]/70 p-3.5 rounded-xl border border-cyan-500/20 shadow-sm"
                     >
                       <div className="flex justify-between items-center text-xs font-bold mb-1.5">
-                        <span className="text-slate-300">{item.subject}</span>
+                        <span className="text-slate-200 font-semibold">{item.subject}</span>
                         <span
-                          className={`font-black ${
+                          className={`font-black font-mono ${
                             item.score >= 80
-                              ? 'text-blue-400'
+                              ? 'text-cyan-400'
                               : item.score >= 60
                               ? 'text-amber-400'
-                              : 'text-red-400'
+                              : 'text-rose-400'
                           }`}
                         >
                           {item.score}점
                         </span>
                       </div>
-                      <div className="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                      <div className="w-full bg-slate-900 rounded-full h-2 overflow-hidden border border-white/5">
                         <div
-                          className={`h-full rounded-full transition-all duration-700 ${
+                          className={`h-full rounded-full transition-all duration-700 shadow-sm ${
                             item.score >= 80
-                              ? 'bg-blue-500'
+                              ? 'bg-gradient-to-r from-cyan-500 to-blue-500'
                               : item.score >= 60
-                              ? 'bg-amber-500'
-                              : 'bg-red-500'
+                              ? 'bg-gradient-to-r from-amber-500 to-orange-500'
+                              : 'bg-gradient-to-r from-rose-500 to-red-500'
                           }`}
                           style={{ width: `${item.score}%` }}
                         ></div>
@@ -1066,12 +1078,13 @@ export default function BootcampFunnelPage() {
               </div>
             </section>
 
-            {/* 카드 2: SWOT 분석 매트릭스 */}
+            {/* 카드 2: SWOT 분석 매트릭스 (벤토 그리드 큐브) */}
             {report.swot && (
-              <section className="bg-[#0F172A]/85 backdrop-blur-2xl rounded-3xl p-6 sm:p-10 border border-white/10 shadow-2xl">
+              <section className="bento-card rounded-3xl p-6 sm:p-10 relative overflow-hidden">
+                <CyberCornerBracket />
                 <div className="mb-6">
-                  <span className="text-xs font-black text-blue-400 tracking-widest uppercase block mb-1">
-                    Strategic Diagnosis
+                  <span className="text-xs font-black text-cyan-400 tracking-widest uppercase block mb-1">
+                    Strategic Diagnosis Matrix
                   </span>
                   <h3 className="text-xl sm:text-2xl font-black text-white">
                     SWOT 전환 구조 정밀 분석
@@ -1079,58 +1092,58 @@ export default function BootcampFunnelPage() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="p-5 rounded-2xl bg-blue-950/20 border border-blue-500/20">
+                  <div className="p-5 rounded-2xl bg-cyan-950/20 border border-cyan-500/30 hover:border-cyan-400/60 transition-all shadow-inner">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-400 font-black text-xs flex items-center justify-center">
+                      <span className="w-7 h-7 rounded-lg bg-cyan-500/20 text-cyan-300 font-black text-xs flex items-center justify-center border border-cyan-500/40">
                         S
                       </span>
-                      <span className="text-xs font-bold text-blue-300 uppercase">
+                      <span className="text-xs font-bold text-cyan-300 uppercase tracking-wide">
                         Strength (핵심 강점)
                       </span>
                     </div>
-                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
+                    <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
                       {report.swot.s}
                     </p>
                   </div>
 
-                  <div className="p-5 rounded-2xl bg-red-950/20 border border-red-500/20">
+                  <div className="p-5 rounded-2xl bg-red-950/20 border border-red-500/30 hover:border-red-400/60 transition-all shadow-inner">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="w-7 h-7 rounded-lg bg-red-500/20 text-red-400 font-black text-xs flex items-center justify-center">
+                      <span className="w-7 h-7 rounded-lg bg-red-500/20 text-red-300 font-black text-xs flex items-center justify-center border border-red-500/40">
                         W
                       </span>
-                      <span className="text-xs font-bold text-red-300 uppercase">
+                      <span className="text-xs font-bold text-red-300 uppercase tracking-wide">
                         Weakness (수익화 약점)
                       </span>
                     </div>
-                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
+                    <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
                       {report.swot.w}
                     </p>
                   </div>
 
-                  <div className="p-5 rounded-2xl bg-emerald-950/20 border border-emerald-500/20">
+                  <div className="p-5 rounded-2xl bg-emerald-950/20 border border-emerald-500/30 hover:border-emerald-400/60 transition-all shadow-inner">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 font-black text-xs flex items-center justify-center">
+                      <span className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-300 font-black text-xs flex items-center justify-center border border-emerald-500/40">
                         O
                       </span>
-                      <span className="text-xs font-bold text-emerald-300 uppercase">
+                      <span className="text-xs font-bold text-emerald-300 uppercase tracking-wide">
                         Opportunity (자동화 기회)
                       </span>
                     </div>
-                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
+                    <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
                       {report.swot.o}
                     </p>
                   </div>
 
-                  <div className="p-5 rounded-2xl bg-amber-950/20 border border-amber-500/20">
+                  <div className="p-5 rounded-2xl bg-amber-950/20 border border-amber-500/30 hover:border-amber-400/60 transition-all shadow-inner">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 font-black text-xs flex items-center justify-center">
+                      <span className="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-300 font-black text-xs flex items-center justify-center border border-amber-500/40">
                         T
                       </span>
-                      <span className="text-xs font-bold text-amber-300 uppercase">
+                      <span className="text-xs font-bold text-amber-300 uppercase tracking-wide">
                         Threat (방치 시 위협)
                       </span>
                     </div>
-                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
+                    <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
                       {report.swot.t}
                     </p>
                   </div>
@@ -1138,16 +1151,17 @@ export default function BootcampFunnelPage() {
               </section>
             )}
 
-            {/* 카드 3: 7일 긴급 개선 액션 플랜 */}
+            {/* 카드 3: 7일 긴급 개선 액션 플랜 (벤토 타임라인) */}
             {report.actionPlan7Days && report.actionPlan7Days.length > 0 && (
-              <section className="bg-[#0F172A]/85 backdrop-blur-2xl rounded-3xl p-6 sm:p-10 border border-white/10 shadow-2xl">
+              <section className="bento-card rounded-3xl p-6 sm:p-10 relative overflow-hidden">
+                <CyberCornerBracket />
                 <div className="flex items-center gap-2 mb-6">
-                  <div className="w-8 h-8 rounded-xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400">
+                  <div className="w-8 h-8 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-300">
                     <Calendar className="w-4 h-4" />
                   </div>
                   <div>
-                    <span className="text-xs font-black text-indigo-400 tracking-widest uppercase block">
-                      Emergency Roadmap
+                    <span className="text-xs font-black text-cyan-400 tracking-widest uppercase block">
+                      Emergency 7-Day Protocol
                     </span>
                     <h3 className="text-xl sm:text-2xl font-black text-white">
                       누수 차단 7일 실행 처방전
@@ -1159,16 +1173,16 @@ export default function BootcampFunnelPage() {
                   {report.actionPlan7Days.map((step, idx) => (
                     <div
                       key={idx}
-                      className="p-5 rounded-2xl bg-[#090E17]/80 border border-white/5 flex flex-col sm:flex-row sm:items-center gap-4 hover:border-indigo-500/30 transition-all"
+                      className="p-5 rounded-2xl bg-[#050811]/80 border border-cyan-500/20 flex flex-col sm:flex-row sm:items-center gap-4 hover:border-cyan-400/50 transition-all shadow-md group"
                     >
-                      <div className="px-3 py-1.5 rounded-xl bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-black tracking-wider uppercase w-fit">
+                      <div className="px-3.5 py-1.5 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-200 text-xs font-mono font-black tracking-wider uppercase w-fit group-hover:bg-cyan-500/30 transition-colors">
                         {step.period}
                       </div>
                       <div className="flex-1">
-                        <h4 className="text-sm sm:text-base font-bold text-white mb-1">
+                        <h4 className="text-sm sm:text-base font-bold text-white mb-1 group-hover:text-cyan-200 transition-colors">
                           {step.title}
                         </h4>
-                        <p className="text-xs sm:text-sm text-slate-400 leading-relaxed font-medium">
+                        <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
                           {step.desc}
                         </p>
                       </div>
@@ -1178,13 +1192,14 @@ export default function BootcampFunnelPage() {
               </section>
             )}
 
-            {/* 카드 4: 피보팅 전략 & 최우선 실행 과제 */}
+            {/* 카드 4: 피보팅 전략 & 최우선 실행 과제 (2분할 벤토 카드) */}
             <section className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {report.direction && (
-                <div className="bg-[#0F172A]/85 backdrop-blur-2xl rounded-3xl p-6 border border-white/10 shadow-xl">
+                <div className="bento-card rounded-3xl p-6 relative overflow-hidden">
+                  <CyberCornerBracket />
                   <div className="flex items-center gap-2 mb-3">
-                    <Compass className="w-4 h-4 text-blue-400" />
-                    <span className="text-xs font-bold text-blue-300 uppercase tracking-wider">
+                    <Compass className="w-4 h-4 text-cyan-400" />
+                    <span className="text-xs font-bold text-cyan-300 uppercase tracking-wider">
                       수익화 비즈니스 피보팅 방향
                     </span>
                   </div>
@@ -1195,7 +1210,8 @@ export default function BootcampFunnelPage() {
               )}
 
               {report.futureTask && (
-                <div className="bg-[#0F172A]/85 backdrop-blur-2xl rounded-3xl p-6 border border-white/10 shadow-xl">
+                <div className="bento-card rounded-3xl p-6 relative overflow-hidden">
+                  <CyberCornerBracket />
                   <div className="flex items-center gap-2 mb-3">
                     <Target className="w-4 h-4 text-indigo-400" />
                     <span className="text-xs font-bold text-indigo-300 uppercase tracking-wider">
