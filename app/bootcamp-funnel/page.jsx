@@ -506,7 +506,7 @@ export default function BootcampFunnelPage() {
   const annualCost = Number(report?.annualLeakageCost || monthlyCost * 12);
 
   return (
-    <div className="min-h-screen w-full max-w-full bg-[#050811] text-slate-100 font-sans break-words flex flex-col items-center selection:bg-cyan-500 selection:text-black relative overflow-x-hidden cyber-grid-bg">
+    <div className="min-h-screen w-full max-w-full bg-[#080C14] text-slate-100 font-sans break-words flex flex-col items-center selection:bg-cyan-500 selection:text-black relative overflow-x-hidden cyber-grid-bg">
       {/* 1. 인터랙티브 뉴럴 네트워크 캔버스 (60fps GPU 가속) */}
       <NeuralNetworkCanvas />
 
@@ -520,7 +520,7 @@ export default function BootcampFunnelPage() {
       {/* =========================================
           네비게이션 헤더 바 (스마트 뒤로가기 탑재)
           ========================================= */}
-      <header className="sticky top-0 z-50 w-full backdrop-blur-2xl bg-[#050811]/85 border-b border-cyan-500/20 px-3 sm:px-8 py-2.5 sm:py-3.5 flex items-center justify-between shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+      <header className="sticky top-0 z-50 w-full backdrop-blur-2xl bg-[#080C14]/90 border-b border-slate-800/80 px-3 sm:px-8 py-2.5 sm:py-3.5 flex items-center justify-between shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
         <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={handleSmartBack}
@@ -568,20 +568,22 @@ export default function BootcampFunnelPage() {
       <main className="w-full max-w-5xl px-3 sm:px-6 py-8 sm:py-16 relative z-10 flex flex-col items-center min-w-0">
         {/* 상단 인트로 히어로 */}
         <div ref={inputRef} className="w-full text-center max-w-2xl mb-8 sm:mb-12">
-          {/* 실시간 시스템 관제탑 HUD 인디케이터 */}
-          <div className="flex items-center justify-center gap-2 mb-4 flex-wrap">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] sm:text-xs font-mono font-bold tracking-wider shadow-[0_0_15px_rgba(16,185,129,0.2)]">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-              <span>AI Engine: Gemini 2.5 Flash Online</span>
-            </div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-[10px] sm:text-xs font-mono font-bold tracking-wider shadow-[0_0_15px_rgba(6,182,212,0.2)]">
-              <span>Latency: 18ms</span>
-              <span className="text-cyan-500/40">|</span>
-              <span>Open-SEO v4.2</span>
+          {/* 실시간 시스템 관제탑 마이크로 알약 칩 인디케이터 (Ruflo Cybernetic Style) */}
+          <div className="flex items-center justify-center gap-2 mb-5 flex-wrap">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0D131F]/90 border border-slate-700/60 shadow-[0_0_25px_rgba(56,189,248,0.08)] backdrop-blur-md">
+              <span className="flex h-2 w-2 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="font-mono text-[11px] sm:text-xs text-slate-300 font-semibold tracking-tight">v2.5 Active</span>
+              <span className="text-slate-600 font-mono text-[10px]">·</span>
+              <span className="font-mono text-[11px] sm:text-xs text-cyan-400 font-semibold tracking-tight">Gemini Flash Core</span>
+              <span className="text-slate-600 font-mono text-[10px]">·</span>
+              <span className="font-mono text-[11px] sm:text-xs text-indigo-300 font-semibold tracking-tight">Multi-Agent Swarm Ready</span>
             </div>
           </div>
 
-          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-[11px] sm:text-xs font-black tracking-widest uppercase mb-4 sm:mb-5 shadow-[0_0_20px_rgba(6,182,212,0.2)]">
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-[11px] sm:text-xs font-black tracking-widest uppercase mb-4 sm:mb-5 shadow-[0_0_20px_rgba(6,182,212,0.15)]">
             <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
             <span>AI Transformation Quantum Lab</span>
           </div>
@@ -604,7 +606,7 @@ export default function BootcampFunnelPage() {
         {/* =========================================
             입력 폼 카드 (1단계: 사이버 HUD 입력 패널)
             ========================================= */}
-        <div className="w-full max-w-xl bg-[#090F1E]/90 backdrop-blur-2xl border border-cyan-500/30 rounded-2xl sm:rounded-3xl p-5 sm:p-10 shadow-2xl relative overflow-hidden mb-12 min-w-0 neon-glow-box">
+        <div className="w-full max-w-xl bg-[#0B101B]/95 backdrop-blur-2xl border border-slate-700/60 rounded-2xl sm:rounded-3xl p-5 sm:p-10 shadow-[0_20px_60px_rgba(0,0,0,0.7)] relative overflow-hidden mb-12 min-w-0">
           {/* 4개 코너 HUD 브래킷 */}
           <CyberCornerBracket />
 

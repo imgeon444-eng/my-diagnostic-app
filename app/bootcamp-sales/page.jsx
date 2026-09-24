@@ -607,7 +607,8 @@ const CONSULTING_TOPICS = [
   '✨ 퍼스널 브랜딩 구축',
   '📈 세일즈/마케팅 효율화',
   '💡 내 아이디어 플랫폼 개발',
-  '🤖 AI 에이전트 기반 인건비 절감'
+  '🤖 AI 에이전트 기반 인건비 절감',
+  '⚡ 엔터프라이즈 멀티에이전트(Swarm) 자율화 시스템 구축'
 ];
 
 function ConsultingApplyModal({ isOpen, onClose, prefillData = null }) {
@@ -637,12 +638,22 @@ function ConsultingApplyModal({ isOpen, onClose, prefillData = null }) {
         ? `관심분야: ${formData.topic} / 직무 및 고민: ${formData.jobAndReason}` 
         : `관심분야: ${formData.topic}`;
 
+      const isSwarmInquiry = formData.topic.includes('멀티에이전트') || formData.topic.includes('에이전트');
+
       await addDoc(collection(db, "bootcamp_leads"), {
         clientName: "무료컨설팅 신청",
         clientTitle: formData.name,
         clientContact: formData.contact,
         clientEmail: formData.email,
         businessGoal: safeBusinessGoal,
+        inquiryTopic: formData.topic,
+        agentArchitecturePreference: isSwarmInquiry ? "swarm" : "single-pipeline",
+        funnelSource: "bootcamp-funnel-v2",
+        diagnosticContext: prefillData ? {
+          brand: prefillData.brand || null,
+          monthlyLeak: Number(prefillData.cost || 0),
+          bottleneck: prefillData.bottleneck || prefillData.pain || null
+        } : null,
         status: "심사 대기",
         createdAt: serverTimestamp()
       });
@@ -1080,6 +1091,25 @@ function BootcampSalesContent() {
                     <h3 className="text-white font-black text-xl mb-2">AI 직원 간 상호작용 및 인건비 제로화</h3>
                     <p className="text-slate-400 text-sm leading-relaxed break-keep font-medium">
                       위 6대 실물 자산들이 하나의 파이프라인 안에서 유기적으로 데이터를 주고받으며 <strong className="text-indigo-300">상호작용(Multi-Agent System)</strong>합니다. 업무 프로세스가 초고도화되어, 1인 기업도 대기업 수준의 아웃풋을 내며 불필요한 고정 인건비와 외주 비용을 대폭 절감하게 됩니다.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </FadeInSection>
+
+            <FadeInSection direction="up">
+              <div className="relative">
+                <div className="absolute left-6 md:left-[35px] -top-16 w-0.5 h-16 bg-gradient-to-b from-indigo-500/50 to-purple-500/50"></div>
+                <div className="bg-gradient-to-br from-[#0B1020]/90 to-[#120D24]/90 border border-purple-500/30 p-6 md:p-8 rounded-[2rem] flex flex-col md:flex-row gap-6 items-start md:items-center relative shadow-[0_0_35px_rgba(168,85,247,0.12)]">
+                  <div className="w-14 h-14 shrink-0 bg-purple-600/20 border border-purple-500/40 rounded-2xl flex items-center justify-center font-black text-purple-300 text-xl shadow-[0_0_20px_rgba(168,85,247,0.3)]">04</div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-1 flex-wrap">
+                      <span className="text-purple-400 font-black text-xs tracking-widest uppercase block">Enterprise Swarm &amp; MCP</span>
+                      <span className="bg-purple-500/20 text-purple-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-purple-500/30">Next-Gen Tech</span>
+                    </div>
+                    <h3 className="text-white font-black text-xl mb-2">100+ 멀티에이전트 군집(Swarm) &amp; MCP 자율화 구축</h3>
+                    <p className="text-slate-300 text-sm leading-relaxed break-keep font-medium">
+                      단일 AI와의 1:1 대화 한계를 돌파합니다. 기획·개발·마케팅·데이터 분석 에이전트들이 스스로 역할을 분담하고 결과를 교차 검증하는 <strong className="text-purple-300">군집 지능(Multi-Agent Swarm)</strong>을 설계합니다. Anthropic 표준 <strong className="text-cyan-300">MCP(Model Context Protocol)</strong>를 결합하여 기업 내부 데이터베이스, CRM, 외부 API 툴을 24시간 자율 가동하는 무인 엔터프라이즈 인프라를 완성합니다.
                     </p>
                   </div>
                 </div>
