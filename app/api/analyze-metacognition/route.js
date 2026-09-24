@@ -18,10 +18,10 @@ export async function POST(request) {
       고객의 '에이전틱 AI 및 MCP 활용 능력' 진단 데이터를 분석하여 날카로운 분석 결과(JSON)를 작성하세요.
 
       [고객 데이터]
-      - 이름: ${clientName}
+      - 이름: ${clientName || '고객'}
       - 직무: ${fieldLabel}
-      - 진단 점수: ${score} / 12점 만점
-      - 답변 맥락: ${answers.join(' | ')}
+      - 진단 점수: ${score || 0} / 12점 만점
+      - 답변 맥락: ${Array.isArray(answers) ? answers.join(' | ') : String(answers || '응답 없음')}
 
       [출력 규격 - 순수 JSON만 반환]
       {
@@ -71,8 +71,8 @@ export async function POST(request) {
               <p><strong>연락처:</strong> <span style="color: #38bdf8; font-weight: bold; font-size: 18px;">${clientContact}</span></p>
               <p><strong>직무:</strong> ${fieldLabel}</p>
               <h3 style="border-bottom: 1px solid #334155; padding-bottom: 10px; color: #38bdf8; margin-top: 25px;">📊 진단 결과 요약</h3>
-              <p><strong>총점:</strong> <span style="color: #fb7185; font-size: 20px; font-weight: bold;">${score}점</span> / 12점</p>
-              <p><strong>AI가 짚어낸 한계:</strong><br/><br/>${aiData.limits.join('<br/>')}</p>
+              <p><strong>총점:</strong> <span style="color: #fb7185; font-size: 20px; font-weight: bold;">${score || 0}점</span> / 12점</p>
+              <p><strong>AI가 짚어낸 한계:</strong><br/><br/>${Array.isArray(aiData?.limits) ? aiData.limits.join('<br/>') : (aiData?.limits || '분석 중')}</p>
             </div>
           </div>
         `

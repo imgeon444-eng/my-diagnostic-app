@@ -4,6 +4,15 @@ import React, { useState, useEffect } from 'react';
 import { db } from '../../lib/firebase';
 import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
 
+function safeDecode(str) {
+  if (!str) return '';
+  try {
+    return decodeURIComponent(str);
+  } catch (e) {
+    return String(str);
+  }
+}
+
 export default function B2BTargetSniperAnalyzer() {
   const [analysisLogs, setAnalysisLogs] = useState([]);
   const [stats, setStats] = useState({
@@ -30,7 +39,7 @@ export default function B2BTargetSniperAnalyzer() {
           id: doc.id,
           channel: mappedChannel,
           // 오늘 수정한 백엔드 구조에 맞춰 URL과 키워드(카테고리) 강제 매핑
-          url: data.targetUrl ? decodeURIComponent(data.targetUrl) : (data.url || 'URL 없음'),
+          url: data.targetUrl ? safeDecode(data.targetUrl) : (data.url || 'URL 없음'),
           keyword: data.publicReport?.category || data.keyword || '미분류',
           createdAt: data.createdAt || { toDate: () => new Date() }
         };

@@ -45,7 +45,21 @@ export async function POST(request) {
       generationConfig: { responseMimeType: "application/json" }
     });
 
-    const analysisData = JSON.parse(result.response.text());
+    const responseText = result.response.text();
+    let analysisData;
+    try {
+      const cleanedJson = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
+      analysisData = JSON.parse(cleanedJson);
+    } catch (parseErr) {
+      console.error("AI 진단 JSON 파싱 실패:", parseErr, responseText);
+      analysisData = {
+        weightClass: totalScore >= 38 ? "플래티넘" : totalScore >= 25 ? "골드" : totalScore >= 15 ? "실버" : "브론즈",
+        stage: totalScore >= 38 ? 4 : totalScore >= 25 ? 3 : totalScore >= 15 ? 2 : 1,
+        analysisText: "고객님의 현재 진단 데이터를 바탕으로 맞춤형 마케팅 솔루션을 배정하였습니다.",
+        direction: "체계적인 퍼널 구축과 무인 자동화 도입을 권장합니다.",
+        reason: "입력된 점수와 비즈니스 목표를 종합적으로 반영한 결과입니다."
+      };
+    }
 
     // 📧 2. 대표님 스마트폰(Gmail)으로 즉시 보고 메일 전송
     try {

@@ -13,7 +13,7 @@ export async function POST(request) {
     ];
 
     // 권한 검증
-    const isAuthorized = authorizedUsers.some(user => email.includes(user));
+    const isAuthorized = typeof email === 'string' && authorizedUsers.some(user => user && email.includes(user));
 
     if (!isAuthorized) {
       return NextResponse.json({ success: false, error: "인가되지 않은 관리자입니다." }, { status: 403 });

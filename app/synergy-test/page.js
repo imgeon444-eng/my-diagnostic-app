@@ -96,7 +96,7 @@ export default function SynergyTestPage() {
             clientContact: formData.clientContact,
             clientEmail: "AI 에이전틱 진단",
             totalScore: score,
-            shortPainPoint: data.aiData.limits[0],
+            shortPainPoint: data.aiData?.limits?.[0] || 'AI 에이전틱 진단 완료',
             status: "상담 대기",
             createdAt: new Date()
           });
