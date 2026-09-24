@@ -44,91 +44,126 @@ export default function Navbar({ onOpenDiagnostic }) {
           </div>
         </Link>
 
-        {/* 데스크톱 메뉴 */}
-        <nav className="hidden md:flex items-center gap-1 bg-slate-900/60 border border-white/10 px-4 py-1.5 rounded-full backdrop-blur-md">
+        {/* 1. 초고해상도 데스크톱 메뉴 (1280px 이상 xl 전용) */}
+        <nav className="hidden xl:flex items-center gap-1 bg-slate-900/60 border border-white/10 px-4 py-1.5 rounded-full backdrop-blur-md shrink-0">
           <button
             onClick={onOpenDiagnostic}
-            className="text-xs lg:text-sm font-bold text-slate-300 hover:text-white px-3 py-2 rounded-full hover:bg-white/5 transition-colors"
+            className="text-xs xl:text-sm font-bold text-slate-300 hover:text-white px-3 py-2 rounded-full hover:bg-white/5 transition-colors whitespace-nowrap shrink-0"
           >
             📋 1층 진단
           </button>
           <Link
             href="/synergy-test"
-            className="text-xs lg:text-sm font-bold text-slate-300 hover:text-white px-3 py-2 rounded-full hover:bg-white/5 transition-colors"
+            className="text-xs xl:text-sm font-bold text-slate-300 hover:text-white px-3 py-2 rounded-full hover:bg-white/5 transition-colors whitespace-nowrap shrink-0"
           >
             🧠 AI 메타인지
           </Link>
           <Link
             href="/storybook"
-            className="text-xs lg:text-sm font-bold text-emerald-300 hover:text-emerald-100 px-3 py-2 rounded-full hover:bg-emerald-500/10 transition-colors"
+            className="text-xs xl:text-sm font-bold text-emerald-300 hover:text-emerald-100 px-3 py-2 rounded-full hover:bg-emerald-500/10 transition-colors whitespace-nowrap shrink-0"
           >
             📖 1.5층 스토리북
           </Link>
           <Link
             href="/bootcamp-funnel"
-            className="text-xs lg:text-sm font-bold text-slate-300 hover:text-white px-3 py-2 rounded-full hover:bg-white/5 transition-colors"
+            className="text-xs xl:text-sm font-bold text-slate-300 hover:text-white px-3 py-2 rounded-full hover:bg-white/5 transition-colors whitespace-nowrap shrink-0"
           >
             📊 2층 URL 데이터랩
           </Link>
           <Link
             href="/bootcamp-sales"
-            className="text-xs lg:text-sm font-bold text-cyan-300 hover:text-cyan-100 px-3 py-2 rounded-full hover:bg-cyan-500/10 transition-colors"
+            className="text-xs xl:text-sm font-bold text-cyan-300 hover:text-cyan-100 px-3 py-2 rounded-full hover:bg-cyan-500/10 transition-colors whitespace-nowrap shrink-0"
           >
             🔥 3층 부트캠프 VIP
           </Link>
         </nav>
 
-        {/* 우측 CTA 및 본사 포털 바로가기 */}
-        <div className="hidden md:flex items-center gap-2 lg:gap-3">
+        {/* 2. 랩탑 및 슬림 데스크톱 메뉴 (1024px ~ 1279px lg 전용 - 1줄 완벽 핏) */}
+        <nav className="hidden lg:flex xl:hidden items-center gap-0.5 bg-slate-900/70 border border-white/10 px-2.5 py-1.5 rounded-full backdrop-blur-md shrink-0">
+          <button
+            onClick={onOpenDiagnostic}
+            className="text-xs font-bold text-slate-300 hover:text-white px-2.5 py-1.5 rounded-full hover:bg-white/5 transition-colors whitespace-nowrap shrink-0"
+          >
+            1층 진단
+          </button>
+          <Link
+            href="/synergy-test"
+            className="text-xs font-bold text-slate-300 hover:text-white px-2.5 py-1.5 rounded-full hover:bg-white/5 transition-colors whitespace-nowrap shrink-0"
+          >
+            AI진단
+          </Link>
+          <Link
+            href="/storybook"
+            className="text-xs font-bold text-emerald-300 hover:text-emerald-100 px-2.5 py-1.5 rounded-full hover:bg-emerald-500/10 transition-colors whitespace-nowrap shrink-0"
+          >
+            스토리북
+          </Link>
+          <Link
+            href="/bootcamp-funnel"
+            className="text-xs font-bold text-slate-300 hover:text-white px-2.5 py-1.5 rounded-full hover:bg-white/5 transition-colors whitespace-nowrap shrink-0"
+          >
+            2층 데이터
+          </Link>
+          <Link
+            href="/bootcamp-sales"
+            className="text-xs font-bold text-cyan-300 hover:text-cyan-100 px-2.5 py-1.5 rounded-full hover:bg-cyan-500/10 transition-colors whitespace-nowrap shrink-0"
+          >
+            3층 VIP
+          </Link>
+        </nav>
+
+        {/* 3. 데스크톱/랩탑 우측 CTA 버튼군 (1024px 이상) */}
+        <div className="hidden lg:flex items-center gap-2 xl:gap-3 shrink-0">
           <a
             href="http://thecreator-mcn.com/"
-            className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600/80 to-indigo-600/80 hover:from-cyan-500 hover:to-indigo-500 text-white transition-all text-xs font-bold shadow-md shadow-indigo-600/20 border border-cyan-400/30"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gradient-to-r from-cyan-600/80 to-indigo-600/80 hover:from-cyan-500 hover:to-indigo-500 text-white transition-all text-xs font-bold shadow-md shadow-indigo-600/20 border border-cyan-400/30 whitespace-nowrap shrink-0"
             title="더크리에이터즈AI 본사 공식 포털로 이동"
           >
-            <span>본사 포털</span>
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+            <span className="whitespace-nowrap">본사 포털</span>
+            <svg className="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
           </a>
 
           <button
             onClick={onOpenDiagnostic}
-            className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white text-xs lg:text-sm font-black px-4 lg:px-5 py-2.5 rounded-xl shadow-[0_0_20px_rgba(59,130,246,0.4)] transition-all hover:scale-105 active:scale-95"
+            className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white text-xs xl:text-sm font-black px-3.5 xl:px-5 py-2 rounded-xl shadow-[0_0_20px_rgba(59,130,246,0.4)] transition-all hover:scale-105 active:scale-95 whitespace-nowrap shrink-0"
           >
             무료 진단 시작
           </button>
           <Link
             href="/admin/login"
-            className="bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white text-xs font-bold px-3 py-2.5 rounded-xl transition-colors"
+            className="bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white text-xs font-bold px-2.5 py-2 rounded-xl transition-colors whitespace-nowrap shrink-0"
             title="관리자 CRM 관제탑"
           >
             🔒 CRM
           </Link>
         </div>
 
-        {/* 모바일 햄버거 버튼 */}
-        <div className="flex md:hidden items-center gap-2">
+        {/* 4. 태블릿 및 모바일 우측 액션 바 (1023px 이하 완벽 반응형) */}
+        <div className="flex lg:hidden items-center gap-1.5 sm:gap-2 shrink-0">
           <a
             href="http://thecreator-mcn.com/"
-            className="bg-cyan-600/80 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg border border-cyan-400/30"
+            className="bg-cyan-600/80 hover:bg-cyan-500 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg border border-cyan-400/30 whitespace-nowrap shrink-0"
+            title="본사 포털"
           >
             본사
           </a>
           <button
             onClick={onOpenDiagnostic}
-            className="bg-blue-600 text-white text-xs font-black px-3 py-2 rounded-lg"
+            className="hidden sm:inline-block bg-blue-600 hover:bg-blue-500 text-white text-xs font-black px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0"
           >
-            진단
+            무료 진단
           </button>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-slate-400 hover:text-white focus:outline-none"
+            className="p-2 text-slate-400 hover:text-white focus:outline-none rounded-lg bg-white/5 border border-white/10 shrink-0"
             aria-label="메뉴 열기"
           >
             {mobileMenuOpen ? (
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             ) : (
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             )}
