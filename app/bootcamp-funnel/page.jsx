@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import {
   Radar,
   RadarChart,
@@ -541,7 +542,25 @@ export default function BootcampFunnelPage() {
           </a>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <Link
+            href="/synergy-test"
+            className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-400/40 text-cyan-300 hover:text-cyan-200 transition-all text-xs font-bold shadow-[0_0_15px_rgba(6,182,212,0.2)]"
+            title="1층 에이전틱 AI 메타인지 역량 진단소로 이동"
+          >
+            <Sparkles className="w-3 h-3 text-cyan-300" />
+            <span className="hidden xs:inline">1층</span>
+            <span>AI수준진단</span>
+          </Link>
+
+          <Link
+            href="/"
+            className="hidden sm:flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white transition-all text-xs font-bold"
+            title="진단기 플랫폼 1층 통합 허브로 이동"
+          >
+            <span>1층 허브</span>
+          </Link>
+
           <a
             href="http://thecreator-mcn.com/subpage.php?sd=2&sc=2_3"
             target="_blank"
@@ -1259,12 +1278,20 @@ export default function BootcampFunnelPage() {
                     <ArrowRight className="w-4 h-4" />
                   </button>
 
+                  <Link
+                    href="/synergy-test"
+                    className="flex-1 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white py-4 px-6 rounded-2xl font-black text-sm sm:text-base transition-all shadow-xl hover:-translate-y-0.5 text-center flex items-center justify-center gap-2 border border-cyan-400/40"
+                  >
+                    <Sparkles className="w-4 h-4 text-cyan-200" />
+                    <span>1층 내 AI수준(메타인지) 진단받기</span>
+                  </Link>
+
                   <a
                     href="tel:051-633-3812"
                     className="flex items-center justify-center gap-2 bg-indigo-900/60 hover:bg-indigo-900 border border-indigo-400/40 text-white py-4 px-6 rounded-2xl font-black text-sm sm:text-base transition-all"
                   >
                     <Phone className="w-4 h-4 text-indigo-300" />
-                    <span>051-633-3812 유선 문의</span>
+                    <span>유선 문의</span>
                   </a>
                 </div>
 
