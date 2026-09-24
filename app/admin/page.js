@@ -14,12 +14,13 @@ import MissionDashboard from '../../components/admin/MissionDashboard';
 
 // 💡 탭 메뉴 배열에서 '5층: 전사 일정'을 삭제했습니다.
 const TABS = [
+  { id: 'inquiry', icon: '📩', label: '0층: 본사 상담문의', color: 'bg-cyan-600 shadow-[0_0_15px_rgba(8,145,178,0.4)] border-transparent' },
   { id: 'marketing', icon: '📋', label: '1층: 마케팅 진단', color: 'bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.4)] border-transparent' },
   { id: 'meta', icon: '🧠', label: '1층: AI 메타인지', color: 'bg-emerald-600 shadow-[0_0_15px_rgba(5,150,105,0.4)] border-transparent' },
   { id: 'url', icon: '📊', label: '2층: URL 통계', color: 'bg-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.4)] border-transparent' },
   { id: 'landing', icon: '🔥', label: '3층: 부트캠프 VIP', color: 'bg-[#3B82F6] shadow-[0_0_15px_rgba(59,130,246,0.4)] border-transparent' },
   { id: 'hr', icon: '🧑‍💻', label: '4층: 인사/근태', color: 'bg-purple-600 shadow-[0_0_15px_rgba(147,51,234,0.4)] border-transparent' },
-  { id: 'mission', icon: '🎯', label: '5층: 목표/미션', color: 'bg-rose-500 shadow-[0_0_15px_rgba(243,24,103,0.4)] border-transparent' }, // 층수 표기 정렬
+  { id: 'mission', icon: '🎯', label: '5층: 목표/미션', color: 'bg-rose-500 shadow-[0_0_15px_rgba(243,24,103,0.4)] border-transparent' },
 ];
 
 export default function AdminDashboard() {
@@ -81,6 +82,7 @@ export default function AdminDashboard() {
         </div>
 
         <main className="min-h-[600px] animate-fade-in-up">
+          {activeTab === 'inquiry' && <div className="space-y-6 animate-fade-in-up"><KanbanBoard collectionName="homepage_leads" title="본사 홈페이지 실시간 상담문의" columns={['상담 대기', '연락 완료', '상담 완료', '등록 완료']} /></div>}
           {activeTab === 'marketing' && <div className="space-y-6 animate-fade-in-up"><KanbanBoard collectionName="diagnostics" title="마케팅 진단기" columns={['신규 유입 (진단 완료)', '분석 중', '리타겟팅 대상', '상담 전환']} /></div>}
           {activeTab === 'meta' && <div className="space-y-6 animate-fade-in-up"><KanbanBoard collectionName="bootcamp_leads" title="AI 메타인지 진단" columns={['상담 대기', '연락 완료', '결제 대기', '등록 완료']} /></div>}
           {activeTab === 'url' && <div className="space-y-6 animate-fade-in-up"><B2BTargetSniperAnalyzer /></div>}

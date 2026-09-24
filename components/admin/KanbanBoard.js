@@ -17,7 +17,14 @@ function LeadCard({ lead, onDragStart, onClick, onDelete }) {
     >
       <div className="flex justify-between items-start mb-2 md:mb-3 pointer-events-none">
         <div>
-          <h3 className="text-white font-bold text-sm md:text-base leading-tight break-keep">{lead.name}</h3>
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <h3 className="text-white font-bold text-sm md:text-base leading-tight break-keep">{lead.name}</h3>
+            {lead.company?.includes('[본사]') && (
+              <span className="bg-cyan-500/20 text-cyan-300 text-[9px] font-bold px-1.5 py-0.5 rounded border border-cyan-500/30">
+                본사문의
+              </span>
+            )}
+          </div>
           <p className="text-slate-400 text-[10px] md:text-xs mt-0.5 truncate max-w-[150px] sm:max-w-[180px]">{lead.company}</p>
         </div>
         {lead.score > 0 ? (
@@ -103,7 +110,7 @@ function LeadDetailModal({ lead, columns, isOpen, onClose, onStatusChange }) {
           {lead.painPoint && (
             <div className="bg-blue-900/10 border border-blue-500/20 p-4 md:p-5 rounded-2xl mb-6 relative">
               <span className="absolute -top-2.5 left-4 bg-[#090E17] text-blue-400 text-[9px] md:text-[10px] font-black uppercase px-2 tracking-widest border border-blue-500/20 rounded-md">
-                Customer Pain Point
+                {lead.company?.includes('[본사]') ? '본사 상담 문의 상세' : 'Customer Pain Point'}
               </span>
               <p className="text-slate-300 font-medium leading-relaxed mt-2 text-xs md:text-sm break-keep">
                 "{lead.painPoint}"
