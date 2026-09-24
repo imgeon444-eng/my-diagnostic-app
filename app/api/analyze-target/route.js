@@ -52,6 +52,8 @@ export async function POST(request) {
           "representative": "${brandDisplay} 운영 주체",
           "category": "콘텐츠 기반 비즈니스",
           "identity": "이 채널이 고객에게 제공하는 핵심 가치와 정체성을 전문적인 2문장으로 작성",
+          "severity": "위험 | 심각 | 치명적 중 하나의 단어만 선택",
+          "bottleneckPhase": "인지 유입 부재 | 리드 획득 실패 | 육성 신뢰 결핍 | 세일즈 전환 병목 | 재구매 락인 부재 중 가장 심각한 단계 1개",
           "swot": {
             "s": "채널의 핵심 강점",
             "w": "수익화 및 시스템 관점의 약점",
@@ -61,14 +63,23 @@ export async function POST(request) {
           "coreValue": "브랜드의 핵심 가치",
           "direction": "수익화를 위한 비즈니스 피보팅 방향 제안",
           "futureTask": "당장 실행해야 할 퍼널 구축 과제",
-          "painPoint": "현재 채널이 겪고 있는 가장 치명적인 문제점 지적",
-          "monthlyLeakageCost": [3000000에서 15000000 사이의 정수 값 중 하나를 논리적으로 추정하여 숫자만 입력],
+          "painPoint": "현재 채널이 겪고 있는 가장 치명적인 세일즈 누수 원인 지적",
+          "monthlyLeakageCost": [3500000에서 18000000 사이의 정수 값 중 하나를 논리적으로 추정하여 숫자만 입력],
+          "leakageFormula": "월간 추정 유입 N명 × 퍼널 이탈률 85% × 평균 객단가 N원 역산 시뮬레이션",
+          "geoScore": [35에서 92 사이의 정수],
+          "geoReadiness": "취약 | 보통 | 양호 | 최적 중 하나만 선택",
+          "geoInsight": "생성형 AI(ChatGPT, Perplexity, Gemini) 검색 환경에서 브랜드 노출 및 인용 잠재력에 대한 전문적인 1문장 진단",
           "chartData": [
-            { "subject": "콘텐츠 매력", "score": [40에서 95 사이의 정수] },
-            { "subject": "브랜딩 통일", "score": [40에서 95 사이의 정수] },
-            { "subject": "트래픽 확보", "score": [40에서 95 사이의 정수] },
-            { "subject": "퍼널/수익화", "score": [40에서 95 사이의 정수] },
-            { "subject": "전환율", "score": [40에서 95 사이의 정수] }
+            { "subject": "콘텐츠 흡입력", "score": [40에서 95 사이의 정수] },
+            { "subject": "브랜딩 일관성", "score": [40에서 95 사이의 정수] },
+            { "subject": "트래픽 유입력", "score": [40에서 95 사이의 정수] },
+            { "subject": "퍼널 락인", "score": [40에서 95 사이의 정수] },
+            { "subject": "전환 효율", "score": [40에서 95 사이의 정수] }
+          ],
+          "actionPlan7Days": [
+            { "period": "Day 1-2", "title": "프로필 & 유입 동선 긴급 정비", "desc": "이탈을 막기 위한 한 줄 가치 제안 및 링크트리/랜딩 통일" },
+            { "period": "Day 3-4", "title": "고가치 리드 마그넷(미끼) 배포", "desc": "고객 연락처를 획득하기 위한 무료 진단/전자책 미끼 자동화 세팅" },
+            { "period": "Day 5-7", "title": "24시간 무인 CRM 전환 퍼널 가동", "desc": "잠재고객 대상 맥락적 신뢰 육성 및 원클릭 결제 전환 구축" }
           ]
         }
       }
@@ -94,8 +105,24 @@ export async function POST(request) {
       throw new Error("AI가 데이터 규격을 지키지 않았습니다.");
     }
 
-    // 이름 재확정 (환각 방지)
-    analysisData.publicReport.brandName = brandDisplay;
+    // 이름 재확정 및 안전 수치 보정
+    if (!analysisData.publicReport) {
+      analysisData.publicReport = {};
+    }
+    const pr = analysisData.publicReport;
+    pr.brandName = brandDisplay;
+    pr.monthlyLeakageCost = Number(pr.monthlyLeakageCost) || 7500000;
+    pr.annualLeakageCost = pr.monthlyLeakageCost * 12;
+    if (!pr.severity) {
+      pr.severity = pr.monthlyLeakageCost >= 10000000 ? "치명적" : "심각";
+    }
+    if (!pr.bottleneckPhase) {
+      pr.bottleneckPhase = "리드 획득 및 24시간 세일즈 전환 병목";
+    }
+    pr.geoScore = Number(pr.geoScore) || 58;
+    pr.geoReadiness = pr.geoReadiness || (pr.geoScore >= 75 ? "양호" : pr.geoScore >= 50 ? "보통" : "취약");
+    pr.geoInsight = pr.geoInsight || "생성형 AI(ChatGPT, Perplexity) 검색 환경에서 브랜드 키워드 인용 빈도가 낮아 GEO 최적화가 필요합니다.";
+    pr.leakageFormula = pr.leakageFormula || `월간 추정 유입 트래픽 × 평균 이탈율 85% × 기회손실 객단가 시뮬레이션`;
 
     return NextResponse.json(analysisData);
 

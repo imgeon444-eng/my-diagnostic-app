@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 
@@ -609,9 +610,19 @@ const CONSULTING_TOPICS = [
   '🤖 AI 에이전트 기반 인건비 절감'
 ];
 
-function ConsultingApplyModal({ isOpen, onClose }) {
+function ConsultingApplyModal({ isOpen, onClose, prefillData = null }) {
   const [formData, setFormData] = useState({ name: '', contact: '', email: '', topic: '', jobAndReason: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (isOpen && prefillData) {
+      setFormData(prev => ({
+        ...prev,
+        topic: prev.topic || '📈 세일즈/마케팅 효율화',
+        jobAndReason: prev.jobAndReason || `[2층 진단 연동] 대상: ${prefillData.brand || '분석채널'} | 월 누수액: ${Number(prefillData.cost || 0).toLocaleString()}원 | 주요 병목: ${prefillData.pain || prefillData.bottleneck || '세일즈 전환 이탈'}`
+      }));
+    }
+  }, [isOpen, prefillData]);
 
   if (!isOpen) return null;
 
@@ -703,8 +714,17 @@ function ConsultingApplyModal({ isOpen, onClose }) {
   );
 }
 
-// 👑 [메인 함수] 랜딩페이지 뼈대
-export default function BootcampSalesPage() {
+function BootcampSalesContent() {
+  const searchParams = useSearchParams();
+  const brandParam = searchParams.get('brand');
+  const costParam = searchParams.get('cost');
+  const painParam = searchParams.get('pain');
+  const bottleneckParam = searchParams.get('bottleneck');
+
+  const prefillData = brandParam
+    ? { brand: brandParam, cost: costParam, pain: painParam, bottleneck: bottleneckParam }
+    : null;
+
   const [heroState, setHeroState] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false); 
 
@@ -713,18 +733,45 @@ export default function BootcampSalesPage() {
     return () => clearInterval(interval);
   }, []);
 
+  const handleSmartBack = () => {
+    if (typeof window !== 'undefined') {
+      if (window.history.length > 1 && document.referrer && document.referrer.includes(window.location.host)) {
+        window.history.back();
+      } else {
+        window.location.href = '/bootcamp-funnel';
+      }
+    }
+  };
+
   return (
     // 🚀 모바일에서 하단 고정바에 가리지 않도록 pb-24 패딩 부여
     <div className="bg-[#05080f] text-slate-900 antialiased selection:bg-[#3B82F6] selection:text-white relative font-sans break-keep overflow-x-hidden pb-24 md:pb-0">
       
       <style dangerouslySetInnerHTML={{__html: globalStyles}} />
 
-      {/* 🚀 좌측 상단: 플로팅 네비게이션 */}
-      <div className="fixed top-4 left-4 md:top-6 md:left-6 z-50">
-        <Link href="/" className="group flex items-center gap-2 px-4 py-2 md:px-5 md:py-2.5 bg-black/30 backdrop-blur-md border border-white/20 rounded-full shadow-lg hover:bg-black/50 transition-all duration-300 ease-lux">
+      {/* 🚀 좌측 상단: 플로팅 네비게이션 및 진단 연동 뱃지 */}
+      <div className="fixed top-4 left-4 md:top-6 md:left-6 z-50 flex items-center gap-2">
+        <button
+          type="button"
+          onClick={handleSmartBack}
+          className="group flex items-center gap-2 px-4 py-2 md:px-5 md:py-2.5 bg-black/40 backdrop-blur-md border border-white/20 rounded-full shadow-lg hover:bg-black/60 transition-all duration-300 ease-lux"
+        >
           <span className="text-white/70 group-hover:text-white transition-transform group-hover:-translate-x-1 ease-lux">←</span>
-          <span className="text-white/90 group-hover:text-white text-xs md:text-sm font-bold tracking-wide">이전 페이지로</span>
-        </Link>
+          <span className="text-white/90 group-hover:text-white text-xs md:text-sm font-bold tracking-wide">뒤로가기</span>
+        </button>
+
+        {brandParam && (
+          <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-indigo-950/80 backdrop-blur-md border border-indigo-500/40 rounded-full text-xs font-bold text-slate-200 shadow-lg">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+            <span className="text-cyan-300">{brandParam}</span>
+            <span className="text-slate-400">진단 연동</span>
+            {costParam && (
+              <span className="text-rose-400 font-extrabold ml-1">
+                월 {Number(costParam).toLocaleString()}원 누수
+              </span>
+            )}
+          </div>
+        )}
       </div>
 
       {/* 🚀 PC 전용 우측 상단: 듀얼 퀵 컨택트 버튼 (모바일에서 숨김) */}
@@ -1130,8 +1177,16 @@ export default function BootcampSalesPage() {
         </div>
       </section>
 
-      <ConsultingApplyModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <ConsultingApplyModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} prefillData={prefillData} />
 
     </div>
+  );
+}
+
+export default function BootcampSalesPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#05080f] flex items-center justify-center text-slate-400">로딩 중...</div>}>
+      <BootcampSalesContent />
+    </Suspense>
   );
 }
