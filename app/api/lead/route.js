@@ -1,7 +1,39 @@
 import { NextResponse } from 'next/server';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { db } from '../../../lib/firebase';
 import nodemailer from 'nodemailer';
+
+const FIREBASE_PROJECT_ID = "thecreators-94563";
+const FIREBASE_API_KEY = "AIzaSyA_q5uu_BfKviHZtMYSXA12zCeCYjctiFQ";
+
+async function saveToFirestoreRest(collectionName, fields) {
+  const url = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/${collectionName}?key=${FIREBASE_API_KEY}`;
+  
+  const formattedFields = {};
+  for (const [key, value] of Object.entries(fields)) {
+    if (typeof value === 'number') {
+      formattedFields[key] = { integerValue: String(value) };
+    } else if (typeof value === 'boolean') {
+      formattedFields[key] = { booleanValue: value };
+    } else {
+      formattedFields[key] = { stringValue: String(value || '') };
+    }
+  }
+
+  // 현재 ISO 시간 추가
+  formattedFields.createdAt = { timestampValue: new Date().toISOString() };
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ fields: formattedFields }),
+  });
+
+  if (!response.ok) {
+    const errText = await response.text();
+    throw new Error(`Firestore REST error (${response.status}): ${errText}`);
+  }
+
+  return response.json();
+}
 
 export async function OPTIONS() {
   return new NextResponse(null, {
@@ -25,7 +57,6 @@ export async function POST(request) {
       const formData = await request.formData();
       body = Object.fromEntries(formData.entries());
     } else {
-      // Fallback text parsing
       const text = await request.text();
       try {
         body = JSON.parse(text);
@@ -43,7 +74,7 @@ export async function POST(request) {
     const item2 = body.item2 || body.o_item2 || '';
     const category = item2 ? `${item1} / ${item2}` : item1;
 
-    const leadData = {
+    const leadFields = {
       clientName: `[본사] ${category}`,
       clientTitle: name,
       clientContact: contact,
@@ -55,19 +86,22 @@ export async function POST(request) {
       funnelSource: 'homepage-mcn-subpage-6-1',
       status: '상담 대기',
       totalScore: 100,
-      createdAt: serverTimestamp(),
     };
 
-    // 1. homepage_leads 전용 컬렉션에 저장
-    const docRef1 = await addDoc(collection(db, 'homepage_leads'), leadData);
+    // 1. homepage_leads 컬렉션에 실시간 등록
+    const firestoreResult = await saveToFirestoreRest('homepage_leads', leadFields);
 
-    // 2. 통합 관리 편의를 위해 bootcamp_leads에도 등록
-    await addDoc(collection(db, 'bootcamp_leads'), {
-      ...leadData,
-      status: '심사 대기',
-    });
+    // 2. 통합 관리를 위해 bootcamp_leads에도 등록
+    try {
+      await saveToFirestoreRest('bootcamp_leads', {
+        ...leadFields,
+        status: '심사 대기',
+      });
+    } catch (e) {
+      console.error('bootcamp_leads backup error:', e);
+    }
 
-    // 3. 대표님 이메일 알림 (GMAIL 환경변수 있을 시)
+    // 3. 대표님 이메일 알림 (환경변수 있을 시)
     if (process.env.GMAIL_USER && process.env.GMAIL_APP_PW) {
       try {
         const transporter = nodemailer.createTransport({
@@ -110,15 +144,15 @@ export async function POST(request) {
 
         await transporter.sendMail(mailOptions);
       } catch (mailErr) {
-        console.error('메일 발송 실패 (진행 유지):', mailErr);
+        console.error('Email notification failed (continuing):', mailErr);
       }
     }
 
     return NextResponse.json(
       {
         success: true,
-        message: 'Lead registered successfully',
-        id: docRef1.id,
+        message: 'Lead registered successfully to Live CRM',
+        documentId: firestoreResult.name?.split('/').pop(),
       },
       {
         status: 200,
