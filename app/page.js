@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Navbar from '../components/home/Navbar';
 import HeroVideoSection from '../components/home/HeroVideoSection';
 import FunnelGateways from '../components/home/FunnelGateways';
-import VideoReviewGallery from '../components/home/VideoReviewGallery';
 import DiagnosticModal from '../components/home/DiagnosticModal';
 import Footer from '../components/home/Footer';
 
@@ -26,10 +25,7 @@ export default function TheCreatorsHomePage() {
       {/* 🏢 2. 1층~3층 퍼널 게이트웨이 관문 */}
       <FunnelGateways onOpenDiagnostic={openDiagnostic} />
 
-      {/* 🎥 3. 실제 수강생 & 파트너사 영상 리뷰 갤러리 */}
-      <VideoReviewGallery />
-
-      {/* 📋 4. 1층 15문항 마케팅 체급 진단 모달 (Firebase 및 /result 연동 완벽 보존) */}
+      {/* 📋 1층 15문항 마케팅 체급 진단 모달 (Firebase 및 /result 연동 완벽 보존) */}
       <DiagnosticModal
         isOpen={isDiagnosticOpen}
         onClose={closeDiagnostic}
