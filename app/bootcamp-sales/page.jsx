@@ -224,8 +224,8 @@ function ReviewSection() {
                 </div>
                 <div className="flex-1 max-w-[240px]">
                   <div className="aspect-[9/16] w-full relative rounded-2xl overflow-hidden border border-slate-700 shadow-2xl bg-black">
-                    <div className="absolute top-2 left-2 bg-cyan-600 text-white text-[10px] font-black px-2 py-1 rounded-md z-10 pointer-events-none shadow-md">특강 안내</div>
-                    <iframe className="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/NPBGbXxhvUU" title="매월 정기 무료특강 안내" frameBorder="0" allowFullScreen></iframe>
+                    <div className="absolute top-2 left-2 bg-cyan-600 text-white text-[10px] font-black px-2 py-1 rounded-md z-10 pointer-events-none shadow-md">Shorts</div>
+                    <iframe className="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/LMWeEyO_YwQ" title="수강생 리얼 후기" frameBorder="0" allowFullScreen></iframe>
                   </div>
                 </div>
               </div>
