@@ -1,4 +1,21 @@
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&display=swap");
+
+@font-face {
+  font-family: 'ChosunIlbo_myungjo';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Chosunilbo_myungjo.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GmarketSansMedium';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
 @tailwind base;
 @tailwind components;
@@ -10,9 +27,12 @@ html, body {
 }
 
 body {
-  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+  font-family: "Pretendard Variable", 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
   background-color: #090E17;
   color: #e2e8f0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* 럭셔리 부드러운 가감속 */
@@ -168,4 +188,102 @@ body {
   border-color: rgba(6, 182, 212, 0.55);
   box-shadow: 0 12px 40px -5px rgba(6, 182, 212, 0.22);
   transform: translateY(-3px);
+}
+
+/* =======================================================
+   전역 마스터 빛 언어 (Motion-Kit 0.1.0 & Light Cue)
+   ======================================================= */
+:root {
+  --role-success: #10B981;
+  --role-info: #38BDF8;
+  --role-accent: #3B82F6;
+  --role-neutral: #64748B;
+  --cue-scale-x: 1.018;
+  --cue-scale-y: 1.095;
+}
+
+.light-cue {
+  position: relative;
+  isolation: isolate;
+}
+
+.light-cue::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  border: 1px solid var(--role-info);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.45);
+  pointer-events: none;
+  opacity: 0;
+  transform: scale3d(1, 1, 1);
+  will-change: transform, opacity;
+}
+
+.light-cue[data-cue-active="true"]::after {
+  animation: light-expand-balanced 3.6s ease-out 2;
+}
+
+@keyframes light-expand-balanced {
+  0%, 12% {
+    opacity: 0;
+    transform: scale3d(1, 1, 1);
+  }
+  22% {
+    opacity: 0.42;
+    transform: scale3d(1, 1, 1);
+  }
+  62%, 100% {
+    opacity: 0;
+    transform: scale3d(var(--cue-scale-x, 1.018), var(--cue-scale-y, 1.095), 1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .light-cue[data-cue-active="true"]::after {
+    animation: none;
+    opacity: 0.2;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+/* =======================================================
+   더크리에이터즈 한국어 광학 타이포그래피 프리셋
+   ======================================================= */
+.typo-hero {
+  letter-spacing: -0.04em;
+  line-height: 1.16;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+
+.typo-heading {
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+
+.typo-body {
+  letter-spacing: -0.015em;
+  line-height: 1.68;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+}
+
+.typo-metric {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.typo-editorial {
+  font-family: 'ChosunIlbo_myungjo', 'Ridibatang', Georgia, serif;
+  letter-spacing: -0.025em;
+  line-height: 1.42;
+  word-break: keep-all;
+  text-wrap: balance;
 }

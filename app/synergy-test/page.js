@@ -1,11 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 
 // 💡 프론트엔드 환경에서 가장 안전하게 작동하는 Firebase 클라이언트 연결
 import { db } from '../../lib/firebase'; 
 import { collection, addDoc } from 'firebase/firestore';
+import {
+  useSingleLightCue,
+  useSurfaceLightHandlers,
+  useCommittedLightFlow,
+} from '../../hooks/useLightInteraction';
 
 const Icons = {
   Business: () => <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" /></svg>,
@@ -31,6 +36,26 @@ export default function SynergyTestPage() {
   const [formData, setFormData] = useState({ clientName: '', clientContact: '' });
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [apiResult, setApiResult] = useState(null);
+
+  const containerRef = useRef(null);
+  const startBtnRef = useRef(null);
+  const submitBtnRef = useRef(null);
+  const resultCardRef = useRef(null);
+
+  useSingleLightCue(startBtnRef, { disabled: step !== 0 });
+  const surfaceLight = useSurfaceLightHandlers();
+  const { captureOriginRect, playCommittedSuccess } = useCommittedLightFlow(containerRef);
+
+  useEffect(() => {
+    if (step === 10 && apiResult && resultCardRef.current) {
+      playCommittedSuccess({
+        originEl: null,
+        targetEl: resultCardRef.current,
+        domainEvent: 'activity-saved',
+        withRewardRing: true,
+      });
+    }
+  }, [step, apiResult, playCommittedSuccess]);
 
   const fields = [
     { id: 'business', icon: <Icons.Business />, label: '대표 / 사업자', desc: '인건비 절감 및 시스템 빌딩' },
@@ -65,6 +90,7 @@ export default function SynergyTestPage() {
   // 📡 서버 연동 및 🗄️ 프론트단 Firebase 칸반보드 저장 로직 (에러 검출기 탑재)
   const submitLeadAndFetchAPI = async (e) => {
     e.preventDefault();
+    captureOriginRect(submitBtnRef.current);
     setStep(9); 
     setIsAnalyzing(true);
 
@@ -142,7 +168,7 @@ export default function SynergyTestPage() {
   const pyramidTiers = [{ lvl: 6, name: "Grandmaster" }, { lvl: 5, name: "Master" }, { lvl: 4, name: "Director" }, { lvl: 3, name: "Manager" }, { lvl: 2, name: "Staff" }, { lvl: 1, name: "Intern" }];
 
   return (
-    <div className="min-h-screen bg-[#090E17] text-slate-200 font-sans flex items-center justify-center p-4 selection:bg-[#3B82F6] selection:text-white pb-24 pt-20 md:pt-24 relative overflow-hidden">
+    <div ref={containerRef} className="min-h-screen bg-[#090E17] text-slate-200 font-sans flex items-center justify-center p-4 selection:bg-[#3B82F6] selection:text-white pb-24 pt-20 md:pt-24 relative overflow-hidden">
       
       {/* 🚀 좌측 상단: 1층 로비 및 본사 포털 복귀 듀얼 버튼 */}
       <div className="fixed top-4 left-4 md:top-6 md:left-6 z-50 flex items-center gap-1.5 sm:gap-2 shrink-0">
@@ -177,7 +203,7 @@ export default function SynergyTestPage() {
             <p className="text-slate-400 text-sm md:text-base mb-12 break-keep leading-relaxed max-w-xl mx-auto font-medium">
               하네스 엔지니어링과 MCP 역량을 평가하는 <strong>최상위 정밀 진단</strong>을 통해,<br/>현재 대표님의 위치와 시스템에서 증발하는 <strong>치명적 기회비용</strong>을 스캔합니다.
             </p>
-            <button onClick={() => setStep(1)} className="w-full sm:w-auto bg-blue-600 hover:bg-cyan-500 text-white font-black text-lg py-5 px-12 rounded-2xl shadow-[0_0_30px_rgba(34,211,238,0.3)] transition-all hover:-translate-y-1">
+            <button ref={startBtnRef} onClick={() => setStep(1)} className="light-cue w-full sm:w-auto bg-blue-600 hover:bg-cyan-500 text-white font-black text-lg py-5 px-12 rounded-2xl shadow-[0_0_30px_rgba(34,211,238,0.3)] transition-all hover:-translate-y-1">
               에이전틱 역량 진단 시작하기
             </button>
           </div>
@@ -189,7 +215,7 @@ export default function SynergyTestPage() {
             <h2 className="text-2xl md:text-3xl font-black text-white mb-10">무인화를 도입하려는 핵심 분야를 선택하십시오.</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {fields.map(field => (
-                <button key={field.id} onClick={() => handleFieldSelect(field.id)} className="bg-slate-800/40 hover:bg-cyan-900/20 border border-slate-700 hover:border-cyan-500/50 p-8 rounded-[1.5rem] transition-all group flex flex-col items-center text-center shadow-lg">
+                <button key={field.id} onClick={() => handleFieldSelect(field.id)} {...surfaceLight} className="bg-slate-800/40 hover:bg-cyan-900/20 border border-slate-700 hover:border-cyan-500/50 p-8 rounded-[1.5rem] transition-all group flex flex-col items-center text-center shadow-lg">
                   <div className="text-slate-400 group-hover:text-cyan-400 transition-colors mb-5">{field.icon}</div>
                   <span className="font-bold text-white mb-2 text-lg">{field.label}</span>
                   <span className="text-xs text-slate-500 font-medium break-keep">{field.desc}</span>
@@ -249,7 +275,7 @@ export default function SynergyTestPage() {
                 <label className="text-slate-500 text-[10px] font-black mb-2 block uppercase tracking-widest">Contact Number</label>
                 <input required type="tel" placeholder="010-0000-0000" value={formData.clientContact} onChange={e => setFormData({...formData, clientContact: e.target.value})} className="w-full bg-slate-950/50 border border-slate-700 p-4 rounded-xl text-white font-medium focus:outline-none focus:border-cyan-500 transition-colors placeholder-slate-600" />
               </div>
-              <button type="submit" disabled={isAnalyzing} className="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-black text-lg py-5 rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all mt-4 disabled:opacity-50">
+              <button ref={submitBtnRef} type="submit" disabled={isAnalyzing} className="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-black text-lg py-5 rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all mt-4 disabled:opacity-50">
                 맞춤형 시스템 리포트 확인하기
               </button>
             </form>
@@ -271,7 +297,7 @@ export default function SynergyTestPage() {
 
         {/* 🎉 10. API 기반 하이엔드 인포그래픽 대시보드 */}
         {step === 10 && uiData && apiResult && (
-          <div className="bg-slate-900 backdrop-blur-2xl border border-slate-800 rounded-[2rem] shadow-2xl animate-fade-in-up overflow-hidden flex flex-col">
+          <div ref={resultCardRef} className="bg-slate-900 backdrop-blur-2xl border border-slate-800 rounded-[2rem] shadow-2xl animate-fade-in-up overflow-hidden flex flex-col">
             
             <div className="flex flex-col md:flex-row border-b border-slate-800">
               <div className="w-full md:w-1/2 p-8 md:p-12 border-b md:border-b-0 md:border-r border-slate-800 flex flex-col items-center justify-center relative bg-slate-950/30">

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { useHeroGlowSettle, useSingleLightCue } from '../../hooks/useLightInteraction';
 
 // 60fps GPU 가속 사이버네틱 뉴럴 인터랙티브 모션그래픽 캔버스
 function CyberLobbyMotionCanvas() {
@@ -142,11 +143,24 @@ function CyberLobbyMotionCanvas() {
 }
 
 export default function HeroVideoSection({ onOpenDiagnostic }) {
+  const heroGlowRef = useRef(null);
+  const primaryCtaRef = useRef(null);
+
+  useHeroGlowSettle(heroGlowRef);
+  useSingleLightCue(primaryCtaRef);
+
   return (
     <section className="relative min-h-[95vh] flex items-center justify-center pt-28 pb-20 md:pt-36 md:pb-28 px-4 sm:px-6 lg:px-8 overflow-hidden bg-[#070B14]">
       
       {/* 1층 로비 전용: 60fps 인터랙티브 사이버네틱 모션그래픽 배경 */}
       <CyberLobbyMotionCanvas />
+
+      {/* Zone 1: 첫인상 광원 정착 (780ms 1회, 사용자 입력 시 즉시 취소) */}
+      <div
+        ref={heroGlowRef}
+        aria-hidden="true"
+        className="absolute top-[38%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] sm:w-[620px] h-[240px] sm:h-[320px] rounded-full bg-gradient-to-r from-cyan-400/40 via-blue-500/35 to-indigo-500/40 blur-[90px] pointer-events-none opacity-0 z-0"
+      />
 
       {/* 미래지향적 사이버 오로라 앰비언트 글로우 */}
       <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-cyan-600/10 rounded-full blur-[160px] pointer-events-none" />
@@ -181,11 +195,12 @@ export default function HeroVideoSection({ onOpenDiagnostic }) {
           </div>
         </div>
 
-        {/* CTA 버튼 그룹 */}
+        {/* CTA 버튼 그룹 (최우선 CTA 1곳에만 .light-cue 적용) */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 animate-fade-in-up">
           <button
+            ref={primaryCtaRef}
             onClick={onOpenDiagnostic}
-            className="w-full sm:w-auto h-14 sm:h-16 px-8 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 text-white font-black text-base sm:text-lg shadow-[0_0_35px_rgba(59,130,246,0.7)] hover:shadow-[0_0_55px_rgba(59,130,246,1)] hover:scale-[1.03] active:scale-[0.98] transition-all flex items-center justify-center gap-2.5 border border-cyan-400/50 group"
+            className="light-cue w-full sm:w-auto h-14 sm:h-16 px-8 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 text-white font-black text-base sm:text-lg shadow-[0_0_35px_rgba(59,130,246,0.7)] hover:shadow-[0_0_55px_rgba(59,130,246,1)] hover:scale-[1.03] active:scale-[0.98] transition-all flex items-center justify-center gap-2.5 border border-cyan-400/50 group"
           >
             <svg className="w-5 h-5 text-cyan-200 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />

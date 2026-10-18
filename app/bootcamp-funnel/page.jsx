@@ -35,6 +35,10 @@ import {
 } from 'lucide-react';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
+import {
+  useSingleLightCue,
+  useCommittedLightFlow,
+} from '../../hooks/useLightInteraction';
 
 function YoutubeIcon({ className = 'w-4 h-4' }) {
   return (
@@ -334,6 +338,9 @@ function HolographicScanner({ stepIndex }) {
 
 export default function BootcampFunnelPage() {
   const router = useRouter();
+  const containerRef = useRef(null);
+  const analyzeBtnRef = useRef(null);
+  const reportCardRef = useRef(null);
   const resultRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -351,6 +358,9 @@ export default function BootcampFunnelPage() {
   const [loadingStepIndex, setLoadingStepIndex] = useState(0);
   const [copySuccess, setCopySuccess] = useState(false);
   const [isClient, setIsClient] = useState(false);
+
+  useSingleLightCue(analyzeBtnRef, { disabled: isLoading || !!analysisResult });
+  const { captureOriginRect, playCommittedSuccess } = useCommittedLightFlow(containerRef);
 
   useEffect(() => {
     setIsClient(true);
@@ -370,12 +380,19 @@ export default function BootcampFunnelPage() {
     };
   }, [isLoading]);
 
-  // 결과 생성 시 부드러운 스크롤 이동
+  // 결과 생성 시 부드러운 스크롤 이동 및 확정형 3단계 빛 이동
   useEffect(() => {
     if (analysisResult && resultRef.current) {
       resultRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const target = reportCardRef.current || resultRef.current;
+      playCommittedSuccess({
+        originEl: analyzeBtnRef.current,
+        targetEl: target,
+        domainEvent: 'activity-saved',
+        withRewardRing: true,
+      });
     }
-  }, [analysisResult]);
+  }, [analysisResult, playCommittedSuccess]);
 
   // 스마트 뒤로가기 핸들러
   const handleSmartBack = () => {
@@ -407,6 +424,7 @@ export default function BootcampFunnelPage() {
       return;
     }
 
+    captureOriginRect(analyzeBtnRef.current);
     setIsLoading(true);
     setAnalysisResult(null);
 
@@ -507,7 +525,7 @@ export default function BootcampFunnelPage() {
   const annualCost = Number(report?.annualLeakageCost || monthlyCost * 12);
 
   return (
-    <div className="min-h-screen w-full max-w-full bg-[#080C14] text-slate-100 font-sans break-words flex flex-col items-center selection:bg-cyan-500 selection:text-black relative overflow-x-hidden cyber-grid-bg">
+    <div ref={containerRef} className="min-h-screen w-full max-w-full bg-[#080C14] text-slate-100 font-sans break-words flex flex-col items-center selection:bg-cyan-500 selection:text-black relative overflow-x-hidden cyber-grid-bg">
       {/* 1. 인터랙티브 뉴럴 네트워크 캔버스 (60fps GPU 가속) */}
       <NeuralNetworkCanvas />
 
@@ -772,12 +790,15 @@ export default function BootcampFunnelPage() {
 
           {/* 진단 실행 버튼 */}
           <button
+            ref={analyzeBtnRef}
             type="button"
             onClick={handleAnalyze}
             disabled={isLoading}
-            className="w-full bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white py-4 sm:py-5 px-3 rounded-xl sm:rounded-2xl font-black text-sm sm:text-lg transition-all shadow-[0_0_25px_rgba(6,182,212,0.4)] disabled:opacity-50 flex items-center justify-center gap-1.5 sm:gap-2 border border-cyan-400/40 relative overflow-hidden group"
+            className="light-cue w-full bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white py-4 sm:py-5 px-3 rounded-xl sm:rounded-2xl font-black text-sm sm:text-lg transition-all shadow-[0_0_25px_rgba(6,182,212,0.4)] disabled:opacity-50 flex items-center justify-center gap-1.5 sm:gap-2 border border-cyan-400/40 relative group"
           >
-            <div className="absolute inset-0 w-1/2 h-full bg-white/20 skew-x-12 -translate-x-full group-hover:translate-x-[300%] transition-transform duration-1000" />
+            <span className="absolute inset-0 overflow-hidden rounded-xl sm:rounded-2xl pointer-events-none">
+              <span className="absolute inset-0 w-1/2 h-full bg-white/20 skew-x-12 -translate-x-full group-hover:translate-x-[300%] transition-transform duration-1000" />
+            </span>
             {isLoading ? (
               <span className="tracking-wider">양자 연산 정밀 해부 중...</span>
             ) : (
@@ -859,7 +880,7 @@ export default function BootcampFunnelPage() {
             </div>
 
             {/* 카드 1: 브랜드 프로필 및 진단 요약 */}
-            <section className="bg-[#090F1E]/90 backdrop-blur-2xl rounded-3xl p-6 sm:p-10 border border-cyan-500/30 shadow-2xl relative overflow-hidden neon-glow-box">
+            <section ref={reportCardRef} className="bg-[#090F1E]/90 backdrop-blur-2xl rounded-3xl p-6 sm:p-10 border border-cyan-500/30 shadow-2xl relative overflow-hidden neon-glow-box">
               {/* 4개 모서리 사이버 HUD 브래킷 */}
               <CyberCornerBracket />
 

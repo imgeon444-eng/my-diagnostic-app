@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { useSingleLightCue } from '../../hooks/useLightInteraction';
 
 // SVG 아이콘 컴포넌트들
 const SvgIcon = ({ d, className }) => (
@@ -49,6 +50,12 @@ export default function StorybookPage() {
 
   const slide = SLIDES[currentSlide];
   const totalSlides = SLIDES.length;
+
+  const nextStepBtnRef = useRef(null);
+  const vipLinkRef = useRef(null);
+
+  useSingleLightCue(nextStepBtnRef, { disabled: currentSlide === totalSlides - 1 });
+  useSingleLightCue(vipLinkRef, { disabled: currentSlide !== totalSlides - 1 });
 
   const handlePageChange = (newIndex) => {
     if (newIndex >= 0 && newIndex < totalSlides && newIndex !== currentSlide) {
@@ -190,8 +197,9 @@ export default function StorybookPage() {
 
       <div className="fixed top-4 right-4 z-50 shrink-0">
         <Link 
+          ref={vipLinkRef}
           href="/bootcamp-sales" 
-          className="flex items-center gap-1 px-3.5 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-full shadow-[0_0_20px_rgba(6,182,212,0.4)] text-xs font-black transition-all hover:scale-105 whitespace-nowrap shrink-0"
+          className="light-cue flex items-center gap-1 px-3.5 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-full shadow-[0_0_20px_rgba(6,182,212,0.4)] text-xs font-black transition-all hover:scale-105 whitespace-nowrap shrink-0"
         >
           <span>🔥 부트캠프 VIP</span>
         </Link>
@@ -275,10 +283,11 @@ export default function StorybookPage() {
           </div>
 
           <button 
+            ref={nextStepBtnRef}
             type="button" 
             onClick={() => handlePageChange(currentSlide + 1)} 
             disabled={currentSlide === totalSlides - 1}
-            className={`flex items-center gap-1 md:gap-2 px-3 md:px-6 py-2 md:py-3 rounded-full text-sm md:text-base font-bold transition-colors cursor-pointer ${currentSlide === totalSlides - 1 ? 'text-slate-600 cursor-not-allowed' : 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 hover:bg-cyan-500 hover:text-black shadow-[0_0_15px_rgba(6,182,212,0.3)]'}`}
+            className={`light-cue flex items-center gap-1 md:gap-2 px-3 md:px-6 py-2 md:py-3 rounded-full text-sm md:text-base font-bold transition-colors cursor-pointer ${currentSlide === totalSlides - 1 ? 'text-slate-600 cursor-not-allowed' : 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 hover:bg-cyan-500 hover:text-black shadow-[0_0_15px_rgba(6,182,212,0.3)]'}`}
           >
             <span className="hidden sm:inline">다음 페이지</span><span className="sm:hidden">다음</span> 
             <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />

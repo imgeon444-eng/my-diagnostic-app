@@ -1,8 +1,11 @@
 'use client';
 
 import Link from 'next/link';
+import { useSurfaceLightHandlers } from '../../hooks/useLightInteraction';
 
 export default function FunnelGateways({ onOpenDiagnostic }) {
+  const surfaceLight = useSurfaceLightHandlers();
+
   return (
     <section id="funnel-gateways" className="py-20 md:py-32 px-4 sm:px-6 lg:px-8 relative">
       <div className="max-w-7xl mx-auto">
@@ -29,7 +32,10 @@ export default function FunnelGateways({ onOpenDiagnostic }) {
           {/* ========================================================
               🏢 1층 게이트웨이: 마케팅 & AI 메타인지 진단
               ======================================================== */}
-          <div className="group relative bg-[#0F172A]/70 backdrop-blur-2xl border border-blue-500/20 hover:border-blue-500/50 rounded-[2.5rem] p-8 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:shadow-[0_20px_40px_rgba(59,130,246,0.2)]">
+          <div
+            {...surfaceLight}
+            className="group relative overflow-hidden bg-[#0F172A]/70 backdrop-blur-2xl border border-blue-500/20 hover:border-blue-500/50 rounded-[2.5rem] p-8 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:shadow-[0_20px_40px_rgba(59,130,246,0.2)]"
+          >
             <div className="absolute top-0 left-8 w-24 h-1 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-b-full"></div>
             
             <div>
@@ -90,7 +96,10 @@ export default function FunnelGateways({ onOpenDiagnostic }) {
           {/* ========================================================
               📊 2층 게이트웨이: 채널 URL 데이터랩 & 누수 비용
               ======================================================== */}
-          <div className="group relative bg-[#0F172A]/70 backdrop-blur-2xl border border-indigo-500/20 hover:border-indigo-500/50 rounded-[2.5rem] p-8 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:shadow-[0_20px_40px_rgba(99,102,241,0.2)]">
+          <div
+            {...surfaceLight}
+            className="group relative overflow-hidden bg-[#0F172A]/70 backdrop-blur-2xl border border-indigo-500/20 hover:border-indigo-500/50 rounded-[2.5rem] p-8 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:shadow-[0_20px_40px_rgba(99,102,241,0.2)]"
+          >
             <div className="absolute top-0 left-8 w-24 h-1 bg-gradient-to-r from-indigo-500 to-pink-500 rounded-b-full"></div>
             
             <div>
@@ -136,7 +145,10 @@ export default function FunnelGateways({ onOpenDiagnostic }) {
           {/* ========================================================
               🔥 3층 게이트웨이: 부트캠프 VIP & 실물 시스템 빌딩
               ======================================================== */}
-          <div className="group relative bg-[#0F172A]/70 backdrop-blur-2xl border border-cyan-500/30 hover:border-cyan-400/60 rounded-[2.5rem] p-8 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:shadow-[0_20px_50px_rgba(34,211,238,0.25)]">
+          <div
+            {...surfaceLight}
+            className="group relative overflow-hidden bg-[#0F172A]/70 backdrop-blur-2xl border border-cyan-500/30 hover:border-cyan-400/60 rounded-[2.5rem] p-8 flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:shadow-[0_20px_50px_rgba(34,211,238,0.25)]"
+          >
             <div className="absolute top-0 left-8 w-24 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-b-full"></div>
             
             <div>
@@ -148,22 +160,22 @@ export default function FunnelGateways({ onOpenDiagnostic }) {
               </div>
 
               <h3 className="text-2xl font-black text-white mb-3 tracking-tight group-hover:text-cyan-300 transition-colors">
-                The Creators AI 4주 실전<br/>부트캠프 VIP 과정
+                The Creators AI 실전<br/>부트캠프 VIP (상시 · 10명 정원)
               </h3>
               
               <p className="text-slate-400 text-sm font-medium leading-relaxed mb-6">
-                공장형 지식 강의가 아닙니다. 대표님의 사업에 24시간 잠들지 않는 무인 세일즈 오피스를 직접 구축해 드립니다.
+                공장형 지식 강의가 아닙니다. 총 40시간(오프라인 20H + 온라인 20H) 동안 기업·행정 AX 하네스 루프와 능동형 AI 자율 오피스를 직접 구축합니다.
               </p>
 
               <ul className="space-y-2.5 text-xs text-slate-300 mb-8 font-medium">
                 <li className="flex items-center gap-2">
-                  <span className="text-cyan-400 font-bold">✓</span> 바이브 코딩으로 나만의 웹/진단기 완성
+                  <span className="text-cyan-400 font-bold">✓</span> 기업 AX 하네스 루프 &amp; AI 팀원 능동형 자율 오피스
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-cyan-400 font-bold">✓</span> MCP & 에이전틱 복수 인공지능 협업망 통제
+                  <span className="text-cyan-400 font-bold">✓</span> 행정 AX 예산 1/5 절감 (지자체·공공기관 10곳 교육 중)
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-cyan-400 font-bold">✓</span> 라이브 CRM & 자동화 알림 파이프라인 완비
+                  <span className="text-cyan-400 font-bold">✓</span> 수료 후 1개월 수익화 파이프라인 컨설팅 무료 지원
                 </li>
               </ul>
             </div>
@@ -173,7 +185,7 @@ export default function FunnelGateways({ onOpenDiagnostic }) {
                 href="/bootcamp-sales"
                 className="w-full py-4 rounded-xl bg-gradient-to-r from-blue-600 via-cyan-600 to-indigo-600 hover:from-blue-500 hover:to-cyan-500 text-white font-black text-sm transition-all shadow-[0_0_25px_rgba(34,211,238,0.4)] flex items-center justify-center gap-2"
               >
-                부트캠프 커리큘럼 & 신청
+                부트캠프 커리큘럼 &amp; 신청
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
               </Link>
             </div>
