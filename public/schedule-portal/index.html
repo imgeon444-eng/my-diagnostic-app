@@ -1,0 +1,2012 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE CREATORS AI ACADEMY | 비개발자를 위한 실전 AI & 바이브 코딩 아카데미</title>
+  
+  <!-- 웹폰트: SUIT Variable & Pretendard (The Creators Text Stylist) -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.css" />
+  <link rel="stylesheet" href="style.css?v=20261018_v7">
+</head>
+<body id="top">
+
+  <!-- ======================================================================
+       1. 최상단 글로벌 네비게이션 바 (Sticky GNB)
+       ====================================================================== -->
+  <header class="site-gnb">
+    <div class="gnb-inner">
+      <a href="#top" class="gnb-brand" aria-label="THE CREATORS Ai ACADEMY">
+        <img src="logo.png" alt="THE CREATORS Ai" class="gnb-real-logo">
+        <span class="gnb-brand-badge">ACADEMY PORTAL</span>
+      </a>
+
+      <!-- 네비게이션 메뉴 링크 (불필요한 중복 텍스트 제거 및 미니멀 정돈) -->
+      <nav class="gnb-nav">
+        <a href="#top" class="gnb-nav-link">홈</a>
+        <a href="#reviews" class="gnb-nav-link">수강 후기</a>
+        <a href="#faq" class="gnb-nav-link">FAQ</a>
+      </nav>
+
+      <!-- 우측 액션 & 실시간 인디케이터 + 관리자 전용 작은 버튼 -->
+      <div class="gnb-actions">
+        <div class="live-sync-indicator" title="모든 창과 탭에서 데이터가 실시간으로 자동 갱신됩니다">
+          <span class="live-dot"></span>
+          <span>실시간 갱신 ON</span>
+          <span id="liveClock" style="font-variant-numeric: tabular-nums; opacity: 0.8; font-size: 10px; margin-left: 2px;"></span>
+        </div>
+        <!-- 관리자 인증 상태 뱃지 & 로그아웃 버튼 (로그인 시 활성화) -->
+        <div id="adminAuthBadgeWrap" style="display: none; align-items: center; gap: 6px;"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 실시간 롤링 마키 티커 (Infinite Live Marquee Ticker) -->
+  <div class="marquee-ticker-wrap">
+    <div class="ticker-fixed-label">
+      <div class="ticker-badge">
+        <span class="live-dot-mini"></span>
+        <span>LIVE TICKER</span>
+      </div>
+    </div>
+    <div class="ticker-track-viewport">
+      <div class="ticker-track" id="tickerTrack">
+        <!-- Rendered dynamically by app.renderTicker() and editable via Data Hub -->
+        <div class="ticker-item"><span class="ticker-icon-badge badge-amber"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span> <span><strong>10월 정규 AI 코스</strong> 모집 중 (선착순 마감 임박)</span></div>
+        <span class="ticker-sep">•</span>
+        <div class="ticker-item"><span class="ticker-icon-badge badge-blue"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></span> <span>강의를 클릭하면 <strong>Google Calendar</strong>에 1초 만에 자동 저장됩니다</span></div>
+        <span class="ticker-sep">•</span>
+        <div class="ticker-item"><span class="ticker-icon-badge badge-indigo"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-2.05 11A22.35 22.35 0 0 1 15 15z"></path></svg></span> <span><strong>바이브 코딩 1기</strong> 수강생 전원 실무 웹 서비스 프로토타입 배포 완료</span></div>
+        <span class="ticker-sep">•</span>
+        <div class="ticker-item"><span class="ticker-icon-badge badge-emerald"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg></span> <span>빅테크 현업 테크 디렉터의 <strong>1:1 라이브 코드 리뷰</strong> 상시 진행</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       2. 메인 히어로 섹션 (Luminous Tech Academy Hero)
+       ====================================================================== -->
+  <section class="hero-section">
+    <!-- Dynamic Ambient Background & Tech Grid Mesh -->
+    <div class="hero-dynamic-bg" aria-hidden="true">
+      <div class="hero-grid-pattern"></div>
+      <div class="hero-aurora-orb hero-aurora-1"></div>
+      <div class="hero-aurora-orb hero-aurora-2"></div>
+      <div class="hero-aurora-orb hero-aurora-3"></div>
+      <div class="hero-ambient-glow"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-badge-pill">
+        <span class="badge-sparkle-dot" aria-hidden="true"></span>
+        <span class="badge-sparkle-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></span>
+        <span>2026 하반기 정규 AI 실무 & 바이브 코딩 코스 오픈</span>
+      </div>
+
+      <h1 class="hero-main-title">
+        <span class="hero-slogan-top" id="heroSloganTop">AI비개발자 초보도 4시간이면 나만의 홈페이지,어플,프로그램을 만드는</span>
+        <span class="hero-slogan-bottom hero-gradient-text" id="heroSloganBottom">실전 AI & 바이브 코딩 아카데미</span>
+      </h1>
+
+      <p class="hero-lead-text" id="heroLeadText">
+        지루한 문법 암기는 끝났습니다. AI 에이전트에게 직관적으로 개발을 지시하고,<br>
+        현업 1타 멘토진의 1:1 밀착 피드백과 함께 나만의 프로덕트를 완성하세요.
+      </p>
+
+      <div class="hero-btn-group">
+        <a href="#calendar-hub" id="heroOctoberBtn" class="btn-hero-primary" onclick="app.goToOctoberCalendar(event)" title="2026년 10월 교육 일정 캘린더 바로가기">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <span>10월 교육 일정 확인하기</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="hero-btn-arrow">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      </div>
+
+      <!-- 10월의 주요강의 일정 배너 (데이터관리에서 배너 노출 강의를 자유롭게 지정/수정) -->
+      <div class="hero-major-banner-wrap reveal-on-scroll is-revealed" id="heroMajorLectureBannerWrap">
+        <!-- Rendered dynamically by app.renderHeroMajorLectureBanner() -->
+      </div>
+
+      <!-- 신뢰도 지표 (Social Proof Stats - 데이터관리 허브에서 수정 가능) -->
+      <div class="hero-stats-strip reveal-on-scroll is-revealed" id="heroStatsContainer">
+        <div class="stat-box">
+          <div class="stat-value">3,850+</div>
+          <div class="stat-label">누적 수강생</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">99.2%</div>
+          <div class="stat-label">수강 만족도</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">100%</div>
+          <div class="stat-label">실습 완성률</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">4.98 / 5.0</div>
+          <div class="stat-label">기업 출강 평점</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       3. 핵심 교육 캘린더 & 칸반 대시보드 허브 (#calendar-hub) - 최우선 배치
+       ====================================================================== -->
+  <section id="calendar-hub" style="background: var(--white); border-bottom: 1px solid var(--slate-200); padding: 52px 0 60px;">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 0 24px;">
+      
+      <!-- 섹션 헤더 & KPI HUD 바 -->
+      <div style="margin-bottom: 24px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; margin-bottom: 16px;">
+          <div>
+            <span class="section-badge">SCHEDULE & PORTAL</span>
+            <h2 style="font-size: 26px; font-weight: 900; color: var(--slate-900); letter-spacing: -0.03em;">2026년 10월 교육 일정 안내</h2>
+            <p style="font-size: 14px; color: var(--slate-500); margin-top: 4px;">강의 카드를 클릭하여 상세 커리큘럼을 확인하고 Google 캘린더에 바로 등록하세요.</p>
+          </div>
+        </div>
+
+        <!-- KPI 지표 요약 HUD 바 -->
+        <div class="kpi-hud-bar" style="margin-top: 14px; margin-bottom: 20px;">
+          <div class="kpi-item">
+            <div class="kpi-label">전체 등록 강의</div>
+            <div class="kpi-value" id="kpiTotal">8<span>개</span></div>
+          </div>
+          <div class="kpi-item active-status">
+            <div class="kpi-label"><span class="kpi-dot dot-blue"></span>모집 및 접수중</div>
+            <div class="kpi-value" id="kpiOpen">4<span>개</span></div>
+          </div>
+          <div class="kpi-item warning-status">
+            <div class="kpi-label"><span class="kpi-dot dot-amber"></span>마감 임박 / 확정</div>
+            <div class="kpi-value" id="kpiClosing">2<span>개</span></div>
+          </div>
+          <div class="kpi-item planning-status">
+            <div class="kpi-label"><span class="kpi-dot dot-slate"></span>기획 및 준비중</div>
+            <div class="kpi-value" id="kpiPlanning">2<span>개</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 실시간 검색 및 카테고리 필터 스트립 -->
+      <section class="filter-strip">
+        <div class="search-box-wrap">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="searchInput" class="search-input" placeholder="강의명, 강사명, 장소 검색..." autocomplete="off">
+          <button id="searchClearBtn" class="search-clear-btn" style="display:none;" title="검색어 지우기" aria-label="검색어 지우기">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="category-pills" id="categoryPills"></div>
+      </section>
+
+      <!-- VIEW 1: 수강생 캘린더 섹션 -->
+      <section id="calendarSection" class="view-section active">
+        <!-- 캘린더 컨트롤 바 -->
+        <div class="calendar-controls">
+          <div class="nav-left">
+            <h2 id="currentMonthYear" class="month-heading">2026년 10월</h2>
+            <div class="nav-buttons">
+              <button id="prevMonthBtn" class="btn btn-icon" aria-label="이전 달" onclick="app.changeMonth(-1)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+              </button>
+              <button id="todayBtn" class="btn btn-today" onclick="app.goToday()">오늘</button>
+              <button id="nextMonthBtn" class="btn btn-icon" aria-label="다음 달" onclick="app.changeMonth(1)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="nav-right">
+            <div class="view-toggle">
+              <button id="calendarViewBtn" class="toggle-btn active" title="월간 달력 보기" onclick="app.switchCalendarView('calendar')">달력 뷰</button>
+              <button id="listViewBtn" class="toggle-btn" title="일정 목록 보기" onclick="app.switchCalendarView('list')">목록 뷰</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 모바일 전용 캘린더 날짜 탭 안내 힌트 -->
+        <div class="mobile-calendar-hint" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <span>날짜 칸이나 강의 칩을 터치하면 아래에 해당일 상세 일정(최대 3개+)이 즉시 펼쳐집니다</span>
+        </div>
+
+        <!-- 월간 캘린더 그리드 -->
+        <div class="calendar-wrapper" id="calendarWrapper">
+          <div class="weekdays-grid">
+            <div class="weekday">월</div>
+            <div class="weekday">화</div>
+            <div class="weekday">수</div>
+            <div class="weekday">목</div>
+            <div class="weekday">금</div>
+            <div class="weekday weekend sat">토</div>
+            <div class="weekday weekend sun">일</div>
+          </div>
+          <div class="days-grid" id="daysGrid"></div>
+        </div>
+
+        <!-- 모바일 & PC 겸용 선택 날짜 일정 브리핑 패널 (하루 최대 3개+ 일정 한눈에 확인 및 즉시 관리) -->
+        <div id="mobileDayDetailPanel" class="mobile-day-detail-panel"></div>
+
+        <!-- 목록 뷰 -->
+        <div class="list-wrapper" id="listWrapper" style="display: none;">
+          <div class="list-header">
+            <h3 id="listMonthTitle" class="list-heading">2026년 10월 전체 교육 일정</h3>
+            <p class="list-subtext">총 <span id="monthlyCount">0</span>개의 강의가 조회되었습니다.</p>
+          </div>
+          <div class="lecture-list" id="lectureList"></div>
+        </div>
+
+        <!-- 하단 안내 바 -->
+        <footer class="calendar-footer-note">
+          <div class="info-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+          </div>
+          <div class="info-text">
+            <strong>수강 안내:</strong> 원하는 강의 카드를 클릭하면 상세 커리큘럼, 강사 프로필, 실습 준비물을 확인하고 <strong>Google 캘린더에 바로 등록</strong>할 수 있습니다.
+          </div>
+        </footer>
+      </section>
+
+      <!-- VIEW 2: 관리자 칸반보드 섹션 -->
+      <section id="kanbanSection" class="view-section">
+        <div class="kanban-header-bar">
+          <div class="kanban-title-box">
+            <h2 class="kanban-heading">강의 운영 관리 칸반보드</h2>
+            <p class="kanban-desc">강의 카드를 마우스로 드래그하여 진행 단계를 자유롭게 변경하세요. 변경 사항은 캘린더와 실시간 연동됩니다.</p>
+          </div>
+          <div class="kanban-actions">
+            <button class="btn btn-secondary" onclick="app.switchMode('calendar')" title="수강생 캘린더 화면으로 복귀">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+              캘린더로 돌아가기
+            </button>
+            <button class="btn btn-secondary" onclick="app.openDataHubModal()" title="데이터 관리 허브 열기">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
+              데이터 관리 허브
+            </button>
+            <button class="btn btn-primary" onclick="app.openCreateModal('모집/접수중')">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              새 강의 등록
+            </button>
+          </div>
+        </div>
+
+        <!-- 4열 칸반 컬럼 그리드 -->
+        <div class="kanban-board-grid">
+          <!-- 1. 기획/준비 단계 -->
+          <div class="kanban-col" data-status="기획/준비">
+            <div class="col-header">
+              <div class="col-title-wrap">
+                <span class="col-dot status-planning"></span>
+                <span class="col-title">기획 / 준비</span>
+                <span class="col-counter" id="count-planning">0</span>
+              </div>
+              <button class="col-add-btn" onclick="app.openCreateModal('기획/준비')" title="이 단계에 강의 추가">+</button>
+            </div>
+            <div class="kanban-dropzone" id="dropzone-planning" data-status="기획/준비"></div>
+            <button class="col-bottom-add-btn" onclick="app.openCreateModal('기획/준비')">+ 이 단계에 강의 추가</button>
+          </div>
+
+          <!-- 2. 모집/접수중 단계 -->
+          <div class="kanban-col" data-status="모집/접수중">
+            <div class="col-header">
+              <div class="col-title-wrap">
+                <span class="col-dot status-open"></span>
+                <span class="col-title">모집 / 접수중</span>
+                <span class="col-counter" id="count-open">0</span>
+              </div>
+              <button class="col-add-btn" onclick="app.openCreateModal('모집/접수중')" title="이 단계에 강의 추가">+</button>
+            </div>
+            <div class="kanban-dropzone" id="dropzone-open" data-status="모집/접수중"></div>
+            <button class="col-bottom-add-btn" onclick="app.openCreateModal('모집/접수중')">+ 이 단계에 강의 추가</button>
+          </div>
+
+          <!-- 3. 마감 임박/확정 단계 -->
+          <div class="kanban-col" data-status="마감임박/확정">
+            <div class="col-header">
+              <div class="col-title-wrap">
+                <span class="col-dot status-closing"></span>
+                <span class="col-title">마감 임박 / 확정</span>
+                <span class="col-counter" id="count-closing">0</span>
+              </div>
+              <button class="col-add-btn" onclick="app.openCreateModal('마감임박/확정')" title="이 단계에 강의 추가">+</button>
+            </div>
+            <div class="kanban-dropzone" id="dropzone-closing" data-status="마감임박/확정"></div>
+            <button class="col-bottom-add-btn" onclick="app.openCreateModal('마감임박/확정')">+ 이 단계에 강의 추가</button>
+          </div>
+
+          <!-- 4. 진행 및 완료 단계 -->
+          <div class="kanban-col" data-status="진행/완료">
+            <div class="col-header">
+              <div class="col-title-wrap">
+                <span class="col-dot status-completed"></span>
+                <span class="col-title">진행 / 완료</span>
+                <span class="col-counter" id="count-completed">0</span>
+              </div>
+              <button class="col-add-btn" onclick="app.openCreateModal('진행/완료')" title="이 단계에 강의 추가">+</button>
+            </div>
+            <div class="kanban-dropzone" id="dropzone-completed" data-status="진행/완료"></div>
+            <button class="col-bottom-add-btn" onclick="app.openCreateModal('진행/완료')">+ 이 단계에 강의 추가</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       4. 아카데미 3대 핵심 가치 (Feature Bento Grid - 캘린더 하단 배치)
+       ====================================================================== -->
+  <section class="features-section" id="features">
+    <div class="section-head-wrap reveal-on-scroll">
+      <span class="section-badge">WHY THE CREATORS</span>
+      <h2 class="section-heading">단순 강의가 아닌 실전 프로덕트를 만듭니다</h2>
+      <p class="section-desc">코딩을 배운 적 없는 비전공자도 AI와 협업하여 즉시 배포 가능한 실무 결과물을 완성합니다.</p>
+    </div>
+
+    <div class="features-grid">
+      <!-- Feature 1 -->
+      <div class="feature-bento-card reveal-on-scroll delay-1">
+        <div class="feature-icon-box f-icon-blue">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+            <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-2.05 11A22.35 22.35 0 0 1 15 15z"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">100% 실습 중심 바이브 코딩</h3>
+        <p class="feature-body">복잡한 프레임워크나 문법을 외울 필요가 없습니다. AI 에이전트에게 기획 의도를 전달하고 1시간 만에 동작하는 인터페이스를 빌드합니다.</p>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="feature-bento-card reveal-on-scroll delay-2">
+        <div class="feature-icon-box f-icon-indigo">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">현업 AX 분야 최고 수준의 실무 강사진 1:1 맞춤 컨설팅</h3>
+        <p class="feature-body">실리콘밸리 SaaS 테크 디렉터와 대기업 AX 컨설턴트가 수강생과 기업에 실시간 1:1 맞춤 컨설팅과 실무 적용 방향을 코칭합니다.</p>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="feature-bento-card reveal-on-scroll delay-3">
+        <div class="feature-icon-box f-icon-emerald">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+            <path d="m9 16 2 2 4-4"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">스마트 일정 & Google 캘린더 연동</h3>
+        <p class="feature-body">강의를 클릭하면 세부 커리큘럼과 장소를 확인하고, 버튼 한 번으로 개인 구글 캘린더에 일정을 즉시 등록하여 놓치지 않습니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       5. 강사진 소개 섹션 (Top Mentors Showcase)
+       ====================================================================== -->
+  <section class="instructors-section" id="instructors">
+    <div class="section-head-wrap reveal-on-scroll">
+      <div style="display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <span class="section-badge">TOP MENTORS</span>
+          <h2 class="section-heading">검증된 현업 최고의 AI 테크 멘토진</h2>
+          <p class="section-desc">단순한 이론 강의가 아닌 현업에서 매일 AI를 다루는 전문가들이 1:1 맞춤 지도를 제공합니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="instructors-grid" id="instructorsGrid">
+      <!-- Dynamically rendered by app.renderInstructors() -->
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       6. 수강생 리얼 후기 (Student Reviews & Social Proof)
+       ====================================================================== -->
+  <section class="reviews-section" id="reviews">
+    <div class="reviews-header-wrap reveal-on-scroll">
+      <div class="section-head-wrap" style="margin-bottom: 0; text-align: left;">
+        <span class="section-badge">STUDENT REVIEWS</span>
+        <h2 class="section-heading" style="text-align: left;">수강생들이 증명하는 실무의 변화</h2>
+        <p class="section-desc" style="text-align: left; margin: 0;">더크리에이터즈 AI 아카데미를 거쳐 간 수강생들의 진솔한 실시간 수강 후기입니다.</p>
+      </div>
+      <div class="reviews-action-box">
+        <div class="reviews-score-summary" title="수강생 만족도 평균 평점">
+          <span class="score-stars">⭐⭐⭐⭐⭐</span>
+          <span class="score-num" id="reviewsAvgScore">5.0</span>
+          <span class="score-count" id="reviewsTotalCount">(총 3개 후기)</span>
+        </div>
+        <button type="button" class="btn btn-primary btn-write-review" onclick="app.openReviewModal()" title="수강 후기 직접 등록하기">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20h9"></path>
+            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+          </svg>
+          <span>수강 후기 작성하기</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="reviews-grid" id="reviewsGrid">
+      <!-- Dynamically rendered by app.renderReviews() -->
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       7. 자주 묻는 질문 (FAQ Accordion)
+       ====================================================================== -->
+  <section class="faq-section" id="faq">
+    <div class="section-head-wrap">
+      <span class="section-badge">FAQ</span>
+      <h2 class="section-heading">자주 묻는 질문</h2>
+      <p class="section-desc">교육 과정에 대해 궁금하신 점을 빠르게 해결해 드립니다.</p>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-card">
+        <button class="faq-question-btn" onclick="toggleFaq(this)">
+          <span>Q1. 코딩이나 프로그래밍 경험이 전혀 없는 비전공자도 수강할 수 있나요?</span>
+          <span class="faq-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          네, 완전히 가능합니다! 더크리에이터즈 AI 아카데미의 모든 과정은 비개발자 직장인, 마케터, 기획자, 크리에이터의 눈높이에 맞춰 설계되었습니다. 복잡한 프로그래밍 언어 문법을 외우는 대신 AI에게 개발을 지시하는 '바이브 코딩' 패러다임을 배우기 때문에 첫날부터 실제 결과물을 만드실 수 있습니다.
+        </div>
+      </div>
+
+      <div class="faq-card">
+        <button class="faq-question-btn" onclick="toggleFaq(this)">
+          <span>Q2. 출강시 일정조율이나 예산조정은 가능한가요?</span>
+          <span class="faq-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          네, 기업 및 공공기관의 교육 상황과 예산에 맞춰 유연하게 조율 가능합니다. 교육 대상자의 직무 난이도와 수강 인원수, 원하시는 교육 형태(단기 집중 특강 / 원데이 해커톤 / 장기 부트캠프)에 맞추어 최적의 일정을 편성해 드리며, 기관의 책정 예산 가이드라인 범위 내에서 실습 커리큘럼 및 시간당 견적을 맞춤 제안해 드립니다. 고객센터(051-633-3812) 또는 이메일(nova78jyg3@naver.com)로 문의주시면 전담 수석 컨설턴트가 1:1 맞춤 제안서와 견적을 신속하게 안내해 드립니다.
+        </div>
+      </div>
+
+      <div class="faq-card">
+        <button class="faq-question-btn" onclick="toggleFaq(this)">
+          <span>Q3. 신청한 강의 일정을 구글 캘린더에 저장할 수 있나요?</span>
+          <span class="faq-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          네! 캘린더에서 관심 있는 강의 카드를 클릭하신 후 모달 하단의 <strong>[Google 캘린더에 저장]</strong> 버튼을 누르시면, 본인의 구글 캘린더에 수업 일시, 장소, 커리큘럼 정보가 1초 만에 자동 등록됩니다.
+        </div>
+      </div>
+
+      <div class="faq-card">
+        <button class="faq-question-btn" onclick="toggleFaq(this)">
+          <span>Q4. 실습 준비물과 교육 장소는 어디인가요?</span>
+          <span class="faq-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          Chrome 브라우저가 설치된 개인 노트북(Windows 또는 Mac)을 지참하시면 됩니다. 오프라인 실습은 <strong>부산 범천동 사학연금빌딩 14층 [더크리에이터즈AI 본사 교육장]</strong> 및 각 협약 기관(부산 북구청, 해운대구청, 신라대, 부산과기대) 전산실에서 쾌적한 실습 환경으로 진행되며, 온라인 과정은 Zoom 실시간 라이브로 동시 송출됩니다.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       8. 교육 문의 CTA 배너
+       ====================================================================== -->
+  <div class="cta-banner-wrap">
+    <div class="cta-banner-inner">
+      <div>
+        <h3 class="cta-title">우리 조직에 꼭 맞는 맞춤형 AI 교육을 찾고 계신가요?</h3>
+        <p class="cta-desc">실무 맞춤형 1:1 상담을 통해 가장 빠르고 확실한 AI 전환 커리큘럼을 무료로 설계해 드립니다.</p>
+      </div>
+      <div class="cta-actions">
+        <button type="button" class="btn-cta-white" onclick="app.openConsultModal(event)" title="온라인 1:1 맞춤 교육 상담 신청하기">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          1:1 교육 상담 신청하기
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       9. 아카데미 종합 푸터 (Full Academy Footer - 3단 최적화 레이아웃)
+  <!-- ======================================================================
+       9. 아카데미 종합 푸터 (Full Academy Footer - 여백 최소화 & 촘촘한 고밀도 레이아웃)
+       ====================================================================== -->
+  <footer class="site-footer footer-compact">
+    <div class="footer-inner">
+      <div class="footer-top-grid footer-3col">
+        <!-- 1열: 브랜드 로고 & 미션 소개 -->
+        <div class="footer-brand-col">
+          <img src="logo-white.png" alt="THE CREATORS Ai" class="footer-real-logo">
+          <div class="footer-brand-desc" id="footerBrandDesc">
+            <span class="footer-copy-item">대한민국 최고수준의 실전 AI & 바이브 코딩 교육 플랫폼.</span>
+            <span class="footer-copy-item">비개발자가 AI와 함께 직접 제품을 만들어 세상과 연결되도록 돕습니다.</span>
+          </div>
+          <div class="footer-trust-badge">
+            <span class="trust-dot"></span>
+            <span>부산 공식 등록 실무 AI & 바이브 코딩 센터</span>
+          </div>
+        </div>
+
+        <!-- 2열: 핵심 교육 과정 바로가기 (모바일에서는 간결화를 위해 숨김) -->
+        <div class="footer-nav-col">
+          <div class="footer-col-title">교육 과정</div>
+          <ul class="footer-link-list">
+            <li><a href="javascript:void(0)" onclick="app.filterCategoryAndScroll('바이브코딩부트캠프', event)">바이브코딩부트캠프</a></li>
+            <li><a href="javascript:void(0)" onclick="app.filterCategoryAndScroll('AI기업업무자동화', event)">AI기업업무자동화</a></li>
+            <li><a href="javascript:void(0)" onclick="app.filterCategoryAndScroll('AX행정 지자체 및 공공기관 연수', event)">AX행정 지자체·공공기관 연수</a></li>
+            <li><a href="javascript:void(0)" onclick="app.filterCategoryAndScroll('AI영상콘텐츠제작', event)">AI영상콘텐츠제작</a></li>
+            <li><a href="javascript:void(0)" onclick="app.filterCategoryAndScroll('AI맞춤형연수', event)">AI맞춤형연수 (기업/대학/기관)</a></li>
+            <li><a href="javascript:void(0)" onclick="app.filterCategoryAndScroll('전체', event)">10월 전체 교육 일정표</a></li>
+          </ul>
+        </div>
+
+        <!-- 3열: 고객지원 & 위치 (2x2 촘촘한 고밀도 카드 배치) -->
+        <div class="footer-contact-col">
+          <div class="footer-col-title">고객지원 & 위치</div>
+          <div class="footer-contact-cards grid-2x2">
+            <a href="tel:051-633-3812" class="footer-contact-card" title="고객센터 즉시 전화연결 (051-633-3812)">
+              <div class="contact-card-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                </svg>
+              </div>
+              <div class="contact-card-body">
+                <span class="contact-card-label">고객센터 전화</span>
+                <span class="contact-card-value font-mono" id="footerPhone">051-633-3812</span>
+              </div>
+            </a>
+
+            <a href="mailto:nova78jyg3@naver.com" class="footer-contact-card" title="공식 문의 이메일 (nova78jyg3@naver.com)">
+              <div class="contact-card-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+              </div>
+              <div class="contact-card-body">
+                <span class="contact-card-label">공식 문의 메일</span>
+                <span class="contact-card-value" id="footerEmail">nova78jyg3@naver.com</span>
+              </div>
+            </a>
+
+            <div class="footer-contact-card info-only">
+              <div class="contact-card-icon time-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+              <div class="contact-card-body">
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <span class="contact-card-label">운영시간</span>
+                  <span class="badge-always-open">365일 상담</span>
+                </div>
+                <span class="contact-card-value highlight-hours" id="footerHours">연중무휴</span>
+              </div>
+            </div>
+
+            <div class="footer-contact-card info-only">
+              <div class="contact-card-icon map-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+              </div>
+              <div class="contact-card-body">
+                <span class="contact-card-label">교육장 위치</span>
+                <span class="contact-card-value loc-text" id="footerLocation">부산 범천동 사학연금빌딩 14층 (범일/범내골역)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom-info">
+        <div class="footer-legal-links">
+          <a href="javascript:void(0)" onclick="app.openPolicyModal('terms', event)">이용약관</a>
+          <span class="legal-sep">·</span>
+          <a href="javascript:void(0)" onclick="app.openPolicyModal('privacy', event)">개인정보처리방침</a>
+          <span class="legal-sep">·</span>
+          <a href="javascript:void(0)" onclick="app.openPolicyModal('refund', event)">수강료 환불규정</a>
+          <span class="legal-sep">·</span>
+          <a href="javascript:void(0)" onclick="app.openInstructorApplyModal(event)">강사 채용 지원</a>
+        </div>
+        <div class="footer-legal-block">
+          <div class="footer-legal-row-split">
+            <span id="footerLegalLine">더크리에이터즈AI | 대표자: 정시후 | 사업자등록번호: 554-62-00204 | 개업연월일: 2018.05.28</span>
+            <span id="footerBizTypeLine" class="footer-biz-line">업태: 교육서비스업, 정보통신업, 서비스 | 종목: 창업·취업, 소프트웨어개발(콘텐츠개발), 유튜브교육</span>
+          </div>
+          <div class="footer-address-copy-row">
+            <span id="footerAddressLine">사업장 및 교육장 주소: 부산광역시 부산진구 범일로 181, 14층(범천동, 사학연금빌딩)</span>
+            <span class="legal-sep">|</span>
+            <span id="footerCopyrightLine" class="footer-copy-inline">Copyright © 2018-2026 더크리에이터즈AI. All rights reserved.</span>
+            <span class="legal-sep">·</span>
+            <a href="javascript:void(0)" onclick="app.openAdminAccess(event)" class="admin-entry-link" id="adminFooterLink" title="관리자 통합 제어판 로그인" style="opacity: 0.4; color: inherit; text-decoration: none; font-size: 11px; transition: opacity 0.2s;" onmouseenter="this.style.opacity='0.95'" onmouseleave="this.style.opacity='0.4'">🔒 관리자</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======================================================================
+       모달 1: 프리미엄 강의 상세 보기 모달 (Lu.ma / FastCampus 스타일)
+       ====================================================================== -->
+  <div class="modal-backdrop" id="lectureModalBackdrop" aria-hidden="true" onclick="app.handleBackdropClick(event, 'lectureModalBackdrop')">
+    <div class="modal-dialog modal-dialog-view" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-hero-banner" id="modalHeroBanner">
+        <div class="modal-badge-row">
+          <span class="category-badge" id="modalCategory">바이브 코딩</span>
+          <span class="status-badge" id="modalStatus">접수중</span>
+        </div>
+        <button class="modal-close-btn" onclick="app.closeDetailModal()" aria-label="닫기">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <h2 class="modal-title" id="modalTitle">바이브 코딩으로 홈페이지 만들기</h2>
+        
+        <div class="detail-info-grid">
+          <div class="info-card">
+            <div class="info-label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              일정 및 날짜
+            </div>
+            <div class="info-value" id="modalDate">2026년 10월 7일 (수)</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              강의 시간
+            </div>
+            <div class="info-value" id="modalTime">19:00 ~ 21:00 (2시간)</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              담당 강사
+            </div>
+            <div class="info-value" id="modalInstructor">정시후 (AI 테크 디렉터)</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              교육 장소
+            </div>
+            <div class="info-value" id="modalLocation">더크리에이터즈AI 교육장</div>
+          </div>
+        </div>
+
+        <div class="modal-section">
+          <h3 class="section-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            오늘 배우는 내용
+          </h3>
+          <ul class="curriculum-list" id="modalCurriculum"></ul>
+        </div>
+
+        <div class="modal-section">
+          <h3 class="section-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            수강생 준비물
+          </h3>
+          <div class="prep-box" id="modalPreparation">개인 노트북 지참</div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <a id="modalGcalBtn" class="btn btn-gcal" target="_blank" rel="noopener noreferrer">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Google 캘린더에 저장
+        </a>
+        <div class="footer-right-btns">
+          <button class="btn btn-secondary" onclick="app.closeDetailModal()">닫기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       모달 2: 강의 등록 및 수정 모달 (어드민 전용 폼)
+       ====================================================================== -->
+  <div class="modal-backdrop" id="editModalBackdrop" aria-hidden="true" onclick="app.handleBackdropClick(event, 'editModalBackdrop')">
+    <div class="modal-dialog modal-dialog-form" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <h2 class="modal-form-title" id="editModalHeading">신규 강의 등록</h2>
+        <button class="modal-close-btn" onclick="app.closeEditModal()" aria-label="닫기">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <form id="lectureForm" class="modal-body form-body" onsubmit="app.handleFormSubmit(event)">
+        <input type="hidden" id="formLectureId" value="">
+
+        <div class="form-group">
+          <label class="form-label" for="formTargetOrg">교육대상자 (기업 / 대학 / 기관명) <span class="required">*</span></label>
+          <input type="text" id="formTargetOrg" class="form-input" placeholder="예: 현대자동차 DX추진실 (또는 부산대학교, 부산진구청 등)" required autocomplete="off">
+          <p style="font-size: 11.5px; color: #64748b; margin-top: 4px;">* 입력하신 대상자명과 아래 선택한 교육과정이 결합되어 캘린더에 자동 반영됩니다.</p>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label" for="formCategory">교육과정 (카테고리) <span class="required">*</span></label>
+            <select id="formCategory" class="form-select" required onchange="app.handleFormCategoryChange(this.value)">
+              <option value="바이브코딩부트캠프">바이브코딩부트캠프</option>
+              <option value="AI기업업무자동화">AI기업업무자동화</option>
+              <option value="AX행정 지자체 및 공공기관 연수">AX행정 지자체 및 공공기관 연수</option>
+              <option value="AI영상콘텐츠제작">AI영상콘텐츠제작</option>
+              <option value="AI비지니스마케팅">AI비지니스마케팅</option>
+              <option value="AI업무활용">AI업무활용</option>
+              <option value="AI리터러시(기초)">AI리터러시(기초)</option>
+              <option value="AI디자인&브랜딩">AI디자인&브랜딩</option>
+              <option value="AI맞춤형연수">AI맞춤형연수</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="formStatus">운영 상태 (칸반 단계) <span class="required">*</span></label>
+            <select id="formStatus" class="form-select" required>
+              <option value="기획/준비">기획 / 준비</option>
+              <option value="모집/접수중">모집 / 접수중</option>
+              <option value="마감임박/확정">마감 임박 / 확정</option>
+              <option value="진행/완료">진행 / 완료</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- AI맞춤형연수 선택 시 노출되는 추가옵션 선택 박스 -->
+        <div class="form-group" id="formCustomTypeWrap" style="display: none; background: #fff7ed; border: 1.5px solid #fed7aa; border-radius: 8px; padding: 12px 14px; margin-top: 4px;">
+          <label class="form-label" for="formCustomType" style="color: #c2410c; font-weight: 700; margin-bottom: 6px;">
+            AI맞춤형연수 추가옵션 선택 (기업 / 대학 / 기관) <span class="required">*</span>
+          </label>
+          <select id="formCustomType" class="form-select" style="border-color: #fdba74;" onchange="app.updateLectureFormPreview()">
+            <option value="기업">기업</option>
+            <option value="대학">대학</option>
+            <option value="기관">기관</option>
+          </select>
+          <p style="font-size: 11.5px; color: #ea580c; margin-top: 4px;">* '기업', '대학', '기관' 중 대상을 선택하면 캘린더에 '[대상자명] AI맞춤형연수 (선택옵션)' 형태로 자동 표기됩니다.</p>
+        </div>
+
+        <!-- 실시간 캘린더 반영 타이틀 미리보기 카드 -->
+        <div class="form-group" id="formCombinedPreviewWrap" style="background: #f8fafc; border: 1.5px dashed #cbd5e1; border-radius: 8px; padding: 12px 14px; margin-top: 4px; margin-bottom: 12px;">
+          <div style="font-size: 11.5px; font-weight: 700; color: #475569; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>캘린더 표출 강의명 자동 조합 미리보기</span>
+          </div>
+          <div id="formCombinedPreviewText" style="font-size: 14px; font-weight: 800; color: #1e293b; word-break: break-all;">
+            [교육대상자] 바이브코딩부트캠프
+          </div>
+        </div>
+
+        <div class="form-row-3">
+          <div class="form-group">
+            <label class="form-label" for="formDate">강의 날짜 <span class="required">*</span></label>
+            <input type="date" id="formDate" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="formStartTime">시작 시간 <span class="required">*</span></label>
+            <input type="time" id="formStartTime" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="formEndTime">종료 시간 <span class="required">*</span></label>
+            <input type="time" id="formEndTime" class="form-input" required>
+          </div>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label" for="formInstructor">담당 강사 <span class="required">*</span></label>
+            <input type="text" id="formInstructor" class="form-input" placeholder="예: 정시후 (AI 테크 디렉터)" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="formLocation">교육 장소 <span class="required">*</span></label>
+            <input type="text" id="formLocation" class="form-input" placeholder="예: 더크리에이터즈AI 부산 본사 또는 협약 전산실" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="formCurriculum">오늘 배우는 내용 (한 줄에 하나씩 입력) <span class="required">*</span></label>
+          <textarea id="formCurriculum" class="form-textarea" rows="4" placeholder="바이브 코딩의 기본 개념 이해&#10;AI에게 개발 지시하는 실전 프롬프트&#10;웹 프로토타입 즉시 제작 및 배포"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="formPreparation">수강생 준비물</label>
+          <input type="text" id="formPreparation" class="form-input" placeholder="예: 개인 노트북 (Chrome 브라우저 설치 필수)">
+        </div>
+
+        <div class="modal-form-actions">
+          <button type="button" id="formDeleteBtn" class="btn btn-danger" style="display: none;" onclick="app.promptDeleteFromForm()">삭제</button>
+          <div class="right-actions">
+            <button type="button" class="btn btn-ghost" onclick="app.closeEditModal()">취소</button>
+            <button type="submit" class="btn btn-primary">저장하기</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       모달 3: 커스텀 인앱 강의 삭제 확인 팝업 (브라우저 confirm 차단 원천 해결)
+       ====================================================================== -->
+  <div class="modal-backdrop" id="deleteConfirmBackdrop" aria-hidden="true" onclick="app.handleBackdropClick(event, 'deleteConfirmBackdrop')">
+    <div class="modal-dialog modal-dialog-delete" role="dialog" aria-modal="true">
+      <div class="delete-header">
+        <div class="delete-icon-wrap">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="delete-title">강의 일정 삭제 확인</h3>
+          <p class="delete-subtitle">선택한 강의를 캘린더에서 완전히 제거할까요?</p>
+        </div>
+      </div>
+      <div class="delete-body">
+        <div class="delete-target-card" id="deleteTargetTitle">강의 제목</div>
+        <p class="delete-warning-text">삭제된 일정은 캘린더와 칸반보드에서 즉시 제거되며 다시 복구할 수 없습니다.</p>
+      </div>
+      <div class="delete-actions">
+        <button type="button" class="btn btn-ghost" onclick="app.closeDeleteConfirmModal()">취소</button>
+        <button type="button" class="btn-danger-solid" onclick="app.executeDeleteLecture()">삭제하기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       모달 4: 샘플 데이터 전체 비우기 확인 팝업
+       ====================================================================== -->
+  <div class="modal-backdrop" id="clearConfirmBackdrop" aria-hidden="true" onclick="app.handleBackdropClick(event, 'clearConfirmBackdrop')">
+    <div class="modal-dialog modal-dialog-delete" role="dialog" aria-modal="true">
+      <div class="delete-header">
+        <div class="delete-icon-wrap" style="background:#fef3c7; border-color:#fde68a;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="delete-title">샘플 데이터 전체 비우기</h3>
+          <p class="delete-subtitle">모든 가짜 샘플을 지우고 내 실제 강의를 등록할까요?</p>
+        </div>
+      </div>
+      <div class="delete-body">
+        <div class="delete-target-card" style="border-left-color: #d97706;">기본 제공되는 8개의 샘플 강의가 모두 삭제됩니다.</div>
+        <p class="delete-warning-text">깨끗하게 비워진 상태에서 아카데미의 실제 정규 강의와 원데이 클래스 일정을 직접 입력하여 운영하실 수 있습니다. (언제든지 [샘플 복원] 가능)</p>
+      </div>
+      <div class="delete-actions">
+        <button type="button" class="btn btn-ghost" onclick="app.closeClearConfirmModal()">취소</button>
+        <button type="button" class="btn-danger-solid" style="background:#d97706;" onclick="app.executeClearAllData()">모두 비우기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       모달 5: 데이터 관리 허브 컨트롤 센터 모달
+       ====================================================================== -->
+  <!-- ======================================================================
+       모달 5: 데이터 관리 허브 컨트롤 센터 모달 (통합 사이트 데이터 관리)
+       ====================================================================== -->
+  <div class="modal-backdrop" id="dataHubModalBackdrop" aria-hidden="true" onclick="app.handleBackdropClick(event, 'dataHubModalBackdrop')">
+    <div class="modal-dialog modal-dialog-datahub" role="dialog" aria-modal="true" aria-labelledby="dataHubTitle">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 38px; height: 38px; border-radius: 10px; background: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center; border: 1px solid #bfdbfe;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </div>
+          <div>
+            <h3 id="dataHubTitle" style="font-size: 17.5px; font-weight: 800; color: #0f172a; letter-spacing: -0.02em;">통합 데이터 관리 허브 (Data Management Hub)</h3>
+            <p style="font-size: 12px; color: #64748b; margin-top: 1px;">가짜 샘플을 지우고 실제 강의 일정, 실적 수치, 강사진, 회사 정보를 직접 관리하세요.</p>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button type="button" id="btnSaveAllHubData" class="btn btn-primary btn-sm" onclick="app.saveAllDataHub()" style="padding: 6px 14px; font-weight: 800; font-size: 12.5px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(37,99,235,0.25);">
+            <span>💾 전체 데이터 저장</span>
+          </button>
+          <button id="btnCloseDataHub" class="modal-close-btn" onclick="app.closeDataHubModal()" aria-label="닫기">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 6대 데이터 서브 탭 네비게이션 (모든 관리 기능 단일 허브로 완전 통합) -->
+      <div class="datahub-nav-tabs">
+        <button id="hubTabLectures" class="datahub-tab-btn active" onclick="app.switchDataHubTab('lectures')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          강의 일정 관리
+        </button>
+        <button id="hubTabMajor" class="datahub-tab-btn" onclick="app.switchDataHubTab('major')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          ⭐ 배너 강의 관리
+        </button>
+        <button id="hubTabTicker" class="datahub-tab-btn" onclick="app.switchDataHubTab('ticker')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          📢 상단 롤링 배너
+        </button>
+        <button id="hubTabStats" class="datahub-tab-btn" onclick="app.switchDataHubTab('stats')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          슬로건 & 실적 지표
+        </button>
+        <button id="hubTabInstructors" class="datahub-tab-btn" onclick="app.switchDataHubTab('instructors')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          강사진 소개 관리
+        </button>
+        <button id="hubTabCompany" class="datahub-tab-btn" onclick="app.switchDataHubTab('company')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          하단 회사/학원 정보
+        </button>
+        <button id="hubTabReviews" class="datahub-tab-btn" onclick="app.switchDataHubTab('reviews')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          수강 후기 & 더미 관리
+        </button>
+        <button id="hubTabConsult" class="datahub-tab-btn" onclick="app.switchDataHubTab('consult')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          📞 1:1 상담 접수함
+        </button>
+      </div>
+
+      <div class="modal-body datahub-modal-body">
+        <!-- PANE 1: 강의 일정 관리 -->
+        <div id="paneHubLectures" class="datahub-tab-pane active">
+          <!-- 관리자 칸반보드 원클릭 이동 카드 -->
+          <div class="datahub-action-card" style="background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%); border-color: #bfdbfe; border-width: 1.5px;">
+            <div class="action-card-info">
+              <span class="action-card-badge" style="background: #2563eb; color: #ffffff;">관리자 칸반 통합</span>
+              <div class="action-card-title">📋 강의 상태 칸반보드 관리 바로가기</div>
+              <div class="action-card-desc">접수예정 · 모집중 · 마감임박 · 완료 단계별로 강의를 한눈에 모니터링하고 카드 드래그로 상태를 즉시 변경합니다.</div>
+            </div>
+            <button class="btn-hub-primary btn-sm" onclick="app.switchToKanbanMode()">칸반보드 열기</button>
+          </div>
+
+          <div class="datahub-action-card">
+            <div class="action-card-info">
+              <span class="action-card-badge badge-primary">실제 운영 전환</span>
+              <div class="action-card-title">🗑️ 가짜 샘플 강의 모두 비우기</div>
+              <div class="action-card-desc">기존 8개의 가짜 샘플 강의를 모두 지우고, 깨끗한 상태에서 우리 교육원의 실제 강의 일정을 등록합니다.</div>
+            </div>
+            <button class="btn-danger-solid btn-sm" onclick="app.closeDataHubModal(); app.promptClearAllData();">샘플 비우기</button>
+          </div>
+
+          <div class="datahub-action-card">
+            <div class="action-card-info">
+              <span class="action-card-badge badge-success">신규 강의</span>
+              <div class="action-card-title">✨ 내 실제 강의 일정 등록하기</div>
+              <div class="action-card-desc">날짜, 강사명, 시간, 커리큘럼, 강의실을 입력하여 실제 운영 중인 강의를 바로 등록합니다.</div>
+            </div>
+            <button class="btn-hub-primary btn-sm" onclick="app.closeDataHubModal(); app.openCreateModal();">+ 강의 등록</button>
+          </div>
+
+          <div class="datahub-action-card">
+            <div class="action-card-info">
+              <span class="action-card-badge badge-blue">전체 통합 백업</span>
+              <div class="action-card-title">💾 전체 데이터(강의·실적·강사진·회사) JSON 백업</div>
+              <div class="action-card-desc">현재 사이트에 등록된 모든 실제 데이터(강의, 실적 수치, 강사진 프로필, 하단 정보)를 컴퓨터에 백업 다운로드합니다.</div>
+            </div>
+            <button class="btn-hub btn-sm" onclick="app.exportToJson()">통합 백업</button>
+          </div>
+
+          <div class="datahub-action-card">
+            <div class="action-card-info">
+              <span class="action-card-badge badge-amber">데이터 복원</span>
+              <div class="action-card-title">📂 JSON 백업 파일 불러오기</div>
+              <div class="action-card-desc">저장해둔 백업 .json 파일을 선택하여 사이트 데이터를 즉시 복원합니다.</div>
+            </div>
+            <button class="btn-hub btn-sm" onclick="document.getElementById('importJsonInputModal').click()">파일 선택</button>
+            <input type="file" id="importJsonInputModal" accept=".json" style="display:none;" onchange="app.importFromJson(this.files[0]); app.closeDataHubModal();">
+          </div>
+
+          <div class="datahub-action-card">
+            <div class="action-card-info">
+              <span class="action-card-badge badge-slate">기본 복원</span>
+              <div class="action-card-title">🔄 기본 8개 샘플 데이터 복원</div>
+              <div class="action-card-desc">기본 예시 데이터가 필요할 때 언제든지 초기 샘플 강의로 다시 되돌립니다.</div>
+            </div>
+            <button class="btn-hub btn-sm" onclick="app.closeDataHubModal(); app.promptResetDefaultData();">샘플 복원</button>
+          </div>
+        </div>
+
+        <!-- PANE 2: 히어로 실적 수치 수정 -->
+        <div id="paneHubStats" class="datahub-tab-pane">
+          <div class="datahub-section-header">
+            <div class="datahub-section-title">📊 히어로 핵심 실적 수치 수정</div>
+            <div class="datahub-section-desc">최상단 메인 슬로건 문구와 신뢰도 핵심 실적 지표를 자유롭게 수정하세요.</div>
+          </div>
+
+          <!-- 최상단 메인 슬로건 및 리드 문구 수정 -->
+          <div class="datahub-form-card" style="margin-bottom: 16px; border-color: #bfdbfe; background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);">
+            <div style="font-size: 13.5px; font-weight: 800; color: #1e40af; margin-bottom: 3px; display: flex; align-items: center; gap: 6px;">
+              <span>✨ 최상단 메인 슬로건 & 리드 문구 수정</span>
+            </div>
+            <div style="font-size: 11.5px; color: #64748b; margin-bottom: 10px;">웹사이트 최상단에 노출되는 대형 헤드라인 슬로건을 직접 수정할 수 있습니다.</div>
+
+            <div class="datahub-field" style="margin-bottom: 8px;">
+              <label class="datahub-label">상단 핵심 슬로건 (기본 문구)</label>
+              <input type="text" id="hubHeroSloganTop" class="datahub-input" placeholder="AI비개발자 초보도 4시간이면 나만의 홈페이지,어플,프로그램을 만드는">
+            </div>
+
+            <div class="datahub-field" style="margin-bottom: 8px;">
+              <label class="datahub-label">강조 타이틀 (그라디언트 텍스트)</label>
+              <input type="text" id="hubHeroSloganBottom" class="datahub-input" placeholder="실전 AI & 바이브 코딩 아카데미">
+            </div>
+
+            <div class="datahub-field">
+              <label class="datahub-label">헤드라인 하단 리드 문구</label>
+              <textarea id="hubHeroLeadText" class="datahub-textarea" rows="2" placeholder="지루한 문법 암기는 끝났습니다. AI 에이전트에게 직관적으로 개발을 지시하고, 현업 1타 멘토진의 1:1 밀착 피드백과 함께 나만의 프로덕트를 완성하세요."></textarea>
+            </div>
+
+            <div class="datahub-field" style="margin-top: 8px;">
+              <label class="datahub-label" for="hubHeroCtaMonth">📅 메인 바로가기 버튼 표시 월 (1~12월 선택)</label>
+              <select id="hubHeroCtaMonth" class="datahub-input" style="max-width: 220px; font-weight: 700;">
+                <option value="1">1월 교육 일정 확인하기</option>
+                <option value="2">2월 교육 일정 확인하기</option>
+                <option value="3">3월 교육 일정 확인하기</option>
+                <option value="4">4월 교육 일정 확인하기</option>
+                <option value="5">5월 교육 일정 확인하기</option>
+                <option value="6">6월 교육 일정 확인하기</option>
+                <option value="7">7월 교육 일정 확인하기</option>
+                <option value="8">8월 교육 일정 확인하기</option>
+                <option value="9">9월 교육 일정 확인하기</option>
+                <option value="10" selected>10월 교육 일정 확인하기</option>
+                <option value="11">11월 교육 일정 확인하기</option>
+                <option value="12">12월 교육 일정 확인하기</option>
+              </select>
+            </div>
+
+            <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-top: 8px;">
+              <button class="btn btn-secondary btn-sm" onclick="app.resetHeroSloganToDefault()">슬로건 기본 복원</button>
+              <button class="btn btn-primary btn-sm" onclick="app.saveHeroSloganFromHub()">💾 슬로건 문구 저장</button>
+            </div>
+          </div>
+
+          <div class="datahub-form-card">
+            <div class="datahub-form-row">
+              <div class="datahub-field">
+                <label class="datahub-label">지표 1 항목명</label>
+                <input type="text" id="hubStatLabel0" class="datahub-input" placeholder="예: 누적 수강생">
+              </div>
+              <div class="datahub-field">
+                <label class="datahub-label">지표 1 수치 표기</label>
+                <input type="text" id="hubStatVal0" class="datahub-input" placeholder="예: 3,850+ 또는 120명">
+              </div>
+            </div>
+
+            <div class="datahub-form-row">
+              <div class="datahub-field">
+                <label class="datahub-label">지표 2 항목명</label>
+                <input type="text" id="hubStatLabel1" class="datahub-input" placeholder="예: 수강 만족도">
+              </div>
+              <div class="datahub-field">
+                <label class="datahub-label">지표 2 수치 표기</label>
+                <input type="text" id="hubStatVal1" class="datahub-input" placeholder="예: 99.2%">
+              </div>
+            </div>
+
+            <div class="datahub-form-row">
+              <div class="datahub-field">
+                <label class="datahub-label">지표 3 항목명</label>
+                <input type="text" id="hubStatLabel2" class="datahub-input" placeholder="예: 실습 완성률">
+              </div>
+              <div class="datahub-field">
+                <label class="datahub-label">지표 3 수치 표기</label>
+                <input type="text" id="hubStatVal2" class="datahub-input" placeholder="예: 100%">
+              </div>
+            </div>
+
+            <div class="datahub-form-row">
+              <div class="datahub-field">
+                <label class="datahub-label">지표 4 항목명</label>
+                <input type="text" id="hubStatLabel3" class="datahub-input" placeholder="예: 기업 출강 평점">
+              </div>
+              <div class="datahub-field">
+                <label class="datahub-label">지표 4 수치 표기</label>
+                <input type="text" id="hubStatVal3" class="datahub-input" placeholder="예: 4.98 / 5.0">
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-top: 6px;">
+              <button class="btn btn-secondary btn-sm" onclick="app.resetStatsToDefault()">기본값 복원</button>
+              <button class="btn btn-primary btn-sm" onclick="app.saveStatsFromHub()">💾 실적 수치 저장</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 3: 강사진 소개 관리 -->
+        <div id="paneHubInstructors" class="datahub-tab-pane">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+            <div class="datahub-section-header">
+              <div class="datahub-section-title">👨‍🏫 현업 멘토진 / 강사진 관리</div>
+              <div class="datahub-section-desc">웹사이트에 노출되는 강사진 프로필을 등록, 수정, 삭제할 수 있습니다.</div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="app.showInstructorForm()">+ 새 강사 추가</button>
+          </div>
+
+          <!-- 강사 등록/수정 폼 -->
+          <div id="hubInstFormWrap" class="datahub-form-card" style="display: none; border-color: #93c5fd; background: #eff6ff;">
+            <div style="font-size: 13.5px; font-weight: 800; color: #1e40af;" id="hubInstFormHeading">신규 강사 등록</div>
+            <input type="hidden" id="hubInstFormId">
+            <div class="datahub-form-row">
+              <div class="datahub-field">
+                <label class="datahub-label">강사 이름 *</label>
+                <input type="text" id="hubInstName" class="datahub-input" placeholder="예: 홍길동">
+              </div>
+              <div class="datahub-field">
+                <label class="datahub-label">직책 / 전문 분야 타이틀 *</label>
+                <input type="text" id="hubInstRole" class="datahub-input" placeholder="예: AI 비즈니스 디렉터">
+              </div>
+            </div>
+            <div class="datahub-form-row">
+              <div class="datahub-field">
+                <label class="datahub-label">아바타 색상 테마</label>
+                <select id="hubInstAvatar" class="datahub-input">
+                  <option value="avatar-blue">블루 (Tech)</option>
+                  <option value="avatar-indigo">인디고 (Auto)</option>
+                  <option value="avatar-sky">스카이 (Media)</option>
+                  <option value="avatar-rose">로즈 (Design)</option>
+                </select>
+              </div>
+              <div class="datahub-field">
+                <label class="datahub-label">전문 태그 (쉼표로 구분)</label>
+                <input type="text" id="hubInstTags" class="datahub-input" placeholder="예: 바이브 코딩, Next.js, AI 에이전트">
+              </div>
+            </div>
+            <div class="datahub-field">
+              <label class="datahub-label">상세 소개 문구</label>
+              <textarea id="hubInstBio" class="datahub-textarea" rows="2" placeholder="강사님의 실무 경력 및 지도 철학을 입력하세요."></textarea>
+            </div>
+            <div class="datahub-field" style="margin-top: 4px;">
+              <label class="datahub-checkbox-row" style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 10px 14px; background: #ffffff; border: 1.5px solid #bfdbfe; border-radius: 8px; user-select: none;">
+                <input type="checkbox" id="hubInstFeatured" style="width: 17px; height: 17px; accent-color: #2563eb; cursor: pointer;">
+                <div>
+                  <div style="font-size: 13px; font-weight: 800; color: #1e40af;">⭐ 메인 히어로 배너에 노출 (대표 강사 스포트라이트)</div>
+                  <div style="font-size: 11.5px; color: #64748b; margin-top: 1px;">체크 시 홈페이지 상단 메인 배너 영역에 이 강사님이 대표 멘토로 노출됩니다.</div>
+                </div>
+              </label>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 4px;">
+              <button class="btn btn-secondary btn-sm" onclick="app.hideInstructorForm()">취소</button>
+              <button class="btn btn-primary btn-sm" onclick="app.saveInstructorFromForm()">강사 저장</button>
+            </div>
+          </div>
+
+          <!-- 강사진 리스트 -->
+          <div id="hubInstListWrap" style="display: flex; flex-direction: column; gap: 8px;">
+            <!-- Rendered by app.renderHubInstructorList() -->
+          </div>
+
+          <!-- 접수된 강사 지원 신청서 목록 -->
+          <div class="datahub-form-card" style="margin-top: 18px; border-color: #cbd5e1; background: #ffffff;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #f1f5f9;">
+              <div style="font-size: 13.5px; font-weight: 800; color: #1e293b; display: flex; align-items: center; gap: 8px;">
+                <span>📥 접수된 강사 지원 신청서</span>
+                <span class="badge-status-planning" id="hubInstAppCount" style="font-size: 11px; padding: 2px 8px;">0건</span>
+              </div>
+              <span style="font-size: 12px; color: #64748b;">하단 '강사 채용 지원'에서 실시간 접수된 내역</span>
+            </div>
+            <div id="hubInstAppListWrap" style="display: flex; flex-direction: column; gap: 10px;">
+              <!-- Rendered dynamically by app.renderHubInstructorApplications() -->
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 4: 회사 및 푸터 정보 수정 -->
+        <div id="paneHubCompany" class="datahub-tab-pane">
+          <div class="datahub-section-header">
+            <div class="datahub-section-title">🏢 하단 회사 / 학원 정보 수정</div>
+            <div class="datahub-section-desc">웹사이트 최하단에 표기되는 고객센터, 교육장 위치, 사업자 및 법적 정보를 수정합니다.</div>
+          </div>
+
+          <div class="datahub-form-card">
+            <div class="datahub-form-row">
+              <div class="datahub-field">
+                <label class="datahub-label">고객센터 전화번호</label>
+                <input type="text" id="hubCompPhone" class="datahub-input" placeholder="051-633-3812">
+              </div>
+              <div class="datahub-field">
+                <label class="datahub-label">대표 이메일</label>
+                <input type="text" id="hubCompEmail" class="datahub-input" placeholder="nova78jyg3@naver.com">
+              </div>
+            </div>
+
+            <div class="datahub-form-row">
+              <div class="datahub-field">
+                <label class="datahub-label">운영시간</label>
+                <input type="text" id="hubCompHours" class="datahub-input" placeholder="연중무휴">
+              </div>
+              <div class="datahub-field">
+                <label class="datahub-label">교육장 오시는 길 / 위치</label>
+                <input type="text" id="hubCompLocation" class="datahub-input" placeholder="부산 범천동 사학연금빌딩 14층 (범일역/범내골역 인근)">
+              </div>
+            </div>
+
+            <div class="datahub-form-row">
+              <div class="datahub-field">
+                <label class="datahub-label">상호명 (사업자등록증 기준)</label>
+                <input type="text" id="hubCompName" class="datahub-input" placeholder="더크리에이터즈AI">
+              </div>
+              <div class="datahub-field">
+                <label class="datahub-label">대표자명</label>
+                <input type="text" id="hubCompCeo" class="datahub-input" placeholder="정시후">
+              </div>
+            </div>
+
+            <div class="datahub-form-row">
+              <div class="datahub-field">
+                <label class="datahub-label">사업자등록번호</label>
+                <input type="text" id="hubCompBiz" class="datahub-input" placeholder="554-62-00204">
+              </div>
+              <div class="datahub-field">
+                <label class="datahub-label">개업연월일</label>
+                <input type="text" id="hubCompOpenDate" class="datahub-input" placeholder="2018.05.28">
+              </div>
+            </div>
+
+            <div class="datahub-form-row">
+              <div class="datahub-field">
+                <label class="datahub-label">업태</label>
+                <input type="text" id="hubCompBizType" class="datahub-input" placeholder="교육서비스업, 정보통신업, 서비스">
+              </div>
+              <div class="datahub-field">
+                <label class="datahub-label">종목</label>
+                <input type="text" id="hubCompBizItem" class="datahub-input" placeholder="창업·취업, 소프트웨어개발(디지털 콘텐츠 개발), 유튜브교육, 광고대행">
+              </div>
+            </div>
+
+            <div class="datahub-field">
+              <label class="datahub-label">사업장 및 교육장 상세 주소</label>
+              <input type="text" id="hubCompAddress" class="datahub-input" placeholder="부산광역시 부산진구 범일로 181, 14층(범천동, 사학연금빌딩)">
+            </div>
+
+            <div class="datahub-field">
+              <label class="datahub-label">하단 브랜드 한 줄 소개</label>
+              <textarea id="hubCompBrandDesc" class="datahub-textarea" rows="2" placeholder="교육원 비전 및 소개 문구"></textarea>
+            </div>
+
+            <div class="datahub-field">
+              <label class="datahub-label">저작권 (Copyright) 문구</label>
+              <input type="text" id="hubCompCopyright" class="datahub-input" placeholder="Copyright © 2018-2026 더크리에이터즈AI. All rights reserved.">
+            </div>
+
+            <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-top: 6px;">
+              <button class="btn btn-secondary btn-sm" onclick="app.resetCompanyInfoToDefault()">기본값 복원</button>
+              <button class="btn btn-primary btn-sm" onclick="app.saveCompanyInfoFromHub()">💾 회사 정보 저장</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 5: 수강 후기 & 더미 데이터 관리 -->
+        <div id="paneHubReviews" class="datahub-tab-pane">
+          <div class="datahub-section-header">
+            <div class="datahub-section-title">💬 수강생 후기 & 더미 데이터 관리</div>
+            <div class="datahub-section-desc">초기 샘플 더미 후기를 일괄 삭제하거나, 등록된 수강생 후기 목록을 확인·개별 삭제할 수 있습니다.</div>
+          </div>
+
+          <div class="datahub-action-card">
+            <div class="action-card-info">
+              <span class="action-card-badge badge-primary">더미 데이터 정리</span>
+              <div class="action-card-title">🗑️ 기본 더미 수강 후기(3건) 일괄 삭제</div>
+              <div class="action-card-desc">초기 예시로 등록된 3건의 더미 후기(김지은, 박성훈, 최원정)를 한 번에 모두 삭제합니다. 실제 수강생이 등록한 후기는 안전하게 보존됩니다.</div>
+            </div>
+            <button class="btn-danger-solid btn-sm" onclick="app.clearDummyReviews()">더미 후기 삭제</button>
+          </div>
+
+          <div class="datahub-action-card">
+            <div class="action-card-info">
+              <span class="action-card-badge badge-slate">전체 비우기</span>
+              <div class="action-card-title">⚠️ 모든 수강 후기 전체 삭제 (완전 초기화)</div>
+              <div class="action-card-desc">등록된 모든 수강 후기(더미 및 신규 등록 후기 포함)를 비워 첫 후기 대기 상태로 만듭니다.</div>
+            </div>
+            <button class="btn btn-secondary btn-sm" style="color: #ef4444; border-color: #fca5a5;" onclick="app.clearAllReviews()">모든 후기 비우기</button>
+          </div>
+
+          <div class="datahub-action-card">
+            <div class="action-card-info">
+              <span class="action-card-badge badge-blue">샘플 복원</span>
+              <div class="action-card-title">🔄 기본 3개 더미 후기 복원</div>
+              <div class="action-card-desc">테스트나 시연이 필요할 때 기본 예시 수강 후기 3건을 다시 불러옵니다.</div>
+            </div>
+            <button class="btn-hub btn-sm" onclick="app.resetDefaultReviews()">샘플 복원</button>
+          </div>
+
+          <!-- 등록된 후기 목록 -->
+          <div style="margin-top: 18px;">
+            <div style="font-size: 13.5px; font-weight: 800; color: #0f172a; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;">
+              <span>📋 등록된 수강 후기 목록</span>
+              <span id="hubReviewsCountBadge" style="font-size: 12px; font-weight: 700; color: #2563eb; background: #eff6ff; padding: 2px 8px; border-radius: 9999px;">총 3개</span>
+            </div>
+            <div id="hubReviewsListWrap" style="display: flex; flex-direction: column; gap: 8px;">
+              <!-- Rendered by app.renderHubReviewsList() -->
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 6: 10월 주요강의 배너 관리 -->
+        <div id="paneHubMajor" class="datahub-tab-pane">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px;">
+            <div class="datahub-section-header" style="margin-bottom: 0;">
+              <div class="datahub-section-title">⭐ 배너 강의 관리 (10월의 주요강의 일정)</div>
+              <div class="datahub-section-desc">홈페이지 상단 '10월의 주요강의 일정' 배너에 노출할 대표 강의들을 선택하세요.</div>
+            </div>
+            <span id="hubMajorCountBadge" style="font-size: 12px; font-weight: 700; color: #2563eb; background: #eff6ff; padding: 4px 10px; border-radius: 9999px; border: 1px solid #bfdbfe; white-space: nowrap;">총 4개 노출 중</span>
+          </div>
+
+          <div class="datahub-action-card" style="background: #fffbeb; border-color: #fde68a; margin-bottom: 14px;">
+            <div class="action-card-info">
+              <div class="action-card-title" style="color: #92400e; font-size: 13.5px;">💡 상단 배너 노출 안내</div>
+              <div class="action-card-desc" style="color: #b45309; line-height: 1.5;">아래 강의 목록에서 [배너 노출] 스위치를 켜면 상단 배너에 실시간으로 등록됩니다. 방문자는 상단에서 핵심 강의 일정을 한눈에 보고 캘린더 연동 및 수강 신청을 진행할 수 있습니다.</div>
+            </div>
+          </div>
+
+          <div id="hubMajorLecturesList" style="display: flex; flex-direction: column; gap: 8px;">
+            <!-- Rendered by app.renderHubMajorLecturesList() -->
+          </div>
+        </div>
+
+        <!-- PANE 7: 상단 롤링 배너 (LIVE TICKER) 문구 관리 -->
+        <div id="paneHubTicker" class="datahub-tab-pane">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px;">
+            <div class="datahub-section-header" style="margin-bottom: 0;">
+              <div class="datahub-section-title">📢 상단 롤링 배너 (LIVE TICKER) 문구 관리</div>
+              <div class="datahub-section-desc">웹사이트 최상단에서 실시간으로 흐르는 공지 메시지를 추가, 수정, 삭제하세요.</div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="app.addTickerItemFromHub()">+ 새 문구 추가</button>
+          </div>
+
+          <div class="datahub-action-card" style="background: #0f172a; border-color: #334155; margin-bottom: 14px; color: #e2e8f0;">
+            <div class="action-card-info">
+              <div class="action-card-title" style="color: #60a5fa; font-size: 13.5px; display: flex; align-items: center; gap: 8px;">
+                <span class="live-dot-mini" style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #38bdf8; box-shadow: 0 0 8px #38bdf8;"></span>
+                <span>실시간 무한 롤링 티커 안내</span>
+              </div>
+              <div class="action-card-desc" style="color: #94a3b8; line-height: 1.5; margin-top: 3px;">
+                등록된 문구들은 웹사이트 최상단 검정 바에서 왼쪽으로 매끄럽게 무한 반복 스크롤됩니다. 수강생 모집 알림, 이벤트, 공지사항을 자유롭게 설정하세요.
+              </div>
+            </div>
+          </div>
+
+          <div id="hubTickerItemsList" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px;">
+            <!-- Rendered by app.renderHubTickerList() -->
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px; border-top: 1px solid #e2e8f0; padding-top: 12px;">
+            <button class="btn btn-secondary btn-sm" onclick="app.resetTickerToDefault()">기본 문구 복원</button>
+            <button class="btn btn-primary btn-sm" onclick="app.saveTickerFromHub()">💾 롤링 배너 문구 저장</button>
+          </div>
+        </div>
+
+        <!-- PANE 8: 1:1 교육 상담 접수함 -->
+        <div id="paneHubConsult" class="datahub-tab-pane">
+          <div class="datahub-section-header">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+              <div>
+                <div class="datahub-section-title">📞 1:1 맞춤 교육 상담 접수 목록</div>
+                <div class="datahub-section-desc">웹사이트에서 실시간 접수된 기업 출강, 단체 교육, 개인 코칭 문의 내역을 관리합니다.</div>
+              </div>
+              <span class="badge-status-open" id="hubConsultCount" style="font-size: 11.5px; padding: 3px 10px;">0건</span>
+            </div>
+          </div>
+
+          <div id="hubConsultListWrap" style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px;">
+            <!-- Rendered by app.renderHubConsultApplications() -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       모달 6: 관리자 보안 인증 로그인 모달 (수강생 임의 조작 방지)
+       ====================================================================== -->
+  <div class="modal-backdrop" id="adminLoginModalBackdrop" aria-hidden="true" onclick="app.handleBackdropClick(event, 'adminLoginModalBackdrop')">
+    <div class="modal-dialog modal-dialog-login" role="dialog" aria-modal="true" aria-labelledby="adminLoginHeading">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 38px; height: 38px; border-radius: 10px; background: #0f172a; color: #60a5fa; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(15, 23, 42, 0.2);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 class="modal-heading" id="adminLoginHeading" style="font-size: 17.5px;">관리자 전용 보안 인증</h3>
+            <p style="font-size: 12px; color: var(--slate-500); margin-top: 1px;">칸반보드 및 사이트 데이터 관리는 관리자만 접근할 수 있습니다.</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="app.closeAdminLoginModal()" aria-label="닫기">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <form id="adminLoginForm" onsubmit="app.handleAdminLogin(event); return false;" class="modal-body" style="padding: 22px; display: flex; flex-direction: column; gap: 14px;">
+        <div id="adminLoginError" class="auth-error-banner" style="display: none;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          <span id="adminLoginErrorText">이메일 또는 비밀번호가 올바르지 않습니다.</span>
+        </div>
+
+        <div class="datahub-field">
+          <label class="datahub-label" for="adminEmailInput">관리자 이메일 주소</label>
+          <input type="email" id="adminEmailInput" class="datahub-input" placeholder="nova78jyg@gmail.com" required autocomplete="email" value="nova78jyg@gmail.com">
+        </div>
+
+        <div class="datahub-field">
+          <label class="datahub-label" for="adminPwInput">비밀번호</label>
+          <input type="password" id="adminPwInput" class="datahub-input" placeholder="비밀번호 8자리 입력" required autocomplete="current-password">
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--slate-600); margin-top: 2px;">
+          <label style="display: flex; align-items: center; gap: 7px; cursor: pointer; user-select: none;">
+            <input type="checkbox" id="adminAutoLoginCheck" checked style="width: 15px; height: 15px; accent-color: var(--blue-600); cursor: pointer;">
+            <span>로그인 상태 유지 (다음 접속 시 자동 로그인)</span>
+          </label>
+          <button type="button" onclick="app.quickFillAdmin()" style="background: none; border: none; color: var(--blue-600); cursor: pointer; text-decoration: underline; font-size: 11px;">
+            자동 완성
+          </button>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 10px;">
+          <button type="button" class="btn btn-secondary" style="flex: 1; padding: 11px;" onclick="app.closeAdminLoginModal()">취소</button>
+          <button type="submit" class="btn btn-primary" style="flex: 2; padding: 11px; font-weight: 800; font-size: 14px;">
+            🔐 관리자 인증 및 입장
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       모달 7: 수강생 리얼 후기 및 별점 평점 등록 모달
+       ====================================================================== -->
+  <div class="modal-backdrop" id="reviewModalBackdrop" aria-hidden="true" onclick="app.handleBackdropClick(event, 'reviewModalBackdrop')">
+    <div class="modal-dialog modal-dialog-review" role="dialog" aria-modal="true" aria-labelledby="reviewModalHeading">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 38px; height: 38px; border-radius: 10px; background: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20h9"></path>
+              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 class="modal-heading" id="reviewModalHeading" style="font-size: 17.5px;">수강생 리얼 후기 작성</h3>
+            <p style="font-size: 12px; color: var(--slate-500); margin-top: 1px;">수강생 여러분의 진솔한 강의 후기와 별점 평점을 등록해주세요.</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="app.closeReviewModal()" aria-label="닫기">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <form id="reviewForm" onsubmit="app.handleReviewSubmit(event); return false;" class="modal-body" style="padding: 22px; display: flex; flex-direction: column; gap: 16px;">
+        <!-- 별점 선택기 -->
+        <div>
+          <label class="datahub-label" style="margin-bottom: 6px;">강의 만족도 평점 선택 <span style="color:#ef4444">*</span></label>
+          <div class="star-rating-selector" id="starRatingSelector">
+            <button type="button" class="star-btn active" data-rating="1" onclick="app.setReviewRating(1)" aria-label="1점">★</button>
+            <button type="button" class="star-btn active" data-rating="2" onclick="app.setReviewRating(2)" aria-label="2점">★</button>
+            <button type="button" class="star-btn active" data-rating="3" onclick="app.setReviewRating(3)" aria-label="3점">★</button>
+            <button type="button" class="star-btn active" data-rating="4" onclick="app.setReviewRating(4)" aria-label="4점">★</button>
+            <button type="button" class="star-btn active" data-rating="5" onclick="app.setReviewRating(5)" aria-label="5점">★</button>
+            <span class="rating-text-label" id="ratingTextLabel">5.0점 (매우 만족해요! 적극 추천)</span>
+          </div>
+          <input type="hidden" id="reviewRatingInput" value="5">
+        </div>
+
+        <div class="datahub-form-row">
+          <div class="datahub-field">
+            <label class="datahub-label" for="reviewAuthorInput">작성자 이름 / 닉네임 <span style="color:#ef4444">*</span></label>
+            <input type="text" id="reviewAuthorInput" class="datahub-input" placeholder="예: 김지은" required autocomplete="name">
+          </div>
+          <div class="datahub-field">
+            <label class="datahub-label" for="reviewRoleInput">직무 / 소속 / 수강 과정 <span style="color:#ef4444">*</span></label>
+            <input type="text" id="reviewRoleInput" class="datahub-input" placeholder="예: 바이브 코딩 1기 / 마케팅 팀장" required>
+          </div>
+        </div>
+
+        <div class="datahub-field">
+          <label class="datahub-label" for="reviewContentInput">수강 후기 내용 <span style="color:#ef4444">*</span></label>
+          <textarea id="reviewContentInput" class="datahub-textarea" rows="4" placeholder="강의를 통해 배운 점, 실무에서의 변화, 강사님의 1:1 피드백 등 솔직한 경험담을 들려주세요." required></textarea>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 6px;">
+          <button type="button" class="btn btn-secondary" style="flex: 1; padding: 11px;" onclick="app.closeReviewModal()">취소</button>
+          <button type="submit" class="btn btn-primary" style="flex: 2; padding: 11px; font-weight: 800; font-size: 14px;">
+            ✨ 솔직한 후기 등록하기
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       모달 8: 강사 채용 지원 및 신청서 작성 모달
+       ====================================================================== -->
+  <div class="modal-backdrop" id="instructorApplyModalBackdrop" aria-hidden="true" onclick="app.handleBackdropClick(event, 'instructorApplyModalBackdrop')">
+    <div class="modal-dialog modal-dialog-form" role="dialog" aria-modal="true" aria-labelledby="instApplyModalHeading" style="max-width: 620px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 38px; height: 38px; border-radius: 10px; background: #e0e7ff; color: #4338ca; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(67, 56, 202, 0.15);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <line x1="19" y1="8" x2="19" y2="14"/>
+              <line x1="22" y1="11" x2="16" y2="11"/>
+            </svg>
+          </div>
+          <div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span class="badge-status-planning" style="font-size: 10.5px; padding: 2px 7px;">RECRUITMENT</span>
+              <h3 class="modal-heading" id="instApplyModalHeading" style="font-size: 17.5px;">강사 채용 지원 | 신청서 작성하기</h3>
+            </div>
+            <p style="font-size: 12px; color: var(--slate-500); margin-top: 1px;">더크리에이터즈 AI 아카데미와 함께할 전문 테크 멘토님을 모십니다.</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="app.closeInstructorApplyModal()" aria-label="닫기">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <form id="instructorApplyForm" onsubmit="app.handleInstructorApplySubmit(event); return false;" class="modal-body" style="padding: 22px; display: flex; flex-direction: column; gap: 14px; max-height: 75vh; overflow-y: auto;">
+        <div class="datahub-form-row">
+          <div class="datahub-field">
+            <label class="datahub-label" for="instApplyName">지원자 성함 <span style="color:#ef4444">*</span></label>
+            <input type="text" id="instApplyName" class="datahub-input" placeholder="예: 홍길동" required autocomplete="name">
+          </div>
+          <div class="datahub-field">
+            <label class="datahub-label" for="instApplyPhone">연락처 (휴대폰) <span style="color:#ef4444">*</span></label>
+            <input type="tel" id="instApplyPhone" class="datahub-input" placeholder="예: 010-1234-5678" required autocomplete="tel">
+          </div>
+        </div>
+
+        <div class="datahub-form-row">
+          <div class="datahub-field">
+            <label class="datahub-label" for="instApplyEmail">이메일 주소 <span style="color:#ef4444">*</span></label>
+            <input type="email" id="instApplyEmail" class="datahub-input" placeholder="예: mentor@example.com" required autocomplete="email">
+          </div>
+          <div class="datahub-field">
+            <label class="datahub-label" for="instApplyCategory">희망 강의 분야 <span style="color:#ef4444">*</span></label>
+            <select id="instApplyCategory" class="datahub-input" required>
+              <option value="바이브 코딩">바이브 코딩 기초 / 실무 과정</option>
+              <option value="업무 자동화">업무 자동화 & AI 에이전트 부트캠프</option>
+              <option value="영상/콘텐츠">숏폼 AI 비디오 크리에이터</option>
+              <option value="디자인/브랜딩">생성형 AI 브랜딩 & 디자인</option>
+              <option value="비즈니스/마케팅">기업 맞춤형 AX 출강 및 컨설팅</option>
+              <option value="기타 제안">기타 신규 교육 과정 제안</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="datahub-field">
+          <label class="datahub-label" for="instApplyCareer">주요 실무 및 강의 이력 요약 <span style="color:#ef4444">*</span></label>
+          <textarea id="instApplyCareer" class="datahub-textarea" rows="3" placeholder="예: 현 IT 스타트업 개발 리드 5년 차, AI 코딩 오프라인 출강 다수 등" required></textarea>
+        </div>
+
+        <div class="datahub-field">
+          <label class="datahub-label" for="instApplyLink">포트폴리오 / 이력서 링크 (GitHub, Notion, 블로그 등)</label>
+          <input type="url" id="instApplyLink" class="datahub-input" placeholder="https://notion.so/... 또는 https://github.com/...">
+        </div>
+
+        <div class="datahub-field">
+          <label class="datahub-label" for="instApplyMotive">강의 제안 및 지원 동기 <span style="color:#ef4444">*</span></label>
+          <textarea id="instApplyMotive" class="datahub-textarea" rows="3" placeholder="담당하고 싶으신 강의 커리큘럼 계획 또는 지원 동기를 자유롭게 적어주세요." required></textarea>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 6px;">
+          <button type="button" class="btn btn-secondary" style="flex: 1; padding: 11px;" onclick="app.closeInstructorApplyModal()">취소</button>
+          <button type="submit" class="btn btn-primary" style="flex: 2; padding: 11px; font-weight: 800; font-size: 14px; background: linear-gradient(135deg, #4338ca, #3b82f6);">
+            📩 강사 지원 신청서 제출하기
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       모달 9: 이용약관 / 개인정보처리방침 / 환불규정 정식 정책 안내 모달
+       ====================================================================== -->
+  <div class="modal-backdrop" id="policyModalBackdrop" aria-hidden="true" onclick="app.handleBackdropClick(event, 'policyModalBackdrop')">
+    <div class="modal-dialog modal-dialog-form" role="dialog" aria-modal="true" aria-labelledby="policyModalHeading" style="max-width: 680px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 38px; height: 38px; border-radius: 10px; background: #f1f5f9; color: #334155; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(51, 65, 85, 0.1);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+          </div>
+          <div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span class="badge-status-planning" style="font-size: 10.5px; padding: 2px 7px;">LEGAL NOTICE</span>
+              <h3 class="modal-heading" id="policyModalHeading" style="font-size: 17.5px;">더크리에이터즈AI 운영 정책 안내</h3>
+            </div>
+            <p style="font-size: 12px; color: var(--slate-500); margin-top: 1px;">투명하고 공정한 교육 서비스를 위한 정식 운영 규정입니다.</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="app.closePolicyModal()" aria-label="닫기">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <!-- 정책 탭 바 (모바일 가로 스크롤 최적화) -->
+      <div style="display: flex; border-bottom: 1.5px solid #e2e8f0; background: #f8fafc; padding: 0 12px; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none;">
+        <button type="button" class="datahub-tab-btn active" id="policyTabBtnTerms" onclick="app.switchPolicyTab('terms')" style="padding: 12px 14px; font-size: 13px; flex-shrink: 0;">
+          📄 이용약관
+        </button>
+        <button type="button" class="datahub-tab-btn" id="policyTabBtnPrivacy" onclick="app.switchPolicyTab('privacy')" style="padding: 12px 14px; font-size: 13px; flex-shrink: 0;">
+          🔒 개인정보처리방침
+        </button>
+        <button type="button" class="datahub-tab-btn" id="policyTabBtnRefund" onclick="app.switchPolicyTab('refund')" style="padding: 12px 14px; font-size: 13px; flex-shrink: 0;">
+          💰 수강료 환불규정
+        </button>
+      </div>
+
+      <div class="modal-body" style="padding: 22px; max-height: 60vh; overflow-y: auto; font-size: 13px; line-height: 1.65; color: #334155;">
+        <!-- PANE 1: 이용약관 -->
+        <div id="policyPaneTerms">
+          <div style="font-size: 15px; font-weight: 800; color: #0f172a; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+            <span>더크리에이터즈AI 서비스 이용약관</span>
+            <span style="font-size: 11px; font-weight: 500; color: #64748b;">(시행일: 2018.05.28 / 최근 갱신: 2026.10.01)</span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="background: #f8fafc; padding: 12px 14px; border-radius: 8px; border-left: 3px solid #2563eb;">
+              <strong>제1조 (목적)</strong><br>
+              본 약관은 더크리에이터즈AI(이하 "교육원")가 제공하는 AI 코딩, 프롬프트 엔지니어링, 실무 자동화 교육 서비스 및 온라인 캘린더 대시보드(이하 "서비스")의 이용조건, 절차 및 수강생과 교육원 간의 권리, 의무, 책임사항을 규정함을 목적으로 합니다.
+            </div>
+
+            <div style="background: #f8fafc; padding: 12px 14px; border-radius: 8px; border-left: 3px solid #2563eb;">
+              <strong>제2조 (수강 신청 및 계약의 성립)</strong><br>
+              ① 수강생은 교육원이 제공하는 캘린더 대시보드 및 지정된 신청 양식을 통해 강의를 신청합니다.<br>
+              ② 수강 계약은 교육원의 승인 및 수강료 납부 또는 확인 통지가 완료된 시점에 유효하게 성립합니다.
+            </div>
+
+            <div style="background: #f8fafc; padding: 12px 14px; border-radius: 8px; border-left: 3px solid #2563eb;">
+              <strong>제3조 (교육원의 의무 및 지원)</strong><br>
+              ① 교육원은 공지된 커리큘럼에 따라 양질의 실무 실습 교육과 현업 멘토의 피드백을 성실히 제공합니다.<br>
+              ② 천재지변, 강사 유고 등 불가피한 사유로 일정이 변경될 경우 사전에 수강생에게 개별 안내하고 대체 일정을 마련합니다.
+            </div>
+
+            <div style="background: #f8fafc; padding: 12px 14px; border-radius: 8px; border-left: 3px solid #2563eb;">
+              <strong>제4조 (지식재산권 및 콘텐츠 보호)</strong><br>
+              ① 교육원이 제공하는 강의 교재, 실습 코드, 동영상 자료의 저작권은 교육원과 담당 멘토에게 있습니다.<br>
+              ② 수강생은 교육원의 사전 서면 동의 없이 강의 콘텐츠를 무단 복제, 녹화, 배포하거나 상업적 용도로 재판매할 수 없습니다.
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 2: 개인정보처리방침 -->
+        <div id="policyPanePrivacy" style="display: none;">
+          <div style="font-size: 15px; font-weight: 800; color: #0f172a; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+            <span>더크리에이터즈AI 개인정보처리방침</span>
+            <span style="font-size: 11px; font-weight: 500; color: #64748b;">(정보통신망법 및 개인정보보호법 준수)</span>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="background: #f8fafc; padding: 12px 14px; border-radius: 8px; border-left: 3px solid #059669;">
+              <strong>1. 수집하는 개인정보 항목</strong><br>
+              - 수강 신청 및 교육 상담: 성함, 연락처(휴대폰 번호), 이메일 주소, 소속/직무<br>
+              - 강사 채용 지원: 성함, 연락처, 이메일, 전문 분야, 경력 요약, 포트폴리오 URL<br>
+              - 서비스 이용 과정: 브라우저 환경, 접속 IP, 쿠키, 로컬스토리지 설정값
+            </div>
+
+            <div style="background: #f8fafc; padding: 12px 14px; border-radius: 8px; border-left: 3px solid #059669;">
+              <strong>2. 개인정보의 수집 및 이용 목적</strong><br>
+              ① 강의 수강 접수, 본인 확인 및 일정 변동 알림(카카오톡/SMS/이메일 발송)<br>
+              ② 강사 채용 지원서 접수 및 심사, 1:1 맞춤 교육 상담 진행<br>
+              ③ 구글 캘린더 연동 및 학습 편의 기능 제공
+            </div>
+
+            <div style="background: #f8fafc; padding: 12px 14px; border-radius: 8px; border-left: 3px solid #059669;">
+              <strong>3. 보유 및 이용 기간</strong><br>
+              원칙적으로 개인정보 수집 및 이용 목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다. 단, 관련 법령에 의하여 보존할 필요가 있는 경우(계약/청약철회 기록 5년, 수강료 결제 기록 5년) 해당 기간 동안 안전하게 보관합니다.
+            </div>
+
+            <div style="background: #f8fafc; padding: 12px 14px; border-radius: 8px; border-left: 3px solid #059669;">
+              <strong>4. 개인정보 보호책임자</strong><br>
+              - 성명: 정시후 대표 | 연락처: 051-633-3812 | 이메일: nova78jyg3@naver.com<br>
+              - 주소: 부산광역시 부산진구 범일로 181, 14층(범천동, 사학연금빌딩)
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 3: 수강료 환불규정 -->
+        <div id="policyPaneRefund" style="display: none;">
+          <div style="font-size: 15px; font-weight: 800; color: #0f172a; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+            <span>수강료 반환 및 환불규정</span>
+            <span class="badge-status-planning" style="font-size: 10.5px; padding: 2px 7px;">평생교육법 시행령 제23조 준수</span>
+          </div>
+
+          <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; color: #1e40af; font-size: 12.5px;">
+            더크리에이터즈AI는 대한민국 교육부 「평생교육법 시행령 제23조(학습비의 반환 등)」 및 공정거래위원회 「소비자분쟁해결기준」을 엄격히 준수합니다.
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;">
+              <div>
+                <strong style="color: #0f172a;">수업 개시 이전 (개강 1일 전까지)</strong>
+                <div style="font-size: 11.5px; color: #64748b;">강의 시작 전 취소 요청 시</div>
+              </div>
+              <span style="font-weight: 800; color: #2563eb; font-size: 14px;">납부한 수강료 전액(100%) 환불</span>
+            </div>
+
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;">
+              <div>
+                <strong style="color: #0f172a;">총 교육시간의 1/3 경과 전</strong>
+                <div style="font-size: 11.5px; color: #64748b;">전체 회차 중 1/3 진행 이전 취소 시</div>
+              </div>
+              <span style="font-weight: 800; color: #059669; font-size: 14px;">기 납부 수강료의 2/3 반환</span>
+            </div>
+
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;">
+              <div>
+                <strong style="color: #0f172a;">총 교육시간의 1/2 경과 전</strong>
+                <div style="font-size: 11.5px; color: #64748b;">전체 회차 중 1/2 진행 이전 취소 시</div>
+              </div>
+              <span style="font-weight: 800; color: #d97706; font-size: 14px;">기 납부 수강료의 1/2 반환</span>
+            </div>
+
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;">
+              <div>
+                <strong style="color: #0f172a;">총 교육시간의 1/2 경과 후</strong>
+                <div style="font-size: 11.5px; color: #64748b;">수업이 절반 이상 진행된 경우</div>
+              </div>
+              <span style="font-weight: 800; color: #94a3b8; font-size: 14px;">반환하지 아니함</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 12px; padding: 10px 12px; background: #f1f5f9; border-radius: 6px; font-size: 11.5px; color: #64748b;">
+            💡 <strong>환불 신청 방법:</strong> 고객센터 전화(051-633-3812) 또는 공식 이메일(nova78jyg3@naver.com)로 성함과 강좌명을 남겨주시면 신청일 기준 영업일 3일 이내에 원 결제 수단으로 환불 처리됩니다.
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: #f8fafc; border-top: 1px solid #e2e8f0;">
+        <span style="font-size: 11.5px; color: #64748b;">문의: 051-633-3812 | nova78jyg3@naver.com</span>
+        <button type="button" class="btn btn-secondary" onclick="app.closePolicyModal()" style="padding: 8px 18px; font-weight: 700;">확인 및 닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       모달 10: 1:1 맞춤 교육 상담 신청 모달
+       ====================================================================== -->
+  <div class="modal-backdrop" id="consultModalBackdrop" aria-hidden="true" onclick="app.handleBackdropClick(event, 'consultModalBackdrop')">
+    <div class="modal-dialog modal-dialog-form" role="dialog" aria-modal="true" aria-labelledby="consultModalHeading" style="max-width: 620px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 38px; height: 38px; border-radius: 10px; background: #ecfdf5; color: #059669; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(5, 150, 105, 0.15);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+          </div>
+          <div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span class="badge-status-open" style="font-size: 10.5px; padding: 2px 7px;">1:1 CONSULTING</span>
+              <h3 class="modal-heading" id="consultModalHeading" style="font-size: 17.5px;">1:1 맞춤 교육 상담 신청</h3>
+            </div>
+            <p style="font-size: 12px; color: var(--slate-500); margin-top: 1px;">기업 출강, 단체 부트캠프, 커리큘럼 맞춤 설계를 신속히 안내드립니다.</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="app.closeConsultModal()" aria-label="닫기">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <form id="consultForm" onsubmit="app.handleConsultSubmit(event); return false;" class="modal-body" style="padding: 22px; display: flex; flex-direction: column; gap: 14px; max-height: 75vh; overflow-y: auto;">
+        <div class="datahub-form-row">
+          <div class="datahub-field">
+            <label class="datahub-label" for="consultName">신청자 / 담당자 성함 <span style="color:#ef4444">*</span></label>
+            <input type="text" id="consultName" class="datahub-input" placeholder="예: 김상우 팀장" required autocomplete="name">
+          </div>
+          <div class="datahub-field">
+            <label class="datahub-label" for="consultPhone">연락처 (휴대폰) <span style="color:#ef4444">*</span></label>
+            <input type="tel" id="consultPhone" class="datahub-input" placeholder="예: 010-1234-5678" required autocomplete="tel">
+          </div>
+        </div>
+
+        <div class="datahub-form-row">
+          <div class="datahub-field">
+            <label class="datahub-label" for="consultEmail">이메일 주소 <span style="color:#ef4444">*</span></label>
+            <input type="email" id="consultEmail" class="datahub-input" placeholder="예: contact@company.com" required autocomplete="email">
+          </div>
+          <div class="datahub-field">
+            <label class="datahub-label" for="consultOrg">소속 기업 / 단체명 <span style="color:#ef4444">*</span></label>
+            <input type="text" id="consultOrg" class="datahub-input" placeholder="예: (주)테크솔루션 기획팀 (또는 개인)" required>
+          </div>
+        </div>
+
+        <div class="datahub-form-row">
+          <div class="datahub-field">
+            <label class="datahub-label" for="consultCategory">관심 교육 분야 <span style="color:#ef4444">*</span></label>
+            <select id="consultCategory" class="datahub-input" required>
+              <option value="바이브 코딩">바이브 코딩 입문 및 실전 웹 구축</option>
+              <option value="업무 자동화">업무 자동화 & AI 에이전트 부트캠프</option>
+              <option value="영상/콘텐츠">숏폼 AI 비디오 크리에이터</option>
+              <option value="디자인/브랜딩">생성형 AI 브랜딩 & 디자인</option>
+              <option value="기업 맞춤형 AX 출강">기업 맞춤형 전사 AI 전환(AX) 출강</option>
+              <option value="기타 상담">기타 커리큘럼 및 예산 조율 상담</option>
+            </select>
+          </div>
+          <div class="datahub-field">
+            <label class="datahub-label" for="consultType">희망 교육 방식 / 규모</label>
+            <select id="consultType" class="datahub-input">
+              <option value="기업 현장 방문 출강">기업/기관 현장 방문 출강 (출장 교육)</option>
+              <option value="부산 범천동 교육장">부산 본원 교육장 대면 실습 (사학연금빌딩)</option>
+              <option value="온라인 실시간 라이브">온라인 실시간 화상 강의 (Zoom/Meet)</option>
+              <option value="1:1 개인 코칭">1:1 개인 집중 멘토링 (1명)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="datahub-field">
+          <label class="datahub-label" for="consultContent">상담 문의 내용 및 예산/일정 조율 요청 <span style="color:#ef4444">*</span></label>
+          <textarea id="consultContent" class="datahub-textarea" rows="4" placeholder="희망 교육 일정, 예상 참석 인원, 목표 결과물, 예산 범위 등 궁금하신 사항을 자유롭게 적어주세요." required></textarea>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 6px;">
+          <button type="button" class="btn btn-secondary" style="flex: 1; padding: 11px;" onclick="app.closeConsultModal()">취소</button>
+          <button type="submit" class="btn btn-primary" style="flex: 2; padding: 11px; font-weight: 800; font-size: 14px; background: linear-gradient(135deg, #059669, #10b981);">
+            ✨ 1:1 상담 신청서 접수하기
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       모달 11: 특정 날짜 전체 강의(3개 초과 포함) 보기 및 관리 모달
+       ====================================================================== -->
+  <div class="modal-backdrop" id="dayAllLecturesModalBackdrop" aria-hidden="true" onclick="app.handleBackdropClick(event, 'dayAllLecturesModalBackdrop')">
+    <div class="modal-dialog modal-dialog-form" role="dialog" aria-modal="true" style="max-width: 580px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 38px; height: 38px; border-radius: 10px; background: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <div>
+            <h3 class="modal-heading" id="dayAllModalHeading" style="font-size: 17.5px;">2026-10-06 전체 강의 일정</h3>
+            <p style="font-size: 12px; color: var(--slate-500); margin-top: 1px;">선택한 날짜에 편성된 모든 교육 일정을 확인하고 관리합니다.</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="app.closeDayAllLecturesModal()" aria-label="닫기">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <div class="modal-body" id="dayAllModalBody" style="padding: 18px 20px; max-height: 70vh; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;"></div>
+      <div class="modal-footer" id="dayAllModalFooter" style="display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: #f8fafc; border-top: 1px solid #e2e8f0;">
+        <span style="font-size: 12px; color: #64748b;" id="dayAllModalCountText">총 0건의 강의</span>
+        <div style="display: flex; gap: 8px;">
+          <button type="button" id="dayAllModalAddBtn" class="btn btn-primary btn-sm" style="display: none;">+ 이 날짜에 강의 추가</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="app.closeDayAllLecturesModal()">닫기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 실시간 플로팅 토스트 알림 컨테이너 -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    function toggleFaq(el) {
+      const card = el.closest('.faq-card');
+      card.classList.toggle('open');
+    }
+
+    // Motion Graphics & Kinetic Typography Engine
+    function initMotionGraphics() {
+      // 1. Reveal on scroll with IntersectionObserver
+      const reveals = document.querySelectorAll('.reveal-on-scroll');
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-revealed');
+              const counters = entry.target.querySelectorAll('.stat-value[data-target]');
+              counters.forEach(c => animateCountUp(c));
+            }
+          });
+        }, { threshold: 0.15 });
+
+        reveals.forEach(el => observer.observe(el));
+      } else {
+        reveals.forEach(el => el.classList.add('is-revealed'));
+      }
+
+      // 2. Count-up animation with cubic easeOut
+      function animateCountUp(el) {
+        if (el.dataset.animated) return;
+        el.dataset.animated = "true";
+        const target = parseFloat(el.dataset.target);
+        const suffix = el.dataset.suffix || "";
+        const isDecimal = el.dataset.decimal ? parseInt(el.dataset.decimal, 10) : 0;
+        const duration = 1400;
+        const startTime = performance.now();
+
+        function update(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          // Ease Out Quart
+          const ease = 1 - Math.pow(1 - progress, 4);
+          const current = target * ease;
+          el.textContent = (isDecimal > 0 ? current.toFixed(isDecimal) : Math.floor(current).toLocaleString()) + suffix;
+          if (progress < 1) {
+            requestAnimationFrame(update);
+          } else {
+            el.textContent = (isDecimal > 0 ? target.toFixed(isDecimal) : target.toLocaleString()) + suffix;
+          }
+        }
+        requestAnimationFrame(update);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initMotionGraphics);
+    } else {
+      initMotionGraphics();
+    }
+  </script>
+  <script src="app.js?v=20261018_v7"></script>
+</body>
+</html>

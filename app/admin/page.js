@@ -20,7 +20,8 @@ const TABS = [
   { id: 'url', icon: '📊', label: '2층: URL 통계', color: 'bg-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.4)] border-transparent' },
   { id: 'landing', icon: '🔥', label: '3층: 부트캠프 VIP', color: 'bg-[#3B82F6] shadow-[0_0_15px_rgba(59,130,246,0.4)] border-transparent' },
   { id: 'hr', icon: '🧑‍💻', label: '4층: 인사/근태', color: 'bg-purple-600 shadow-[0_0_15px_rgba(147,51,234,0.4)] border-transparent' },
-  { id: 'mission', icon: '🎯', label: '5층: 목표/미션', color: 'bg-rose-500 shadow-[0_0_15px_rgba(243,24,103,0.4)] border-transparent' },
+  { id: 'calendar', icon: '📅', label: '5층: 일정표/포털 관리', color: 'bg-amber-600 shadow-[0_0_15px_rgba(217,119,6,0.4)] border-transparent' },
+  { id: 'mission', icon: '🎯', label: '6층: 목표/미션', color: 'bg-rose-500 shadow-[0_0_15px_rgba(243,24,103,0.4)] border-transparent' },
 ];
 
 export default function AdminDashboard() {

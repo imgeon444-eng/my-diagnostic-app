@@ -1,0 +1,78 @@
+{
+  "version": "3.0.0",
+  "name": "The Creators Context-Driven Harness Rules V3",
+  "updated_at": "2026-09-25",
+  "gate_criteria": {
+    "repeatability": "실제로 반복해서 일어났거나 일어날 가능성이 명백한가",
+    "severity": "발생 시 사이트가 멈추거나 데이터 유실 또는 고객에게 망가진 화면 노출",
+    "determinism": "인간의 기분이 아닌 Exit Code나 문자열 검색으로 100% 참/거짓 판별",
+    "irreversibility": "한 번 발생하면 복구 비용이 크거나 비가역적인 손상"
+  },
+  "tier_1_pre_tool_use": {
+    "whitelist_keywords": ["승인해", "승인", "시공해", "시공", "진행해", "진행", "배포해", "수정해", "적용해", "실행해", "복구해"],
+    "blocked_commands": [
+      "rm -rf /",
+      "rm -rf *",
+      "drop database",
+      "drop table",
+      "truncate table",
+      "git push -f",
+      "git push --force",
+      "git reset --hard origin"
+    ],
+    "asset_integrity": {
+      "protected_extensions": [".mp4", ".png", ".jpg", ".jpeg", ".svg", ".webp", ".php", ".ts", ".tsx"],
+      "action_on_match": "BLOCK_WITH_ACTIONABLE_PATH"
+    },
+    "domain_isolation": {
+      "DOMAIN_DIAGNOSTIC": {
+        "allowed_paths": ["src/*", "public/*", "package.json", "next.config.js"],
+        "prohibited_paths": ["/www/theme/*", "scratch/live_*"]
+      },
+      "DOMAIN_HOMEPAGE": {
+        "allowed_paths": ["/www/theme/2001/*", "/www/data/*", "scratch/live_*"],
+        "prohibited_paths": ["src/app/*", "src/components/*"]
+      }
+    }
+  },
+  "tier_2_commit": {
+    "litmus_threshold": {
+      "max_changed_files": 3,
+      "max_changed_lines": 80,
+      "action_on_exceed": "REQUIRE_TEST_PLAN_BEFORE_TURN_ENDS"
+    },
+    "build_check": {
+      "command": "npm run build",
+      "required_exit_code": 0
+    },
+    "schema_guard": {
+      "require_fallback_default": true,
+      "require_optional_chaining": true,
+      "require_migration_file_on_schema_change": true
+    },
+    "waiver_protocol": {
+      "waiver_file": "WAIVER_LOG.md",
+      "require_explicit_reason": true,
+      "require_user_approval": true
+    }
+  },
+  "tier_3_deploy": {
+    "locale_guard": {
+      "minimum_korean_text_ratio": 0.8,
+      "prohibit_english_only_cardnews": true
+    },
+    "hosting_quota": {
+      "minimum_residual_mb": 20.0,
+      "max_upload_size_without_opt_mb": 10.0
+    },
+    "runtime_sanity": {
+      "max_console_errors": 0,
+      "allowed_http_statuses": [200, 206],
+      "require_screenshot_evidence": true
+    },
+    "fail_safe": {
+      "max_auto_retries": 3,
+      "action_on_exhaust": "ROLLBACK_TO_BACKUP_AND_HALT"
+    }
+  }
+}

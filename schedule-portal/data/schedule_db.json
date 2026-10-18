@@ -1,0 +1,471 @@
+{
+  "version": "v4",
+  "exportedAt": "2026-10-05T06:45:34.326Z",
+  "lectures": [
+    {
+      "id": "lec-01",
+      "date": "2026-10-06",
+      "startTime": "14:00",
+      "endTime": "17:00",
+      "targetOrg": "부산 북구청 AX연수",
+      "category": "바이브코딩부트캠프",
+      "title": "[부산 북구청 AX연수] 바이브코딩부트캠프",
+      "instructor": "정시후 테크 디렉터",
+      "location": "부산북구청 전산실",
+      "status": "모집/접수중",
+      "isMajorFeatured": true,
+      "curriculum": [
+        "지자체 공무원 및 실무자를 위한 바이브 코딩(Vibe Coding) 핵심 이해",
+        "AI 에이전트에게 직관적으로 지시하는 실전 프롬프트 엔지니어링",
+        "행정 업무용 웹 대시보드 및 프로토타입 실시간 빌드",
+        "실시간 오류 디버깅 및 공공 데이터 시각화 연동 실습"
+      ],
+      "preparation": "개인 노트북 (Chrome 브라우저 설치 필수)"
+    },
+    {
+      "id": "lec-02",
+      "date": "2026-10-07",
+      "startTime": "14:00",
+      "endTime": "17:00",
+      "targetOrg": "부산 해운대구청 AX연수",
+      "category": "AI기업업무자동화",
+      "title": "[부산 해운대구청 AX연수] AI기업업무자동화",
+      "instructor": "임건 테크 디렉터",
+      "location": "해운대구청 전산실",
+      "status": "마감임박/확정",
+      "isMajorFeatured": true,
+      "curriculum": [
+        "행정·공공 실무 자동화를 위한 멀티모달 AI 프롬프트 설계",
+        "공문서 요약, 보도자료 초안 작성 및 엑셀 데이터 자동 가공",
+        "지능형 맞춤 AI 행정 비서 워크플로우 세팅",
+        "반복 행정 업무 90% 단축을 위한 실전 AX 파이프라인 완성"
+      ],
+      "preparation": "개인 노트북, 구글 계정"
+    },
+    {
+      "id": "lec-03",
+      "date": "2026-10-08",
+      "startTime": "13:00",
+      "endTime": "16:00",
+      "targetOrg": "신라대학교 AI콘텐츠제작",
+      "category": "AI영상콘텐츠제작",
+      "title": "[신라대학교 AI콘텐츠제작] AI영상콘텐츠제작",
+      "instructor": "김민석 수석 컨설턴트",
+      "location": "신라대학교",
+      "status": "모집/접수중",
+      "isMajorFeatured": true,
+      "curriculum": [
+        "대학생 및 청년 창업가를 위한 생성형 AI 숏폼 영상 기획",
+        "AI 보이스 생성 및 캡컷(CapCut) 자동 자막 템플릿 제작법",
+        "시선을 사로잡는 3초 훅(Hook) 바이럴 영상 촬영 & 편집 노하우",
+        "유튜브 쇼츠 & 인스타그램 릴스 알고리즘 최적화 전략"
+      ],
+      "preparation": "스마트폰, 개인 노트북, 캡컷(CapCut) 앱 설치"
+    },
+    {
+      "id": "lec-04",
+      "date": "2026-10-09",
+      "startTime": "13:00",
+      "endTime": "16:00",
+      "targetOrg": "부산과학기술대학교 AI콘텐츠제작",
+      "category": "AI영상콘텐츠제작",
+      "title": "[부산과학기술대학교 AI콘텐츠제작] AI영상콘텐츠제작",
+      "instructor": "김민석 수석 컨설턴트",
+      "location": "부산과학기술대학교",
+      "status": "모집/접수중",
+      "isMajorFeatured": true,
+      "curriculum": [
+        "생성형 AI를 활용한 학과 홍보 및 포트폴리오 영상 제작",
+        "미드저니 & AI 비디오 생성 툴을 결합한 하이엔드 모션 그래픽",
+        "오디오 싱크 애니메이션 및 감성 컷편집 테크닉",
+        "실전 프로젝트 제작 및 전문가 1:1 라이브 피드백"
+      ],
+      "preparation": "개인 노트북, 실습 영상 에셋"
+    },
+    {
+      "id": "lec-1791179529201",
+      "title": "[동의대 미래융합대학] 바이브코딩부트캠프",
+      "targetOrg": "동의대 미래융합대학",
+      "customType": "",
+      "category": "바이브코딩부트캠프",
+      "status": "마감임박/확정",
+      "date": "2026-10-12",
+      "startTime": "19:00",
+      "endTime": "21:00",
+      "instructor": "정시후",
+      "location": "동의대학교 지천관 6층",
+      "curriculum": [
+        "강의 커리큘럼 준비 중"
+      ],
+      "preparation": "개인 노트북 지참"
+    },
+    {
+      "id": "lec-1791180400349",
+      "title": "[금정구청] AX행정 지자체 및 공공기관 연수",
+      "targetOrg": "금정구청",
+      "customType": "",
+      "category": "AX행정 지자체 및 공공기관 연수",
+      "status": "진행/완료",
+      "date": "2026-10-15",
+      "startTime": "19:00",
+      "endTime": "21:00",
+      "instructor": "정시후",
+      "location": "더크리에이터즈AI 대강의장",
+      "curriculum": [
+        "강의 커리큘럼 준비 중"
+      ],
+      "preparation": "개인 노트북 지참"
+    },
+    {
+      "id": "lec-1791180474493",
+      "title": "[부산과학기술대학교] AI영상콘텐츠제작",
+      "targetOrg": "부산과학기술대학교",
+      "customType": "",
+      "category": "AI영상콘텐츠제작",
+      "status": "모집/접수중",
+      "date": "2026-10-13",
+      "startTime": "19:00",
+      "endTime": "21:00",
+      "instructor": "임건",
+      "location": "부산과학기술대학교",
+      "curriculum": [
+        "강의 커리큘럼 준비 중"
+      ],
+      "preparation": "개인 노트북 지참"
+    },
+    {
+      "id": "lec-1791181461146",
+      "title": "[부산과기대] AI영상콘텐츠제작",
+      "targetOrg": "부산과기대",
+      "customType": "",
+      "category": "AI영상콘텐츠제작",
+      "status": "모집/접수중",
+      "date": "2026-10-16",
+      "startTime": "19:00",
+      "endTime": "21:00",
+      "instructor": "임건",
+      "location": "부산과기대",
+      "curriculum": [
+        "강의 커리큘럼 준비 중"
+      ],
+      "preparation": "개인 노트북 지참"
+    },
+    {
+      "id": "lec-1791181484449",
+      "title": "[부산과기대] AI영상콘텐츠제작",
+      "targetOrg": "부산과기대",
+      "customType": "",
+      "category": "AI영상콘텐츠제작",
+      "status": "모집/접수중",
+      "date": "2026-10-14",
+      "startTime": "19:00",
+      "endTime": "21:00",
+      "instructor": "임건",
+      "location": "부산과기대",
+      "curriculum": [
+        "강의 커리큘럼 준비 중"
+      ],
+      "preparation": "개인 노트북 지참"
+    },
+    {
+      "id": "lec-1791181550960",
+      "title": "[부산경제진흥원] AI리터러시(기초)",
+      "targetOrg": "부산경제진흥원",
+      "customType": "",
+      "category": "AI리터러시(기초)",
+      "status": "진행/완료",
+      "date": "2026-10-19",
+      "startTime": "19:00",
+      "endTime": "21:00",
+      "instructor": "정시후",
+      "location": "더크리에이터즈AI 대강의장",
+      "curriculum": [
+        "강의 커리큘럼 준비 중"
+      ],
+      "preparation": "개인 노트북 지참"
+    },
+    {
+      "id": "lec-1791181585438",
+      "title": "[해운대구청] AX행정 지자체 및 공공기관 연수",
+      "targetOrg": "해운대구청",
+      "customType": "",
+      "category": "AX행정 지자체 및 공공기관 연수",
+      "status": "모집/접수중",
+      "date": "2026-10-20",
+      "startTime": "19:00",
+      "endTime": "21:00",
+      "instructor": "정시후",
+      "location": "해운대구청",
+      "curriculum": [
+        "강의 커리큘럼 준비 중"
+      ],
+      "preparation": "개인 노트북 지참"
+    },
+    {
+      "id": "lec-1791181613314",
+      "title": "[북구평생학습관] 바이브코딩부트캠프",
+      "targetOrg": "북구평생학습관",
+      "customType": "",
+      "category": "바이브코딩부트캠프",
+      "status": "모집/접수중",
+      "date": "2026-10-21",
+      "startTime": "19:00",
+      "endTime": "21:00",
+      "instructor": "김민석",
+      "location": "만덕도서관",
+      "curriculum": [
+        "강의 커리큘럼 준비 중"
+      ],
+      "preparation": "개인 노트북 지참"
+    },
+    {
+      "id": "lec-1791181634181",
+      "title": "[해운대구청] AX행정 지자체 및 공공기관 연수",
+      "targetOrg": "해운대구청",
+      "customType": "",
+      "category": "AX행정 지자체 및 공공기관 연수",
+      "status": "마감임박/확정",
+      "date": "2026-10-22",
+      "startTime": "19:00",
+      "endTime": "21:00",
+      "instructor": "정시후",
+      "location": "해운대구청",
+      "curriculum": [
+        "강의 커리큘럼 준비 중"
+      ],
+      "preparation": "개인 노트북 지참"
+    },
+    {
+      "id": "lec-1791181722002",
+      "title": "[해운대구청] AI기업업무자동화",
+      "targetOrg": "해운대구청",
+      "customType": "",
+      "category": "AI기업업무자동화",
+      "status": "모집/접수중",
+      "date": "2026-10-26",
+      "startTime": "19:00",
+      "endTime": "21:00",
+      "instructor": "정시후",
+      "location": "해운대구청",
+      "curriculum": [
+        "강의 커리큘럼 준비 중"
+      ],
+      "preparation": "개인 노트북 지참"
+    },
+    {
+      "id": "lec-1791181745740",
+      "title": "[북구평생학습관] 바이브코딩부트캠프",
+      "targetOrg": "북구평생학습관",
+      "customType": "",
+      "category": "바이브코딩부트캠프",
+      "status": "마감임박/확정",
+      "date": "2026-10-28",
+      "startTime": "19:00",
+      "endTime": "21:00",
+      "instructor": "임건",
+      "location": "만덕도서관",
+      "curriculum": [
+        "강의 커리큘럼 준비 중"
+      ],
+      "preparation": "개인 노트북 지참"
+    },
+    {
+      "id": "lec-1791181768274",
+      "title": "[부산과기대] AI영상콘텐츠제작",
+      "targetOrg": "부산과기대",
+      "customType": "",
+      "category": "AI영상콘텐츠제작",
+      "status": "모집/접수중",
+      "date": "2026-10-01",
+      "startTime": "19:00",
+      "endTime": "21:00",
+      "instructor": "임건",
+      "location": "부산과기대",
+      "curriculum": [
+        "강의 커리큘럼 준비 중"
+      ],
+      "preparation": "개인 노트북 지참"
+    },
+    {
+      "id": "lec-1791181803235",
+      "title": "[더크리에이터즈AI] 바이브코딩부트캠프",
+      "targetOrg": "더크리에이터즈AI",
+      "customType": "",
+      "category": "바이브코딩부트캠프",
+      "status": "모집/접수중",
+      "date": "2026-10-02",
+      "startTime": "13:00",
+      "endTime": "18:00",
+      "instructor": "정시후",
+      "location": "더크리에이터즈AI 대강의장",
+      "curriculum": [
+        "강의 커리큘럼 준비 중"
+      ],
+      "preparation": "개인 노트북 지참"
+    }
+  ],
+  "stats": [
+    {
+      "id": "stat-1",
+      "label": "누적 수강생",
+      "value": "3,850+"
+    },
+    {
+      "id": "stat-2",
+      "label": "수강 만족도",
+      "value": "95.2%"
+    },
+    {
+      "id": "stat-3",
+      "label": "실습 완성률",
+      "value": "85%"
+    },
+    {
+      "id": "stat-4",
+      "label": "기업 출강 평점",
+      "value": "4.98 / 5.0"
+    }
+  ],
+  "tickerItems": [
+    {
+      "id": "tick-1",
+      "text": "11월 정규 AI바이브코딩 모집 중",
+      "badge": "badge-amber",
+      "icon": "zap"
+    },
+    {
+      "id": "tick-2",
+      "text": "강의를 클릭하면 Google Calendar에 1초 만에 자동 저장됩니다",
+      "badge": "badge-blue",
+      "icon": "calendar"
+    },
+    {
+      "id": "tick-3",
+      "text": "바이브 코딩 3기 수강생 전원 실무 웹 서비스 프로토타입 배포 완료",
+      "badge": "badge-indigo",
+      "icon": "rocket"
+    },
+    {
+      "id": "tick-4",
+      "text": "빅테크 현업 테크 디렉터의 1:1 라이브 코드 리뷰 상시 진행",
+      "badge": "badge-emerald",
+      "icon": "award"
+    }
+  ],
+  "heroConfig": {
+    "sloganTop": "AI비개발자 초보도 4시간이면 나만의 홈페이지,어플,프로그램을 만드는",
+    "sloganBottom": "실전 AI & 바이브 코딩 아카데미",
+    "leadText": "지루한 문법 암기는 끝났습니다. AI 에이전트에게 직관적으로 개발을 지시하고,\n현업 AX 분야 최고 수준의 실무 강사진과 함께 나만의 프로덕트를 완성하세요.",
+    "ctaMonth": 10
+  },
+  "instructors": [
+    {
+      "id": "inst-1",
+      "name": "정시후",
+      "role": "AI 테크 디렉터",
+      "bio": "더크리에이터즈 AI 테크 리드. 비개발자도 1시간 만에 배포 가능한 웹 서비스를 완성하도록 바이브 코딩 실무를 이끕니다.",
+      "tags": [
+        "바이브 코딩",
+        "Next.js",
+        "AI 에이전트"
+      ],
+      "avatarClass": "avatar-blue",
+      "featuredInBanner": true
+    },
+    {
+      "id": "inst-2",
+      "name": "김민석",
+      "role": "AX 수석 컨설턴트",
+      "bio": "대기업 AX 프로젝트 40회 이상 수행. 제미나이와 안티그래비티 CLI를 결합하여 기업 실무 자동화 파이프라인을 구축합니다.",
+      "tags": [
+        "업무 자동화",
+        "제미나이",
+        "프롬프트 고급"
+      ],
+      "avatarClass": "avatar-indigo",
+      "featuredInBanner": true
+    },
+    {
+      "id": "inst-임건",
+      "name": "임건",
+      "role": "AI 테크 디렉터",
+      "bio": "지자체 및 공공기관 AX 연수 총괄 디렉터. 행정 업무 자동화 및 AI 에이전트 구축 실무를 전담합니다.",
+      "tags": [
+        "AX 행정 연수",
+        "기업 업무 자동화",
+        "AI 에이전트"
+      ],
+      "avatarClass": "avatar-purple",
+      "featuredInBanner": true
+    },
+    {
+      "id": "inst-4",
+      "name": "이소율",
+      "role": "브랜드 아트디렉터",
+      "bio": "국내 톱 브랜드 비주얼 총괄. 미드저니 v6 파라미터 제어와 생성형 AI를 활용한 하이엔드 패키지 & 웹 비주얼을 제작합니다.",
+      "tags": [
+        "디자인 시스템",
+        "미드저니 v6",
+        "AI 브랜딩"
+      ],
+      "avatarClass": "avatar-rose",
+      "featuredInBanner": false
+    }
+  ],
+  "companyInfo": {
+    "brandDesc": "대한민국 최고수준의 실전 AI & 바이브 코딩 교육 플랫폼.\n비개발자가 AI와 함께 직접 제품을 만들어 세상과 연결되도록 돕습니다.",
+    "phone": "051-633-3812",
+    "email": "nova78jyg3@naver.com",
+    "hours": "연중무휴",
+    "location": "부산 범천동 사학연금빌딩 14층 (범일역/범내골역 인근)",
+    "companyName": "더크리에이터즈AI",
+    "ceo": "정시후",
+    "bizNumber": "554-62-00204",
+    "openDate": "2018.05.28",
+    "bizType": "교육서비스업, 정보통신업, 서비스",
+    "bizItem": "창업·취업, 소프트웨어사업(디지털 콘텐츠 개발), 유튜브교육, 광고대행",
+    "telecomNumber": "제 2018-부산진구-0528호",
+    "address": "부산광역시 부산진구 범일로 181, 14층(범천동, 사학연금빌딩)",
+    "copyright": "Copyright © 2018-2026 더크리에이터즈AI. All rights reserved."
+  },
+  "reviews": [
+    {
+      "id": "rev-1",
+      "author": "김지은",
+      "role": "IT 스타트업 마케팅 팀장",
+      "rating": 5,
+      "course": "바이브 코딩 & 실무 자동화",
+      "content": "코딩을 한 줄도 몰랐던 마케터인데 2주 만에 회사 업무 자동화 툴과 고객 랜딩페이지를 완성했습니다. AI와 대화하는 법을 배운 게 인생의 터닝포인트예요.",
+      "date": "2026.09.28",
+      "avatarInitial": "김",
+      "avatarBg": "linear-gradient(135deg, #2563eb, #3b82f6)",
+      "isDummy": true
+    },
+    {
+      "id": "rev-2",
+      "author": "박성훈",
+      "role": "엔터프라이즈 프로덕트 매니저",
+      "rating": 5,
+      "course": "제미나이 & 안티그래비티 부트캠프",
+      "content": "강사님의 1:1 피드백 덕분에 에이전트 CLI와 바이브 코딩을 실무에 바로 접목했습니다. 사내에서 AI 챔피언으로 인정받아 승진까지 했습니다!",
+      "date": "2026.09.30",
+      "avatarInitial": "박",
+      "avatarBg": "linear-gradient(135deg, #4f46e5, #6366f1)",
+      "isDummy": true
+    },
+    {
+      "id": "rev-3",
+      "author": "최원정",
+      "role": "이커머스 비즈니스 대표",
+      "rating": 5,
+      "course": "소상공인 AI 상세페이지",
+      "content": "구글 캘린더 원클릭 연동부터 칸반보드 관리까지 수강생 입장을 배려한 디테일이 살아있습니다. 직장인이나 사업자라면 꼭 들어야 하는 필수 코스입니다.",
+      "date": "2026.10.02",
+      "avatarInitial": "최",
+      "avatarBg": "linear-gradient(135deg, #059669, #10b981)",
+      "isDummy": true
+    }
+  ],
+  "instructorApplications": [],
+  "consultApplications": []
+}
