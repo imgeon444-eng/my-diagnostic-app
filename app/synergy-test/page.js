@@ -192,32 +192,32 @@ export default function SynergyTestPage() {
       <div className="max-w-4xl w-full relative z-10 animate-fade-in-up">
         
         {step === 0 && (
-          <div className="bg-slate-900/80 backdrop-blur-2xl border border-slate-800 p-8 md:p-14 rounded-[2rem] text-center shadow-2xl relative overflow-hidden">
+          <div className="bg-slate-900/80 backdrop-blur-2xl border border-slate-800 p-6 sm:p-8 md:p-14 rounded-[2rem] text-center shadow-2xl relative overflow-hidden">
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-cyan-500/20 blur-[60px] rounded-full"></div>
             <span className="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-cyan-900/30 border border-cyan-500/30 text-cyan-400 font-bold text-xs tracking-widest uppercase mb-8">
               <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span> The Creators AI Metacognition V2.0
             </span>
-            <h1 className="text-3xl md:text-5xl font-black text-white leading-tight mb-6 break-keep">
+            <h1 className="text-2xl sm:text-3xl md:text-5xl font-black text-white leading-tight mb-6 break-keep">
               프롬프트의 시대는 <span className="text-rose-500 line-through">끝났습니다.</span><br/>당신은 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">시스템의 창조자</span>입니까?
             </h1>
-            <p className="text-slate-400 text-sm md:text-base mb-12 break-keep leading-relaxed max-w-xl mx-auto font-medium">
-              하네스 엔지니어링과 MCP 역량을 평가하는 <strong>최상위 정밀 진단</strong>을 통해,<br/>현재 대표님의 위치와 시스템에서 증발하는 <strong>치명적 기회비용</strong>을 스캔합니다.
+            <p className="text-slate-400 text-sm md:text-base mb-10 sm:mb-12 break-keep leading-relaxed max-w-xl mx-auto font-medium">
+              하네스 엔지니어링과 MCP 역량을 평가하는 <strong>최상위 정밀 진단</strong>을 통해,<br className="hidden sm:block"/>현재 대표님의 위치와 시스템에서 증발하는 <strong>치명적 기회비용</strong>을 스캔합니다.
             </p>
-            <button ref={startBtnRef} onClick={() => setStep(1)} className="light-cue w-full sm:w-auto bg-blue-600 hover:bg-cyan-500 text-white font-black text-lg py-5 px-12 rounded-2xl shadow-[0_0_30px_rgba(34,211,238,0.3)] transition-all hover:-translate-y-1">
+            <button ref={startBtnRef} onClick={() => setStep(1)} className="light-cue w-full sm:w-auto bg-blue-600 hover:bg-cyan-500 text-white font-black text-base sm:text-lg py-4 sm:py-5 px-8 sm:px-12 rounded-2xl shadow-[0_0_30px_rgba(34,211,238,0.3)] transition-all hover:-translate-y-1">
               에이전틱 역량 진단 시작하기
             </button>
           </div>
         )}
 
         {step === 1 && (
-          <div className="bg-slate-900/80 backdrop-blur-2xl border border-slate-800 p-8 md:p-14 rounded-[2rem] text-center shadow-2xl animate-fade-in-up">
+          <div className="bg-slate-900/80 backdrop-blur-2xl border border-slate-800 p-6 sm:p-8 md:p-14 rounded-[2rem] text-center shadow-2xl animate-fade-in-up">
             <span className="text-cyan-500 font-black text-xs tracking-widest uppercase mb-3 block">Step 01. Context Setting</span>
-            <h2 className="text-2xl md:text-3xl font-black text-white mb-10">무인화를 도입하려는 핵심 분야를 선택하십시오.</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-white mb-8 sm:mb-10 break-keep">무인화를 도입하려는 핵심 분야를 선택하십시오.</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
               {fields.map(field => (
-                <button key={field.id} onClick={() => handleFieldSelect(field.id)} {...surfaceLight} className="bg-slate-800/40 hover:bg-cyan-900/20 border border-slate-700 hover:border-cyan-500/50 p-8 rounded-[1.5rem] transition-all group flex flex-col items-center text-center shadow-lg">
-                  <div className="text-slate-400 group-hover:text-cyan-400 transition-colors mb-5">{field.icon}</div>
-                  <span className="font-bold text-white mb-2 text-lg">{field.label}</span>
+                <button key={field.id} onClick={() => handleFieldSelect(field.id)} {...surfaceLight} className="bg-slate-800/40 hover:bg-cyan-900/20 border border-slate-700 hover:border-cyan-500/50 p-6 sm:p-8 rounded-[1.5rem] transition-all group flex flex-col items-center text-center shadow-lg">
+                  <div className="text-slate-400 group-hover:text-cyan-400 transition-colors mb-4 sm:mb-5">{field.icon}</div>
+                  <span className="font-bold text-white mb-2 text-base sm:text-lg">{field.label}</span>
                   <span className="text-xs text-slate-500 font-medium break-keep">{field.desc}</span>
                 </button>
               ))}
@@ -226,8 +226,8 @@ export default function SynergyTestPage() {
         )}
 
         {step >= 2 && step <= 7 && (
-          <div className="bg-slate-900/80 backdrop-blur-2xl border border-slate-800 p-6 md:p-14 rounded-[2rem] shadow-2xl animate-fade-in-up">
-            <div className="flex flex-col md:flex-row md:justify-between md:items-end mb-10 gap-4 border-b border-slate-800 pb-6">
+          <div className="bg-slate-900/80 backdrop-blur-2xl border border-slate-800 p-5 sm:p-8 md:p-14 rounded-[2rem] shadow-2xl animate-fade-in-up">
+            <div className="flex flex-col md:flex-row md:justify-between md:items-end mb-8 sm:mb-10 gap-4 border-b border-slate-800 pb-5 sm:pb-6">
               <div>
                 <span className={`text-xs font-black tracking-widest uppercase mb-2 block ${currentQIdx < 3 ? 'text-blue-400' : 'text-cyan-400'}`}>
                   {currentQuestions[currentQIdx].phase}
@@ -239,14 +239,14 @@ export default function SynergyTestPage() {
               </div>
             </div>
             
-            <h2 className="text-xl md:text-2xl font-bold text-white mb-10 leading-relaxed break-keep">
+            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-8 sm:mb-10 leading-relaxed break-keep">
               <span className="text-slate-500 mr-2">{currentQuestions[currentQIdx].tag.split('.')[0]}.</span>
               {currentQuestions[currentQIdx].q}
             </h2>
             
-            <div className="space-y-4">
+            <div className="space-y-3.5 sm:space-y-4">
               {currentQuestions[currentQIdx].options.map((option, idx) => (
-                <button key={idx} onClick={() => handleOptionClick(option.score, option.text)} className="w-full text-left bg-slate-800/30 hover:bg-slate-800 border border-slate-700/50 hover:border-cyan-500/50 p-5 md:p-6 rounded-[1rem] transition-all group flex items-center gap-5">
+                <button key={idx} onClick={() => handleOptionClick(option.score, option.text)} className="w-full text-left bg-slate-800/30 hover:bg-slate-800 border border-slate-700/50 hover:border-cyan-500/50 p-4 sm:p-5 md:p-6 rounded-[1rem] transition-all group flex items-center gap-4 sm:gap-5">
                   <div className="w-5 h-5 rounded-full border border-slate-600 group-hover:border-cyan-400 shrink-0 flex items-center justify-center">
                     <div className="w-2 h-2 bg-cyan-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   </div>
@@ -259,23 +259,23 @@ export default function SynergyTestPage() {
 
         {/* 🎯 8. VIP 리드 수집 폼 */}
         {step === 8 && (
-          <div className="bg-slate-900/90 backdrop-blur-2xl border border-cyan-900/50 p-8 md:p-14 rounded-[2rem] shadow-2xl max-w-xl mx-auto animate-fade-in-up">
-            <div className="text-center mb-10">
+          <div className="bg-slate-900/90 backdrop-blur-2xl border border-cyan-900/50 p-6 sm:p-8 md:p-14 rounded-[2rem] shadow-2xl max-w-xl mx-auto animate-fade-in-up">
+            <div className="text-center mb-8 sm:mb-10">
               <span className="text-cyan-400 mb-5 block flex justify-center"><Icons.Business /></span>
-              <h2 className="text-2xl font-black text-white mb-3 tracking-tight">데이터 스캔 완료.</h2>
-              <p className="text-slate-400 text-sm leading-relaxed">제미나이 2.5 기반의 맞춤형 한계 분석 리포트를 확인하기 위해<br/>기본 정보를 입력해 주세요.</p>
+              <h2 className="text-xl sm:text-2xl font-black text-white mb-3 tracking-tight">데이터 스캔 완료.</h2>
+              <p className="text-slate-400 text-sm leading-relaxed break-keep">제미나이 2.5 기반의 맞춤형 한계 분석 리포트를 확인하기 위해<br className="hidden sm:block"/>기본 정보를 입력해 주세요.</p>
             </div>
             
             <form onSubmit={submitLeadAndFetchAPI} className="space-y-6">
               <div>
                 <label className="text-slate-500 text-[10px] font-black mb-2 block uppercase tracking-widest">Name / Title</label>
-                <input required type="text" placeholder="홍길동 대표" value={formData.clientName} onChange={e => setFormData({...formData, clientName: e.target.value})} className="w-full bg-slate-950/50 border border-slate-700 p-4 rounded-xl text-white font-medium focus:outline-none focus:border-cyan-500 transition-colors placeholder-slate-600" />
+                <input required type="text" placeholder="홍길동 대표" value={formData.clientName} onChange={e => setFormData({...formData, clientName: e.target.value})} className="w-full bg-slate-950/50 border border-slate-700 p-4 rounded-xl text-white text-base font-medium focus:outline-none focus:border-cyan-500 transition-colors placeholder-slate-600" />
               </div>
               <div>
                 <label className="text-slate-500 text-[10px] font-black mb-2 block uppercase tracking-widest">Contact Number</label>
-                <input required type="tel" placeholder="010-0000-0000" value={formData.clientContact} onChange={e => setFormData({...formData, clientContact: e.target.value})} className="w-full bg-slate-950/50 border border-slate-700 p-4 rounded-xl text-white font-medium focus:outline-none focus:border-cyan-500 transition-colors placeholder-slate-600" />
+                <input required type="tel" placeholder="010-0000-0000" value={formData.clientContact} onChange={e => setFormData({...formData, clientContact: e.target.value})} className="w-full bg-slate-950/50 border border-slate-700 p-4 rounded-xl text-white text-base font-medium focus:outline-none focus:border-cyan-500 transition-colors placeholder-slate-600" />
               </div>
-              <button ref={submitBtnRef} type="submit" disabled={isAnalyzing} className="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-black text-lg py-5 rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all mt-4 disabled:opacity-50">
+              <button ref={submitBtnRef} type="submit" disabled={isAnalyzing} className="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-black text-base sm:text-lg py-4 sm:py-5 rounded-xl shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all mt-4 disabled:opacity-50">
                 맞춤형 시스템 리포트 확인하기
               </button>
             </form>

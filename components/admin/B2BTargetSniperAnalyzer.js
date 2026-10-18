@@ -38,20 +38,28 @@ export default function B2BTargetSniperAnalyzer() {
         return {
           id: doc.id,
           channel: mappedChannel,
-          // 오늘 수정한 백엔드 구조에 맞춰 URL과 키워드(카테고리) 강제 매핑
+          // 백엔드 구조에 맞춰 URL, 키워드(카테고리), REA 텔레메트리 지표 안전 매핑 (하위 호환 보장)
           url: data.targetUrl ? safeDecode(data.targetUrl) : (data.url || 'URL 없음'),
+          brandName: data.brandName || data.publicReport?.brandName || '미상',
           keyword: data.publicReport?.category || data.keyword || '미분류',
+          detectedPixels:
+            data.detectedPixels ||
+            data.telemetry?.pixelsAndCrm?.detectedPixelNames ||
+            [],
+          geoScore: data.geoScore ?? data.publicReport?.geoScore ?? 58,
+          monthlyLeakageCost:
+            data.monthlyLeakageCost ?? data.publicReport?.monthlyLeakageCost ?? 0,
           createdAt: data.createdAt || { toDate: () => new Date() }
         };
       });
       
       // 임시 목업 데이터 믹스 (초기 화면이 비어보이지 않도록 시각화)
       const displayLogs = logs.length > 0 ? logs : [
-        { id: '1', channel: 'youtube', url: 'youtube.com/shorts/...', keyword: '비즈니스/동기부여', createdAt: { toDate: () => new Date() } },
-        { id: '2', channel: 'insta', url: 'instagram.com/p/...', keyword: '뷰티/코스메틱', createdAt: { toDate: () => new Date(Date.now() - 3600000) } },
-        { id: '3', channel: 'web', url: 'naver.com/place/...', keyword: '지역 맛집/F&B', createdAt: { toDate: () => new Date(Date.now() - 7200000) } },
-        { id: '4', channel: 'youtube', url: 'youtube.com/watch?...', keyword: 'IT/테크 리뷰', createdAt: { toDate: () => new Date(Date.now() - 10800000) } },
-        { id: '5', channel: 'youtube', url: 'youtube.com/shorts/...', keyword: '비즈니스/동기부여', createdAt: { toDate: () => new Date(Date.now() - 14400000) } },
+        { id: '1', channel: 'youtube', url: 'youtube.com/shorts/...', keyword: '비즈니스/동기부여', detectedPixels: [], geoScore: 64, monthlyLeakageCost: 6800000, createdAt: { toDate: () => new Date() } },
+        { id: '2', channel: 'insta', url: 'instagram.com/p/...', keyword: '뷰티/코스메틱', detectedPixels: ['Meta Pixel'], geoScore: 48, monthlyLeakageCost: 8200000, createdAt: { toDate: () => new Date(Date.now() - 3600000) } },
+        { id: '3', channel: 'web', url: 'naver.com/place/...', keyword: '지역 맛집/F&B', detectedPixels: ['Naver WCS'], geoScore: 72, monthlyLeakageCost: 4500000, createdAt: { toDate: () => new Date(Date.now() - 7200000) } },
+        { id: '4', channel: 'youtube', url: 'youtube.com/watch?...', keyword: 'IT/테크 리뷰', detectedPixels: ['GA4'], geoScore: 78, monthlyLeakageCost: 5400000, createdAt: { toDate: () => new Date(Date.now() - 10800000) } },
+        { id: '5', channel: 'youtube', url: 'youtube.com/shorts/...', keyword: '비즈니스/동기부여', detectedPixels: [], geoScore: 60, monthlyLeakageCost: 7500000, createdAt: { toDate: () => new Date(Date.now() - 14400000) } },
       ];
 
       setAnalysisLogs(displayLogs);
@@ -175,7 +183,7 @@ export default function B2BTargetSniperAnalyzer() {
       {/* 🔍 실시간 URL 분석 로그 */}
       <div className="bg-slate-800/30 border border-slate-700 rounded-2xl overflow-hidden shadow-lg">
         <div className="p-5 border-b border-slate-700/50 bg-slate-800/50 flex justify-between items-center">
-          <h3 className="text-white font-black text-base">🔍 실시간 고객 분석 로그 (Recent Logs)</h3>
+          <h3 className="text-white font-black text-base">🔍 실시간 고객 분석 로그 (REA Telemetry Logs)</h3>
           <span className="bg-blue-500/20 text-blue-400 text-xs font-bold px-3 py-1 rounded-full border border-blue-500/30">
             총 {stats.total}건 분석됨
           </span>
@@ -189,6 +197,8 @@ export default function B2BTargetSniperAnalyzer() {
                 <th className="px-6 py-4 font-bold">플랫폼</th>
                 <th className="px-6 py-4 font-bold">분석 대상 URL</th>
                 <th className="px-6 py-4 font-bold">감지된 업종/장르</th>
+                <th className="px-6 py-4 font-bold">실측 픽셀 · GEO</th>
+                <th className="px-6 py-4 font-bold">월 예상 누수액</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800/50">
@@ -215,6 +225,14 @@ export default function B2BTargetSniperAnalyzer() {
                   </td>
                   <td className="px-6 py-4 text-sm text-white font-bold truncate max-w-[150px]">
                     {log.keyword}
+                  </td>
+                  <td className="px-6 py-4 text-xs font-mono text-cyan-300 whitespace-nowrap">
+                    픽셀 {log.detectedPixels?.length || 0}개 · GEO {log.geoScore ?? 58}점
+                  </td>
+                  <td className="px-6 py-4 text-xs font-mono font-bold text-rose-400 whitespace-nowrap">
+                    {log.monthlyLeakageCost
+                      ? `${Number(log.monthlyLeakageCost).toLocaleString()}원`
+                      : '-'}
                   </td>
                 </tr>
               ))}

@@ -139,10 +139,10 @@ export default function StorybookPage() {
         return (
           <div className="flex flex-col items-center justify-center h-full text-center px-6 md:px-12">
             <h2 className="text-xl md:text-3xl font-bold text-cyan-300 mb-8 md:mb-16 break-keep">{slide.title}</h2>
-            <blockquote className="text-3xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-8 relative break-keep">
-              <span className="text-cyan-500/30 text-5xl md:text-8xl absolute -top-6 -left-6 md:-top-8 md:-left-12">"</span>
+            <blockquote className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-8 relative px-4 sm:px-6 break-keep">
+              <span className="text-cyan-500/30 text-4xl sm:text-5xl md:text-8xl absolute -top-5 left-0 md:-top-8 md:-left-10">"</span>
               {slide.quote}
-              <span className="text-cyan-500/30 text-5xl md:text-8xl absolute -bottom-10 -right-4 md:-bottom-16 md:-right-8">"</span>
+              <span className="text-cyan-500/30 text-4xl sm:text-5xl md:text-8xl absolute -bottom-8 right-0 md:-bottom-16 md:-right-6">"</span>
             </blockquote>
             <p className="text-base md:text-xl text-slate-400 mt-8 font-medium">— {slide.author}</p>
           </div>
@@ -260,24 +260,25 @@ export default function StorybookPage() {
         </div>
 
         {/* 하단 슬라이드 조작 네비게이션 바 */}
-        <div className="relative h-20 md:h-24 border-t border-slate-800 bg-slate-950/90 backdrop-blur-xl px-4 md:px-12 flex items-center justify-between z-20 shrink-0">
+        <div className="relative h-20 md:h-24 border-t border-slate-800 bg-slate-950/90 backdrop-blur-xl px-3 sm:px-6 md:px-12 flex items-center justify-between gap-2 z-20 shrink-0">
           <button 
             type="button" 
             onClick={() => handlePageChange(currentSlide - 1)} 
             disabled={currentSlide === 0}
-            className={`flex items-center gap-1 md:gap-2 px-3 md:px-6 py-2 md:py-3 rounded-full text-sm md:text-base font-bold transition-colors cursor-pointer ${currentSlide === 0 ? 'text-slate-600 cursor-not-allowed' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`}
+            className={`min-h-[44px] flex items-center gap-1 md:gap-2 px-3.5 md:px-6 py-2 md:py-3 rounded-full text-xs sm:text-sm md:text-base font-bold transition-colors cursor-pointer shrink-0 ${currentSlide === 0 ? 'text-slate-600 cursor-not-allowed' : 'text-slate-300 hover:bg-slate-800 hover:text-white'}`}
           >
             <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" /> 
             <span className="hidden sm:inline">이전 페이지</span><span className="sm:hidden">이전</span>
           </button>
 
-          <div className="flex gap-1.5 md:gap-2">
+          <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2 overflow-x-auto py-2">
             {SLIDES.map((_, idx) => (
               <button 
                 type="button" 
                 key={idx} 
                 onClick={() => handlePageChange(idx)}
-                className={`h-1.5 md:h-2 rounded-full transition-all duration-300 cursor-pointer ${currentSlide === idx ? 'w-6 md:w-8 bg-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.5)]' : 'w-1.5 md:w-2 bg-slate-700 hover:bg-slate-500'}`} 
+                aria-label={`슬라이드 ${idx + 1} 이동`}
+                className={`h-1.5 md:h-2 rounded-full transition-all duration-300 cursor-pointer shrink-0 ${currentSlide === idx ? 'w-5 sm:w-6 md:w-8 bg-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.5)]' : 'w-1.5 md:w-2 bg-slate-700 hover:bg-slate-500'}`} 
               />
             ))}
           </div>
@@ -287,7 +288,7 @@ export default function StorybookPage() {
             type="button" 
             onClick={() => handlePageChange(currentSlide + 1)} 
             disabled={currentSlide === totalSlides - 1}
-            className={`light-cue flex items-center gap-1 md:gap-2 px-3 md:px-6 py-2 md:py-3 rounded-full text-sm md:text-base font-bold transition-colors cursor-pointer ${currentSlide === totalSlides - 1 ? 'text-slate-600 cursor-not-allowed' : 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 hover:bg-cyan-500 hover:text-black shadow-[0_0_15px_rgba(6,182,212,0.3)]'}`}
+            className={`light-cue min-h-[44px] flex items-center gap-1 md:gap-2 px-3.5 md:px-6 py-2 md:py-3 rounded-full text-xs sm:text-sm md:text-base font-bold transition-colors cursor-pointer shrink-0 ${currentSlide === totalSlides - 1 ? 'text-slate-600 cursor-not-allowed' : 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 hover:bg-cyan-500 hover:text-black shadow-[0_0_15px_rgba(6,182,212,0.3)]'}`}
           >
             <span className="hidden sm:inline">다음 페이지</span><span className="sm:hidden">다음</span> 
             <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />

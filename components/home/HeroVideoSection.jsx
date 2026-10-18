@@ -221,7 +221,7 @@ export default function HeroVideoSection({ onOpenDiagnostic }) {
             href="/bootcamp-sales"
             className="w-full sm:w-auto h-14 sm:h-16 px-7 rounded-2xl bg-black/60 hover:bg-black/80 border border-white/20 hover:border-white/40 text-white font-bold text-sm sm:text-base transition-all flex items-center justify-center gap-2 backdrop-blur-md shadow-xl"
           >
-            <span>🔥 4주 부트캠프 알아보기</span>
+            <span>🔥 실전 부트캠프 VIP 알아보기</span>
           </Link>
         </div>
 

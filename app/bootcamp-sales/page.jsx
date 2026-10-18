@@ -476,31 +476,31 @@ function VirtualAgencySection() {
               <div className="w-20 h-20 bg-slate-800 rounded-2xl flex items-center justify-center text-4xl mb-6 shadow-inner border-[3px] border-slate-700 animate-bounce">🏢</div>
               <h3 className="typo-heading text-white font-black text-xl mb-6 text-center">AI 팀원들을 지휘할 최고 경영자(CEO)의 성함을 입력하십시오.</h3>
               <div className="flex w-full max-w-sm gap-2">
-                <input type="text" maxLength="8" placeholder="예: 김대표" value={ceoName} onChange={(e) => setCeoName(e.target.value)} className="flex-1 bg-slate-800 border-2 border-slate-600 text-white px-4 py-3 rounded-xl focus:outline-none focus:border-purple-500 font-bold" />
-                <button onClick={() => ceoName.trim() ? setIsLogged(true) : alert("이름을 입력해주세요!")} className="bg-purple-600 hover:bg-purple-500 text-white font-black px-6 py-3 rounded-xl transition-colors border-b-4 border-purple-800 active:border-b-0 active:translate-y-1">
+                <input type="text" maxLength="8" placeholder="예: 김대표" value={ceoName} onChange={(e) => setCeoName(e.target.value)} className="flex-1 min-w-0 bg-slate-800 border-2 border-slate-600 text-white text-base sm:text-sm px-4 py-3 rounded-xl focus:outline-none focus:border-purple-500 font-bold" />
+                <button onClick={() => ceoName.trim() ? setIsLogged(true) : alert("이름을 입력해주세요!")} className="bg-purple-600 hover:bg-purple-500 text-white font-black px-5 sm:px-6 py-3 rounded-xl transition-colors border-b-4 border-purple-800 active:border-b-0 active:translate-y-1 whitespace-nowrap shrink-0">
                   시스템 접속
                 </button>
               </div>
             </div>
           ) : (
             <div className="absolute inset-0 bg-[#0f172a] cursor-crosshair overflow-hidden" onClick={handleMapClick}>
-              <div className="absolute top-4 left-4 z-30 bg-black/60 backdrop-blur-md border border-slate-600 p-4 rounded-2xl pointer-events-none w-48 shadow-xl">
-                <div className="flex items-center gap-2 mb-3 border-b border-slate-600 pb-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                  <span className="font-mono text-slate-300 text-xs font-black tracking-widest uppercase">Live System</span>
+              <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-30 bg-black/70 backdrop-blur-md border border-slate-600 p-3 sm:p-4 rounded-2xl pointer-events-none w-36 sm:w-48 shadow-xl">
+                <div className="flex items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3 border-b border-slate-600 pb-1.5 sm:pb-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+                  <span className="font-mono text-slate-300 text-[10px] sm:text-xs font-black tracking-widest uppercase truncate">Live System</span>
                 </div>
-                <div className="mb-2">
-                  <div className="text-slate-400 text-[10px] font-bold">누적 인건비 절감액</div>
-                  <div className="typo-metric text-emerald-400 font-black text-lg font-mono">₩{stats.costSaved.toLocaleString()}</div>
+                <div className="mb-1.5 sm:mb-2">
+                  <div className="text-slate-400 text-[9px] sm:text-[10px] font-bold">누적 인건비 절감액</div>
+                  <div className="typo-metric text-emerald-400 font-black text-sm sm:text-lg font-mono">₩{stats.costSaved.toLocaleString()}</div>
                 </div>
                 <div>
-                  <div className="text-slate-400 text-[10px] font-bold">자동화 처리된 업무</div>
-                  <div className="typo-metric text-blue-400 font-black text-lg font-mono">{stats.tasksDone.toLocaleString()} 건</div>
+                  <div className="text-slate-400 text-[9px] sm:text-[10px] font-bold">자동화 처리된 업무</div>
+                  <div className="typo-metric text-blue-400 font-black text-sm sm:text-lg font-mono">{stats.tasksDone.toLocaleString()} 건</div>
                 </div>
               </div>
-              <div className="absolute top-4 right-4 z-30 bg-black/50 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-lg text-white/70 text-[10px] sm:text-xs font-bold pointer-events-none flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                마우스(터치)로 공간을 클릭하여 이동하세요
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 sm:bottom-auto sm:left-auto sm:translate-x-0 sm:top-4 sm:right-4 z-30 bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-lg text-white/80 text-[10px] sm:text-xs font-bold pointer-events-none flex items-center gap-1.5 whitespace-nowrap">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+                <span>화면(공간)을 터치·클릭하여 이동하세요</span>
               </div>
               <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(#334155 1px, transparent 1px), linear-gradient(90deg, #334155 1px, transparent 1px)', backgroundSize: '40px 40px', transform: 'perspective(600px) rotateX(60deg) scale(2.5)', transformOrigin: 'top center', opacity: 0.3 }}></div>
               <div className="absolute z-20 flex flex-col items-center transition-all duration-700 ease-lux transform -translate-x-1/2 -translate-y-1/2 pointer-events-none" style={{ top: `${userPos.y}%`, left: `${userPos.x}%` }}>
@@ -851,19 +851,19 @@ function BootcampSalesContent() {
         </button>
       </div>
 
-      {/* 🚀 모바일 전용 하단 고정 퀵 컨택트 바 (PC에서 숨김) */}
-      <div className="md:hidden fixed bottom-0 left-0 w-full z-[100] bg-slate-900/90 backdrop-blur-xl border-t border-white/10 flex items-center justify-between px-2 py-3 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
-        <a href="tel:051-633-3812" className="flex-1 flex flex-col items-center justify-center text-slate-300 hover:text-white transition-colors">
-          <span className="text-xl mb-1">📞</span>
+      {/* 🚀 모바일 전용 하단 고정 퀵 컨택트 바 (PC에서 숨김, iOS Safe-Area 대응) */}
+      <div className="md:hidden fixed bottom-0 left-0 w-full z-[100] bg-slate-900/95 backdrop-blur-xl border-t border-white/10 flex items-center justify-between px-2 pt-2.5 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
+        <a href="tel:051-633-3812" className="flex-1 min-h-[44px] flex flex-col items-center justify-center text-slate-300 hover:text-white transition-colors">
+          <span className="text-lg mb-0.5">📞</span>
           <span className="text-[10px] font-bold">전화문의</span>
         </a>
         <div className="w-px h-8 bg-slate-700"></div>
-        <button onClick={() => alert('카카오톡 ID: aegisnova\\n친구 추가 후 문의 남겨주시면 즉시 답변드리겠습니다.')} className="flex-1 flex flex-col items-center justify-center text-[#FEE500] hover:scale-105 transition-transform">
-          <span className="text-xl mb-1">💬</span>
+        <button onClick={() => alert('카카오톡 ID: aegisnova\n친구 추가 후 문의 남겨주시면 즉시 답변드리겠습니다.')} className="flex-1 min-h-[44px] flex flex-col items-center justify-center text-[#FEE500] hover:scale-105 transition-transform">
+          <span className="text-lg mb-0.5">💬</span>
           <span className="text-[10px] font-bold">카톡상담</span>
         </button>
         <div className="w-px h-8 bg-slate-700"></div>
-        <button onClick={() => setIsModalOpen(true)} className="flex-[2] mx-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-xl py-3 text-xs font-black shadow-[0_0_15px_rgba(59,130,246,0.4)] active:scale-95 transition-all">
+        <button onClick={() => setIsModalOpen(true)} className="flex-[2] min-h-[44px] mx-2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-xl py-2.5 text-xs font-black shadow-[0_0_15px_rgba(59,130,246,0.4)] active:scale-95 transition-all">
           🚀 VIP 진단 신청
         </button>
       </div>

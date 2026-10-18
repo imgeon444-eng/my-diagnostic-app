@@ -171,9 +171,9 @@ export default function Navbar({ onOpenDiagnostic }) {
         </div>
       </div>
 
-      {/* 모바일 드롭다운 메뉴 */}
+      {/* 모바일 및 태블릿 드롭다운 메뉴 (1023px 이하 완벽 연동) */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#090E17]/95 border-b border-white/10 backdrop-blur-2xl px-6 py-6 space-y-4 animate-fade-in-up">
+        <div className="lg:hidden bg-[#090E17]/95 border-b border-white/10 backdrop-blur-2xl px-5 sm:px-6 py-6 space-y-4 animate-fade-in-up">
           <div className="flex flex-col space-y-2">
             <a
               href="http://thecreator-mcn.com/"

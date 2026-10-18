@@ -65,50 +65,75 @@ function ResultContent() {
   );
 
   return (
-    <div className="min-h-screen bg-[#090E17] text-slate-200 font-sans p-4 md:p-8 flex flex-col items-center overflow-x-hidden selection:bg-blue-500">
+    <div className="min-h-screen bg-[#090E17] text-slate-200 font-sans pt-20 pb-12 px-4 md:p-8 md:pt-24 flex flex-col items-center overflow-x-hidden selection:bg-blue-500 relative">
       
+      {/* 상단 플로팅 복귀 네비게이션 */}
+      <div className="fixed top-4 left-4 right-4 z-50 flex items-center justify-between max-w-6xl mx-auto pointer-events-none">
+        <div className="flex items-center gap-1.5 sm:gap-2 pointer-events-auto">
+          <Link
+            href="/"
+            className="group flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 bg-black/60 backdrop-blur-md border border-white/20 rounded-full shadow-lg hover:bg-black/80 hover:border-cyan-400/50 transition-all text-xs sm:text-sm font-bold text-white"
+          >
+            <span className="text-cyan-400 group-hover:-translate-x-0.5 transition-transform">←</span>
+            <span>1층 로비</span>
+          </Link>
+          <Link
+            href="/bootcamp-funnel"
+            className="flex items-center gap-1 px-3 py-1.5 sm:px-4 sm:py-2 bg-slate-900/80 backdrop-blur-md border border-cyan-500/30 rounded-full shadow-lg hover:border-cyan-400 transition-all text-xs sm:text-sm font-bold text-cyan-300"
+          >
+            <span>2층 데이터랩</span>
+          </Link>
+        </div>
+        <a
+          href="http://thecreator-mcn.com/"
+          className="pointer-events-auto flex items-center gap-1 px-3 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-cyan-600/80 to-indigo-600/80 hover:from-cyan-500 hover:to-indigo-500 text-white rounded-full shadow-lg text-xs sm:text-sm font-bold border border-cyan-400/30 transition-all"
+        >
+          <span>본사 포털</span>
+        </a>
+      </div>
+
       {/* 🚀 1. 상단 결과 헤더 */}
-      <div className="max-w-3xl w-full mt-10 text-center animate-fade-in-up">
+      <div className="max-w-3xl w-full mt-4 sm:mt-8 text-center animate-fade-in-up">
         <span className="bg-blue-500/20 text-blue-400 px-4 py-1 rounded-full text-[10px] font-black tracking-widest border border-blue-500/30 uppercase">
           Marketing Analysis Result
         </span>
-        <h1 className="text-4xl md:text-5xl font-black text-white mt-4 tracking-tighter">
+        <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-white mt-4 tracking-tighter leading-tight break-keep">
           {dbData?.clientName} 님을 위한<br/>
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">맞춤형 진단 리포트</span>
         </h1>
         
-        <div className="flex justify-center items-baseline gap-2 mt-8">
-          <span className="text-6xl font-black text-white">{dbData?.totalScore}</span>
-          <span className="text-2xl text-slate-500 font-bold">/ 45점</span>
+        <div className="flex justify-center items-baseline gap-2 mt-6 sm:mt-8">
+          <span className="text-5xl sm:text-6xl font-black text-white">{dbData?.totalScore}</span>
+          <span className="text-xl sm:text-2xl text-slate-500 font-bold">/ 45점</span>
         </div>
-        <div className="inline-block bg-white/10 border border-white/10 text-white font-black px-6 py-2.5 rounded-xl text-lg mt-4 backdrop-blur-md">
+        <div className="inline-block bg-white/10 border border-white/10 text-white font-black px-5 sm:px-6 py-2 sm:py-2.5 rounded-xl text-base sm:text-lg mt-4 backdrop-blur-md">
           {aiReport?.weightClass || "분석 중..."} 등급
         </div>
       </div>
 
       {/* 🧠 2. AI 처방전 섹션 */}
-      <div className="max-w-3xl w-full mt-12 bg-white/5 border border-white/10 rounded-[2.5rem] p-8 md:p-12 backdrop-blur-xl shadow-2xl relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+      <div className="max-w-3xl w-full mt-8 sm:mt-12 bg-white/5 border border-white/10 rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 md:p-12 backdrop-blur-xl shadow-2xl relative overflow-hidden animate-fade-in-up" style={{ animationDelay: '200ms' }}>
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-blue-500 to-indigo-600"></div>
         
-        <div className="mb-10">
+        <div className="mb-8 sm:mb-10">
           <h3 className="text-blue-400 font-black text-xs uppercase tracking-widest mb-3 flex items-center gap-2">
              AI STRATEGIC ANALYSIS
           </h3>
-          <p className="text-2xl md:text-3xl font-bold text-white leading-snug break-keep">
+          <p className="text-xl sm:text-2xl md:text-3xl font-bold text-white leading-snug break-keep">
             {aiReport?.analysisText ? `"${aiReport.analysisText}"` : "AI 팀장이 심층 분석 리포트를 작성하고 있습니다..."}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-          <div className="bg-white/5 p-6 rounded-2xl border border-white/5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 mb-8 sm:mb-10">
+          <div className="bg-white/5 p-5 sm:p-6 rounded-2xl border border-white/5">
             <h4 className="text-slate-500 font-bold text-xs uppercase mb-3">핵심 성장 방향</h4>
-            <p className="text-slate-200 font-medium leading-relaxed break-keep">
+            <p className="text-sm sm:text-base text-slate-200 font-medium leading-relaxed break-keep">
               {aiReport?.direction || "분석 데이터를 불러오는 중입니다."}
             </p>
           </div>
-          <div className="bg-white/5 p-6 rounded-2xl border border-white/5">
+          <div className="bg-white/5 p-5 sm:p-6 rounded-2xl border border-white/5">
             <h4 className="text-slate-500 font-bold text-xs uppercase mb-3">등급 판정 근거</h4>
-            <p className="text-slate-200 font-medium leading-relaxed break-keep">
+            <p className="text-sm sm:text-base text-slate-200 font-medium leading-relaxed break-keep">
               {aiReport?.reason || "잠시만 기다려 주시면 정밀 판정 결과가 나옵니다."}
             </p>
           </div>
@@ -121,16 +146,16 @@ function ResultContent() {
           </p>
           
           {aiReport?.stage === 1 && (
-            <a href="https://open.kakao.com/o/sw0Qhz5b" target="_blank" rel="noreferrer" className="w-full inline-flex h-16 bg-emerald-600 text-white rounded-2xl items-center justify-center font-black text-lg hover:bg-emerald-500 transition-all shadow-lg shadow-emerald-900/20">무료 방향성 컨설팅 신청</a>
+            <a href="https://open.kakao.com/o/sw0Qhz5b" target="_blank" rel="noreferrer" className="w-full inline-flex h-14 sm:h-16 px-4 bg-emerald-600 text-white rounded-2xl items-center justify-center font-black text-base sm:text-lg hover:bg-emerald-500 transition-all shadow-lg shadow-emerald-900/20">무료 방향성 컨설팅 신청</a>
           )}
           {aiReport?.stage === 2 && (
-            <Link href="/courses" className="w-full inline-flex h-16 bg-blue-600 text-white rounded-2xl items-center justify-center font-black text-lg hover:bg-blue-500 transition-all shadow-lg shadow-blue-900/20">기초 강화 커리큘럼 보기</Link>
+            <Link href="/storybook" className="w-full inline-flex h-14 sm:h-16 px-4 bg-blue-600 text-white rounded-2xl items-center justify-center font-black text-base sm:text-lg hover:bg-blue-500 transition-all shadow-lg shadow-blue-900/20">1.5층 퍼널마케팅 공식 스토리북 보기</Link>
           )}
           {aiReport?.stage === 3 && (
-            <Link href="/bootcamp-sales" className="w-full inline-flex h-16 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl items-center justify-center font-black text-lg hover:scale-[1.02] transition-all shadow-xl shadow-blue-500/20">실전 부트캠프 1기 합류하기</Link>
+            <Link href="/bootcamp-sales" className="w-full inline-flex h-14 sm:h-16 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl items-center justify-center font-black text-base sm:text-lg hover:scale-[1.02] transition-all shadow-xl shadow-blue-500/20">실전 부트캠프 VIP 합류하기 (상시 · 10명 소수정예)</Link>
           )}
           {aiReport?.stage === 4 && (
-            <a href="mailto:ceo@thecreators.ai" className="w-full inline-flex h-16 bg-white text-black rounded-2xl items-center justify-center font-black text-lg hover:bg-slate-200 transition-all">브랜드 파트너십 제안 (B2B)</a>
+            <a href="mailto:ceo@thecreators.ai" className="w-full inline-flex h-14 sm:h-16 px-4 bg-white text-black rounded-2xl items-center justify-center font-black text-base sm:text-lg hover:bg-slate-200 transition-all">브랜드 파트너십 제안 (B2B)</a>
           )}
           {!aiReport?.stage && (
             <span className="text-slate-500 text-sm">추천 솔루션을 계산 중입니다...</span>

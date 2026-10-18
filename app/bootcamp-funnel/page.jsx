@@ -450,14 +450,22 @@ export default function BootcampFunnelPage() {
 
       setAnalysisResult(data);
 
-      // Firestore 기록 연동 (비동기 안전 처리)
+      // Firestore 기록 연동 (REA 실측 텔레메트리 및 하위 호환 스키마 동시 저장)
       try {
         await addDoc(collection(db, 'url_analysis'), {
+          schemaVersion: data.schemaVersion || '2.0.0-rea-telemetry',
           platform,
           targetUrl:
-            payload.targetUrl || payload.manualData?.brandName || '직접입력',
-          publicReport: data.publicReport,
+            data.targetUrl || payload.targetUrl || payload.manualData?.brandName || '직접입력',
+          brandName: data.publicReport?.brandName || '미상',
           keyword: data.publicReport?.category || '미분류',
+          geoScore: data.publicReport?.geoScore ?? 0,
+          monthlyLeakageCost: data.publicReport?.monthlyLeakageCost ?? 0,
+          detectedPixels: data.telemetry?.pixelsAndCrm?.detectedPixelNames || [],
+          detectedStack: data.telemetry?.network?.detectedStack || [],
+          evidenceLedger: data.evidenceLedger || null,
+          telemetry: data.telemetry || null,
+          publicReport: data.publicReport,
           createdAt: serverTimestamp(),
         });
       } catch (logErr) {
@@ -712,7 +720,7 @@ export default function BootcampFunnelPage() {
                         ? '예: https://www.youtube.com/@TheCreators'
                         : '예: https://thecreator-mcn.com'
                     }
-                    className="w-full bg-[#050811] border border-cyan-500/30 focus:border-cyan-400 px-4 py-4 rounded-xl text-white text-sm outline-none focus:ring-2 focus:ring-cyan-500/30 transition-all placeholder:text-slate-600 shadow-inner"
+                    className="w-full bg-[#050811] border border-cyan-500/30 focus:border-cyan-400 px-4 py-4 rounded-xl text-white text-base sm:text-sm outline-none focus:ring-2 focus:ring-cyan-500/30 transition-all placeholder:text-slate-600 shadow-inner"
                   />
                 </div>
                 <p className="text-[11px] text-slate-500 mt-2">
@@ -732,11 +740,11 @@ export default function BootcampFunnelPage() {
                       setInstaData({ ...instaData, brandName: e.target.value })
                     }
                     placeholder="예: 더크리에이터즈"
-                    className="w-full bg-[#050811] border border-pink-500/30 focus:border-pink-400 px-4 py-3 rounded-xl text-white text-sm outline-none focus:ring-2 focus:ring-pink-500/30 transition-all placeholder:text-slate-600 shadow-inner"
+                    className="w-full bg-[#050811] border border-pink-500/30 focus:border-pink-400 px-4 py-3 rounded-xl text-white text-base sm:text-sm outline-none focus:ring-2 focus:ring-pink-500/30 transition-all placeholder:text-slate-600 shadow-inner"
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="block text-xs font-bold text-pink-300 uppercase tracking-wider mb-1.5">
                       팔로워 수
@@ -748,7 +756,7 @@ export default function BootcampFunnelPage() {
                         setInstaData({ ...instaData, followerCount: e.target.value })
                       }
                       placeholder="예: 2.3만"
-                      className="w-full bg-[#050811] border border-pink-500/30 focus:border-pink-400 px-4 py-3 rounded-xl text-white text-sm outline-none focus:ring-2 focus:ring-pink-500/30 transition-all placeholder:text-slate-600 shadow-inner"
+                      className="w-full bg-[#050811] border border-pink-500/30 focus:border-pink-400 px-4 py-3 rounded-xl text-white text-base sm:text-sm outline-none focus:ring-2 focus:ring-pink-500/30 transition-all placeholder:text-slate-600 shadow-inner"
                     />
                   </div>
                   <div>
@@ -762,7 +770,7 @@ export default function BootcampFunnelPage() {
                         setInstaData({ ...instaData, mainContent: e.target.value })
                       }
                       placeholder="예: 지식창업, 교육, 서비스"
-                      className="w-full bg-[#050811] border border-pink-500/30 focus:border-pink-400 px-4 py-3 rounded-xl text-white text-sm outline-none focus:ring-2 focus:ring-pink-500/30 transition-all placeholder:text-slate-600 shadow-inner"
+                      className="w-full bg-[#050811] border border-pink-500/30 focus:border-pink-400 px-4 py-3 rounded-xl text-white text-base sm:text-sm outline-none focus:ring-2 focus:ring-pink-500/30 transition-all placeholder:text-slate-600 shadow-inner"
                     />
                   </div>
                 </div>
@@ -778,7 +786,7 @@ export default function BootcampFunnelPage() {
                       setInstaData({ ...instaData, coreProblem: e.target.value })
                     }
                     placeholder="예: 조회수는 나오는데 문의 및 실제 결제로 이어지지 않음"
-                    className="w-full bg-[#050811] border border-pink-500/30 focus:border-pink-400 px-4 py-3 rounded-xl text-white text-sm outline-none focus:ring-2 focus:ring-pink-500/30 transition-all placeholder:text-slate-600 shadow-inner"
+                    className="w-full bg-[#050811] border border-pink-500/30 focus:border-pink-400 px-4 py-3 rounded-xl text-white text-base sm:text-sm outline-none focus:ring-2 focus:ring-pink-500/30 transition-all placeholder:text-slate-600 shadow-inner"
                   />
                 </div>
               </div>
@@ -1020,6 +1028,115 @@ export default function BootcampFunnelPage() {
                   </div>
                 </div>
               </div>
+
+              {/* REA 실시간 코드·픽셀·GEO 실측 증거 원장 (Live Telemetry Evidence Ledger) */}
+              {(report.evidenceSummary?.length > 0 || analysisResult?.telemetry) && (
+                <div className="p-4 sm:p-6 rounded-2xl bg-[#040711]/95 border border-cyan-500/30 mb-6 shadow-inner">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 mb-4 border-b border-white/10">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="px-2.5 py-1 rounded-md bg-cyan-500/15 border border-cyan-400/40 text-cyan-300 font-mono text-[10px] font-black tracking-wider uppercase shrink-0">
+                        REA TELEMETRY VERIFIED
+                      </span>
+                      <h3 className="text-sm sm:text-base font-black text-white tracking-tight break-keep">
+                        실시간 DOM · 애드테크 픽셀 · GEO 실측 증거 원장
+                      </h3>
+                    </div>
+                    {analysisResult?.evidenceLedger?.evidenceId && (
+                      <div className="flex flex-wrap items-center gap-2 text-[11px] font-mono text-slate-400">
+                        <span className="break-all">ID: {analysisResult.evidenceLedger.evidenceId}</span>
+                        <span className="text-cyan-400 font-bold shrink-0">
+                          신뢰도 {analysisResult.evidenceLedger?.confidenceScore ?? 95}%
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* 4대 핵심 실측 판정 카드 */}
+                  {report.evidenceSummary?.length > 0 && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                      {report.evidenceSummary.map((ev, i) => {
+                        const badgeClass =
+                          ev.status === 'PASS'
+                            ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40'
+                            : ev.status === 'WARN'
+                            ? 'bg-amber-500/15 text-amber-300 border-amber-500/40'
+                            : 'bg-rose-500/15 text-rose-300 border-rose-500/40';
+                        return (
+                          <div
+                            key={ev.code || i}
+                            className="p-3.5 rounded-xl bg-white/[0.03] border border-white/10 flex flex-col justify-between gap-1.5"
+                          >
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="text-xs font-bold text-slate-200">
+                                {ev.label}
+                              </span>
+                              <span
+                                className={`px-2 py-0.5 rounded text-[10px] font-mono font-black border ${badgeClass}`}
+                              >
+                                {ev.status}
+                              </span>
+                            </div>
+                            <p className="text-[11px] sm:text-xs text-slate-300 font-mono leading-relaxed break-keep">
+                              {ev.fact}
+                            </p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {/* 웹/스토어 픽셀 및 GEO 프로토콜 마이크로 칩 매트릭스 */}
+                  {platform !== 'instagram' && analysisResult?.telemetry && (
+                    <div className="flex flex-wrap items-center gap-1.5 pt-2">
+                      {[
+                        {
+                          name: 'Meta Pixel',
+                          ok: analysisResult.telemetry?.pixelsAndCrm?.metaPixel?.detected,
+                        },
+                        {
+                          name: 'Google Tag Manager',
+                          ok: analysisResult.telemetry?.pixelsAndCrm?.googleTagManager?.detected,
+                        },
+                        {
+                          name: 'GA4 Analytics',
+                          ok: analysisResult.telemetry?.pixelsAndCrm?.googleAnalytics4?.detected,
+                        },
+                        {
+                          name: 'Naver WCS',
+                          ok: analysisResult.telemetry?.pixelsAndCrm?.naverWcs?.detected,
+                        },
+                        {
+                          name: 'Kakao Pixel',
+                          ok: analysisResult.telemetry?.pixelsAndCrm?.kakaoPixel?.detected,
+                        },
+                        {
+                          name: 'Schema.org JSON-LD',
+                          ok: analysisResult.telemetry?.seoAndGeo?.geo?.hasJsonLd,
+                        },
+                        {
+                          name: 'sitemap.xml',
+                          ok: analysisResult.telemetry?.seoAndGeo?.geo?.hasSitemapXml,
+                        },
+                        {
+                          name: 'llms.txt (AI 색인)',
+                          ok: analysisResult.telemetry?.seoAndGeo?.geo?.hasLlmsTxt,
+                        },
+                      ].map((chip) => (
+                        <span
+                          key={chip.name}
+                          className={`px-2.5 py-1 rounded-lg text-[11px] font-mono font-semibold border ${
+                            chip.ok
+                              ? 'bg-cyan-500/15 border-cyan-500/40 text-cyan-200'
+                              : 'bg-slate-900/90 border-slate-800 text-slate-500'
+                          }`}
+                        >
+                          {chip.name}: {chip.ok ? 'DETECTED' : 'MISSING'}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* 채널 아이덴티티 및 본질 분석 */}
               {report.identity && (
