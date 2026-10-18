@@ -5169,3 +5169,74 @@ body.crm-embedded-mode .gnb-brand-badge {
   color: #ffffff;
   border-color: #3b82f6;
 }
+
+/* ======================================================================
+   V6.1 PERFORMANCE & ZERO-OVERFLOW PATCH (PC 60FPS + Mobile 390px 0px Overflow)
+   ====================================================================== */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* PC 60FPS 보장: 무거운 filter:blur(80px) 무한 리페인트 애니메이션을 정적 radial-gradient 조명으로 치환 */
+.hero-aurora-orb,
+.hero-ambient-glow {
+  filter: none !important;
+  animation: none !important;
+  will-change: auto !important;
+  pointer-events: none;
+}
+.hero-aurora-1 {
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.16) 0%, rgba(59, 130, 246, 0) 70%) !important;
+}
+.hero-aurora-2 {
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.14) 0%, rgba(99, 102, 241, 0) 70%) !important;
+}
+.hero-aurora-3 {
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.12) 0%, rgba(14, 165, 233, 0) 70%) !important;
+}
+.hero-ambient-glow {
+  background: radial-gradient(ellipse at center, rgba(37, 99, 235, 0.10) 0%, rgba(37, 99, 235, 0) 70%) !important;
+  max-width: 100vw !important;
+}
+.ticker-bar {
+  overflow: hidden !important;
+  max-width: 100% !important;
+}
+.ticker-track {
+  will-change: transform;
+}
+
+/* 모바일(390px) 하단 푸터 연락처 카드 13px 가로 넘침 원천 차단 */
+@media (max-width: 768px) {
+  .site-footer,
+  .footer-inner,
+  .footer-top-grid,
+  .footer-contact-col {
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+  .footer-contact-cards.grid-2x2 {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .footer-contact-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+  .contact-card-body,
+  .contact-card-label,
+  .contact-card-value {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow-wrap: anywhere !important;
+    word-break: keep-all !important;
+  }
+}
+
