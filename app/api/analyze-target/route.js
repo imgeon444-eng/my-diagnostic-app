@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { runRealMarketingTelemetry } from '../../../lib/marketing-inspector/realTelemetryEngine';
 
+export const maxDuration = 30;
+
 const genAI = process.env.GEMINI_API_KEY
   ? new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
   : null;
@@ -250,10 +252,16 @@ ${telemetryBrief}
 }
 `;
 
-        const result = await model.generateContent({
+        const aiGenerationPromise = model.generateContent({
           contents: [{ role: 'user', parts: [{ text: prompt }] }],
           generationConfig: { responseMimeType: 'application/json' },
         });
+
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Gemini API synthesis timeout (5000ms)')), 5000)
+        );
+
+        const result = await Promise.race([aiGenerationPromise, timeoutPromise]);
 
         const responseText = result.response.text();
         const cleanedJson = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
