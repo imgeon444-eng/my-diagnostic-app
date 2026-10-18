@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import KanbanBoard from '../../components/admin/KanbanBoard';
 import B2BTargetSniperAnalyzer from '../../components/admin/B2BTargetSniperAnalyzer'; 
-import { getAuth, signOut } from 'firebase/auth';
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { app } from '../../lib/firebase';
 import { useRouter } from 'next/navigation';
 
@@ -26,7 +26,20 @@ const TABS = [
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('marketing'); 
+  const [authChecked, setAuthChecked] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const auth = getAuth(app);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        router.replace('/admin/login');
+      } else {
+        setAuthChecked(true);
+      }
+    });
+    return () => unsubscribe();
+  }, [router]);
 
   const handleLogout = () => {
     const auth = getAuth(app);
@@ -34,6 +47,15 @@ export default function AdminDashboard() {
       router.push('/admin/login');
     });
   };
+
+  if (!authChecked) {
+    return (
+      <div className="min-h-screen bg-[#090E17] flex flex-col items-center justify-center text-white">
+        <div className="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+        <p className="text-sm font-bold text-slate-400">보안 세션 인가 확인 중...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#090E17] text-slate-200 p-4 md:p-8 font-sans selection:bg-[#3B82F6] selection:text-white relative overflow-x-hidden">

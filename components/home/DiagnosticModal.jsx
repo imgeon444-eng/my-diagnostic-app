@@ -159,7 +159,7 @@ export default function DiagnosticModal({ isOpen, onClose }) {
                     placeholder="예: 더크리에이터즈"
                     value={formData.clientName}
                     onChange={e => handleInputChange('clientName', e.target.value)}
-                    className="w-full p-4 bg-[#0B1120] border border-slate-700 rounded-2xl outline-none focus:border-blue-500 text-white placeholder:text-slate-600 text-sm transition-all"
+                    className="w-full p-4 bg-[#0B1120] border border-slate-700 rounded-2xl outline-none focus:border-blue-500 text-white placeholder:text-slate-600 text-base sm:text-sm transition-all"
                   />
                 </div>
                 <div>
@@ -169,17 +169,17 @@ export default function DiagnosticModal({ isOpen, onClose }) {
                     placeholder="예: 홍길동 대표"
                     value={formData.clientTitle}
                     onChange={e => handleInputChange('clientTitle', e.target.value)}
-                    className="w-full p-4 bg-[#0B1120] border border-slate-700 rounded-2xl outline-none focus:border-blue-500 text-white placeholder:text-slate-600 text-sm transition-all"
+                    className="w-full p-4 bg-[#0B1120] border border-slate-700 rounded-2xl outline-none focus:border-blue-500 text-white placeholder:text-slate-600 text-base sm:text-sm transition-all"
                   />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-slate-300 mb-1.5 ml-1">연락처 *</label>
                   <input
-                    type="text"
+                    type="tel"
                     placeholder="예: 010-1234-5678"
                     value={formData.clientContact}
                     onChange={e => handleInputChange('clientContact', e.target.value)}
-                    className="w-full p-4 bg-[#0B1120] border border-slate-700 rounded-2xl outline-none focus:border-blue-500 text-white placeholder:text-slate-600 text-sm transition-all"
+                    className="w-full p-4 bg-[#0B1120] border border-slate-700 rounded-2xl outline-none focus:border-blue-500 text-white placeholder:text-slate-600 text-base sm:text-sm transition-all"
                   />
                 </div>
                 <div>
@@ -189,14 +189,14 @@ export default function DiagnosticModal({ isOpen, onClose }) {
                     placeholder="예: contact@domain.com"
                     value={formData.clientEmail}
                     onChange={e => handleInputChange('clientEmail', e.target.value)}
-                    className="w-full p-4 bg-[#0B1120] border border-slate-700 rounded-2xl outline-none focus:border-blue-500 text-white placeholder:text-slate-600 text-sm transition-all"
+                    className="w-full p-4 bg-[#0B1120] border border-slate-700 rounded-2xl outline-none focus:border-blue-500 text-white placeholder:text-slate-600 text-base sm:text-sm transition-all"
                   />
                 </div>
               </div>
             </div>
           )}
 
-          {/* STEP 2: 15문항 체급 진단 */}
+          {/* STEP 2: 15문항 체급 진단 (15문항 × 3점 = 45점 만점 정합성 일치) */}
           {step === 2 && (
             <div className="space-y-6 animate-fade-in-up">
               <div className="mb-4">
@@ -204,7 +204,7 @@ export default function DiagnosticModal({ isOpen, onClose }) {
                   15문항 마케팅 체급 진단
                 </h3>
                 <p className="text-slate-400 text-xs font-medium">
-                  솔직하게 답변해 주실수록 AI의 처방 정확도가 올라갑니다.
+                  솔직하게 답변해 주실수록 AI의 처방 정확도가 올라갑니다. (총 45점 만점)
                 </p>
               </div>
 
@@ -216,9 +216,9 @@ export default function DiagnosticModal({ isOpen, onClose }) {
                     </h4>
                     <div className="flex flex-col gap-2">
                       {[
-                        { label: '네, 그렇습니다 (2점)', val: '2' },
-                        { label: '보통입니다 (1점)', val: '1' },
-                        { label: '아직 안하고 있습니다 (0점)', val: '0' }
+                        { label: '네, 그렇습니다 (3점)', val: '3' },
+                        { label: '보통입니다 (2점)', val: '2' },
+                        { label: '아직 안하고 있습니다 (1점)', val: '1' }
                       ].map(opt => (
                         <button
                           key={opt.val}
@@ -276,7 +276,7 @@ export default function DiagnosticModal({ isOpen, onClose }) {
                   placeholder="예: 월 300만 원"
                   value={formData.budget}
                   onChange={e => handleInputChange('budget', e.target.value)}
-                  className="w-full p-4 bg-[#0B1120] border border-slate-700 rounded-2xl outline-none focus:border-blue-500 text-white placeholder:text-slate-600 text-sm"
+                  className="w-full p-4 bg-[#0B1120] border border-slate-700 rounded-2xl outline-none focus:border-blue-500 text-white placeholder:text-slate-600 text-base sm:text-sm"
                 />
               </div>
 
@@ -286,7 +286,7 @@ export default function DiagnosticModal({ isOpen, onClose }) {
                   placeholder="예: 광고비는 나가는데 실제 전환이 안 일어납니다."
                   value={formData.shortPainPoint}
                   onChange={e => handleInputChange('shortPainPoint', e.target.value)}
-                  className="w-full p-4 bg-[#0B1120] border border-slate-700 rounded-2xl h-24 outline-none focus:border-blue-500 text-white placeholder:text-slate-600 text-sm custom-scrollbar"
+                  className="w-full p-4 bg-[#0B1120] border border-slate-700 rounded-2xl h-24 outline-none focus:border-blue-500 text-white placeholder:text-slate-600 text-base sm:text-sm custom-scrollbar"
                 />
               </div>
             </div>

@@ -20,7 +20,10 @@ function ResultContent() {
 
   useEffect(() => {
     async function runFullAnalysis() {
-      if (!id) return;
+      if (!id) {
+        setLoading(false);
+        return;
+      }
       try {
         const docRef = doc(db, "diagnostics", id);
         const docSnap = await getDoc(docRef);
@@ -28,6 +31,19 @@ function ResultContent() {
         if (docSnap.exists()) {
           const data = docSnap.data();
           setDbData(data);
+
+          // 새로고침 시 중복 API 호출 및 중복 이메일 발송 방지 캐시 확인
+          const cacheKey = `tc_diag_report_${id}`;
+          const cachedReport = typeof window !== 'undefined' ? sessionStorage.getItem(cacheKey) : null;
+          if (cachedReport) {
+            try {
+              setAiReport(JSON.parse(cachedReport));
+              setLoading(false);
+              return;
+            } catch (_) {
+              // ignore malformed cache
+            }
+          }
 
           // 제미나이 2.5 플래시 API 호출 (1층 진단기 뇌)
           const response = await fetch('/api/diagnose', {
@@ -37,6 +53,9 @@ function ResultContent() {
           });
           const analysis = await response.json();
           setAiReport(analysis);
+          if (typeof window !== 'undefined' && analysis && !analysis.error) {
+            sessionStorage.setItem(cacheKey, JSON.stringify(analysis));
+          }
         }
       } catch (e) {
         console.error("데이터 로드 또는 분석 실패", e);
@@ -58,9 +77,29 @@ function ResultContent() {
   const formatWon = (value) => `${Math.round(value).toLocaleString('ko-KR')}원`;
 
   if (loading) return (
-    <div className="min-h-screen bg-[#090E17] flex flex-col items-center justify-center text-white">
+    <div className="min-h-screen bg-[#090E17] flex flex-col items-center justify-center text-white px-4 text-center">
       <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-6"></div>
-      <p className="text-xl font-black animate-pulse">AI 팀장이 리포트를 작성하고 있습니다...</p>
+      <p className="text-lg sm:text-xl font-black animate-pulse break-keep">AI 팀장이 리포트를 작성하고 있습니다...</p>
+    </div>
+  );
+
+  if (!id || !dbData) return (
+    <div className="min-h-screen bg-[#090E17] flex flex-col items-center justify-center text-white px-4 text-center">
+      <div className="max-w-md w-full bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-xl shadow-2xl">
+        <span className="inline-block px-3 py-1 rounded-full bg-blue-500/20 border border-blue-500/30 text-blue-400 text-xs font-black uppercase tracking-widest mb-4">
+          Report Not Found
+        </span>
+        <h1 className="text-2xl font-black text-white mb-3 break-keep">진단 리포트 정보를 찾을 수 없습니다</h1>
+        <p className="text-slate-400 text-sm mb-8 leading-relaxed break-keep">
+          진단 세션이 만료되었거나 잘못된 접근입니다. 1층 로비에서 1분 마케팅 체급 진단을 먼저 진행해 주세요.
+        </p>
+        <Link
+          href="/"
+          className="w-full inline-flex h-14 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white rounded-2xl items-center justify-center font-black text-base transition-all shadow-lg"
+        >
+          1층 메인 로비로 이동하기
+        </Link>
+      </div>
     </div>
   );
 

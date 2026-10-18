@@ -5,6 +5,10 @@ export async function POST(request) {
   try {
     const { email, name, time } = await request.json();
 
+    if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PW) {
+      return NextResponse.json({ success: true, message: "이메일 환경변수 미설정 (스킵)" });
+    }
+
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: { 

@@ -2,27 +2,43 @@ import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import nodemailer from 'nodemailer';
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+export const maxDuration = 30;
+
+const genAI = process.env.GEMINI_API_KEY
+  ? new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
+  : null;
 
 export async function POST(request) {
   try {
     const body = await request.json();
     
     // 💡 1층 진단기에서 넘어온 고객 정보들
-    const { clientName, clientTitle, clientContact, clientEmail, totalScore, budget, shortPainPoint, goals } = body;
+    const { clientName, clientTitle, clientContact, clientEmail, totalScore = 0, budget, shortPainPoint, goals, skipEmail = false } = body;
 
-    // 🧠 1. 제미나이 2.5 플래시 AI 분석
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-    const prompt = `
+    const fallbackAnalysis = {
+      weightClass: totalScore >= 38 ? "플래티넘" : totalScore >= 25 ? "골드" : totalScore >= 15 ? "실버" : "브론즈",
+      stage: totalScore >= 38 ? 4 : totalScore >= 25 ? 3 : totalScore >= 15 ? 2 : 1,
+      analysisText: `${clientName || '대표'}님의 현재 마케팅 체급 점수는 ${totalScore}점(45점 만점)으로, ${shortPainPoint ? `"${shortPainPoint}" 병목을 해결할` : '유입부터 전환까지 이어지는'} 자동화 세일즈 퍼널 구축이 시급합니다.`,
+      direction: "수동 운영에서 벗어나 24시간 무인 리드 캡처와 데이터 기반 세일즈 파이프라인을 도입해야 합니다.",
+      reason: "진단 문항별 마케팅 인프라 성숙도와 최우선 비즈니스 목표를 종합 분석하여 가장 ROI가 높은 솔루션을 배정하였습니다."
+    };
+
+    let analysisData = fallbackAnalysis;
+
+    // 🧠 1. 제미나이 2.5 플래시 AI 분석 (5초 타임아웃 및 폴백 보장)
+    if (genAI) {
+      try {
+        const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+        const prompt = `
       당신은 'The Creators AI'의 수석 비즈니스 설계자입니다.
       고객의 마케팅 진단 데이터를 바탕으로 현재 '마케팅 체급'을 판정하고 최적의 솔루션 단계를 배정하세요.
 
       [고객 데이터]
       - 이름: ${clientName}
       - 진단 점수: ${totalScore} / 45점
-      - 선택한 목표: ${goals?.join(', ')}
-      - 예산 규모: ${budget}
-      - 현재 고민: ${shortPainPoint}
+      - 선택한 목표: ${Array.isArray(goals) ? goals.join(', ') : (goals || '미지정')}
+      - 예산 규모: ${budget || '미지정'}
+      - 현재 고민: ${shortPainPoint || '전환율 및 자동화 부재'}
 
       [솔루션 배정 기준]
       - 1단계 (무료 컨설팅): 점수가 매우 낮거나(15점 미만) 방향성 자체가 아예 없는 경우
@@ -40,75 +56,73 @@ export async function POST(request) {
       }
     `;
 
-    const result = await model.generateContent({
-      contents: [{ role: "user", parts: [{ text: prompt }] }],
-      generationConfig: { responseMimeType: "application/json" }
-    });
+        const aiPromise = model.generateContent({
+          contents: [{ role: "user", parts: [{ text: prompt }] }],
+          generationConfig: { responseMimeType: "application/json" }
+        });
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Gemini diagnose timeout (5000ms)')), 5000)
+        );
 
-    const responseText = result.response.text();
-    let analysisData;
-    try {
-      const cleanedJson = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
-      analysisData = JSON.parse(cleanedJson);
-    } catch (parseErr) {
-      console.error("AI 진단 JSON 파싱 실패:", parseErr, responseText);
-      analysisData = {
-        weightClass: totalScore >= 38 ? "플래티넘" : totalScore >= 25 ? "골드" : totalScore >= 15 ? "실버" : "브론즈",
-        stage: totalScore >= 38 ? 4 : totalScore >= 25 ? 3 : totalScore >= 15 ? 2 : 1,
-        analysisText: "고객님의 현재 진단 데이터를 바탕으로 맞춤형 마케팅 솔루션을 배정하였습니다.",
-        direction: "체계적인 퍼널 구축과 무인 자동화 도입을 권장합니다.",
-        reason: "입력된 점수와 비즈니스 목표를 종합적으로 반영한 결과입니다."
-      };
+        const result = await Promise.race([aiPromise, timeoutPromise]);
+        const responseText = result.response.text();
+        const cleanedJson = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
+        const parsed = JSON.parse(cleanedJson);
+        if (parsed && parsed.weightClass && parsed.stage) {
+          analysisData = parsed;
+        }
+      } catch (aiErr) {
+        console.warn("AI 진단 폴백 전환:", aiErr.message);
+      }
     }
 
-    // 📧 2. 대표님 스마트폰(Gmail)으로 즉시 보고 메일 전송
-    try {
-      const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: process.env.GMAIL_USER,
-          pass: process.env.GMAIL_APP_PW
-        }
-      });
+    // 📧 2. 대표님 스마트폰(Gmail)으로 즉시 보고 메일 전송 (중복 발송 방지 가드 포함)
+    if (!skipEmail && process.env.GMAIL_USER && process.env.GMAIL_APP_PW) {
+      try {
+        const transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: process.env.GMAIL_USER,
+            pass: process.env.GMAIL_APP_PW
+          }
+        });
 
-      const mailOptions = {
-        from: `"AI 팀장" <${process.env.GMAIL_USER}>`,
-        to: process.env.GMAIL_USER, // 대표님 본인에게 보냄
-        subject: `🚨 [신규 리드] ${clientName}님 진단 완료! (총점: ${totalScore}점)`,
-        html: `
-          <div style="font-family: 'Malgun Gothic', sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden;">
-            <div style="background-color: #0f172a; color: #fff; padding: 20px; text-align: center;">
-              <h2 style="margin: 0; color: #3b82f6;">🔥 신규 VIP 리드 발생</h2>
-              <p style="margin: 5px 0 0; font-size: 14px; color: #94a3b8;">The Creators AI 진단기 (1층)</p>
-            </div>
-            
-            <div style="padding: 20px; background-color: #f8fafc;">
-              <h3 style="color: #0f172a; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">👤 고객 정보</h3>
-              <p><strong>이름/직함:</strong> ${clientName} / ${clientTitle}</p>
-              <p><strong>연락처:</strong> <span style="color: #2563eb; font-weight: bold;">${clientContact}</span></p>
-              <p><strong>이메일:</strong> ${clientEmail}</p>
+        const mailOptions = {
+          from: `"AI 팀장" <${process.env.GMAIL_USER}>`,
+          to: process.env.GMAIL_USER,
+          subject: `🚨 [신규 리드] ${clientName}님 진단 완료! (총점: ${totalScore}점)`,
+          html: `
+            <div style="font-family: 'Malgun Gothic', sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden;">
+              <div style="background-color: #0f172a; color: #fff; padding: 20px; text-align: center;">
+                <h2 style="margin: 0; color: #3b82f6;">🔥 신규 VIP 리드 발생</h2>
+                <p style="margin: 5px 0 0; font-size: 14px; color: #94a3b8;">The Creators AI 진단기 (1층)</p>
+              </div>
               
-              <h3 style="color: #0f172a; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-top: 30px;">📊 진단 데이터</h3>
-              <p><strong>진단 점수:</strong> <span style="color: #e11d48; font-weight: bold; font-size: 18px;">${totalScore}점</span> / 45점</p>
-              <p><strong>희망 예산:</strong> ${budget}</p>
-              <p><strong>핵심 목표:</strong> ${goals?.join(', ')}</p>
-              <p><strong>현재 고민:</strong><br/> <span style="background-color: #fff; padding: 10px; display: block; border-radius: 5px; margin-top: 5px; border: 1px solid #e2e8f0;">${shortPainPoint}</span></p>
-              
-              <h3 style="color: #0f172a; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-top: 30px;">🤖 AI 팀장 판정 요약</h3>
-              <p><strong>권장 단계:</strong> <span style="background-color: #3b82f6; color: white; padding: 3px 8px; border-radius: 5px; font-weight: bold;">${analysisData.stage}단계</span> 솔루션 제안</p>
-              <p><strong>AI 분석 요약:</strong> ${analysisData.analysisText}</p>
+              <div style="padding: 20px; background-color: #f8fafc;">
+                <h3 style="color: #0f172a; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">👤 고객 정보</h3>
+                <p><strong>이름/직함:</strong> ${clientName} / ${clientTitle || '미입력'}</p>
+                <p><strong>연락처:</strong> <span style="color: #2563eb; font-weight: bold;">${clientContact}</span></p>
+                <p><strong>이메일:</strong> ${clientEmail || '미입력'}</p>
+                
+                <h3 style="color: #0f172a; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-top: 30px;">📊 진단 데이터</h3>
+                <p><strong>진단 점수:</strong> <span style="color: #e11d48; font-weight: bold; font-size: 18px;">${totalScore}점</span> / 45점</p>
+                <p><strong>희망 예산:</strong> ${budget || '미입력'}</p>
+                <p><strong>핵심 목표:</strong> ${Array.isArray(goals) ? goals.join(', ') : '미입력'}</p>
+                <p><strong>현재 고민:</strong><br/> <span style="background-color: #fff; padding: 10px; display: block; border-radius: 5px; margin-top: 5px; border: 1px solid #e2e8f0;">${shortPainPoint || '미입력'}</span></p>
+                
+                <h3 style="color: #0f172a; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-top: 30px;">🤖 AI 팀장 판정 요약</h3>
+                <p><strong>권장 단계:</strong> <span style="background-color: #3b82f6; color: white; padding: 3px 8px; border-radius: 5px; font-weight: bold;">${analysisData.stage}단계</span> 솔루션 제안</p>
+                <p><strong>AI 분석 요약:</strong> ${analysisData.analysisText}</p>
+              </div>
             </div>
-          </div>
-        `
-      };
+          `
+        };
 
-      // 메일 발송 (이 작업이 화면 출력을 늦추지 않도록 비동기 처리)
-      await transporter.sendMail(mailOptions);
-      console.log("✅ AI 팀장 보고 메일 발송 완료");
-      
-    } catch (mailError) {
-      console.error("🚨 메일 발송 실패:", mailError);
-      // 메일 발송이 실패해도 화면 결과는 정상적으로 보여줘야 함
+        await transporter.sendMail(mailOptions);
+        console.log("✅ AI 팀장 보고 메일 발송 완료");
+      } catch (mailError) {
+        console.error("🚨 메일 발송 실패:", mailError);
+      }
     }
 
     // 3. 화면(프론트엔드)으로 결과 반환
